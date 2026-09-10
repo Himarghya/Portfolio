@@ -10,15 +10,20 @@ export const SeasonsEpisodeTimeline: React.FC = () => {
     <div id="timeline" className="relative py-8 sm:py-12 px-4 sm:px-12 select-none border-t border-white/5 bg-[#141414]">
       
       {/* Header & Season Selector */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="font-bebas text-2xl text-[#E50914] font-bold">N</span>
-            <h3 className="text-xl sm:text-3xl font-bold text-white tracking-wide font-bebas">
-              Episodes &amp; Career Seasons
-            </h3>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="inline-flex items-center justify-center w-5 h-5 rounded bg-[#E50914] text-white font-bebas text-sm font-bold shadow-md shadow-red-950/50">
+              N
+            </span>
+            <span className="text-xs font-semibold tracking-[0.2em] text-[#E50914] uppercase font-mono">
+              CHRONOLOGY // CAREER TIMELINE
+            </span>
           </div>
-          <p className="text-xs sm:text-sm text-gray-400 font-normal">
+          <h3 className="text-2xl sm:text-4xl font-extrabold text-white tracking-wide font-bebas uppercase">
+            EPISODES &amp; CAREER SEASONS
+          </h3>
+          <p className="text-xs sm:text-sm text-gray-400 font-mono mt-0.5">
             The chronological releases and technical milestones of Himarghya Das.
           </p>
         </div>
