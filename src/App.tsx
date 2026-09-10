@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import Lenis from 'lenis';
+import React from 'react';
 import { useScrollSpy } from './hooks/useScrollSpy';
 import { useWebGLSupport } from './hooks/useWebGLSupport';
-import { useCyberSound } from './hooks/useCyberSound';
 import { BackgroundGrid } from './components/ui/BackgroundGrid';
-import { WarpSpeedCanvas } from './components/ui/WarpSpeedCanvas';
-import { ScrollTelemetryHUD } from './components/ui/ScrollTelemetryHUD';
 import { CustomCursor } from './components/ui/CustomCursor';
 import { Navbar } from './components/ui/Navbar';
-import { ThrillingSectionWrapper } from './components/ui/ThrillingSectionWrapper';
+import { SectionDeckNavigator } from './components/ui/SectionDeckNavigator';
+import { ScrollSnapWrapper } from './components/ui/ScrollSnapWrapper';
 
 import { HeroSection } from './components/sections/HeroSection';
 import { BeyondScreenSection } from './components/sections/BeyondScreenSection';
@@ -21,94 +18,68 @@ import { ContactSection } from './components/sections/ContactSection';
 import { Footer } from './components/sections/Footer';
 
 export const App: React.FC = () => {
-  const sectionIds = ['hero', 'beyond', 'about', 'skills', 'projects', 'journey', 'terminal', 'contact'];
-  const activeSection = useScrollSpy(sectionIds, 150);
+  const sections = [
+    { id: 'hero', label: 'Home' },
+    { id: 'beyond', label: '3D Cosmos' },
+    { id: 'about', label: 'About' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'journey', label: 'Journey' },
+    { id: 'terminal', label: 'CLI' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
+  const sectionIds = sections.map(s => s.id);
+  const activeSection = useScrollSpy(sectionIds, 120);
   const { isSupported: webglSupported } = useWebGLSupport();
-  const { soundEnabled, toggleSound, playHover, playClick, playWarp } = useCyberSound();
-  const [scrollVelocity, setScrollVelocity] = useState(0);
-
-  // Initialize Lenis smooth inertial scrolling
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1.1,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  const handleVelocityChange = (vel: number) => {
-    setScrollVelocity(vel);
-    playWarp(vel);
-  };
 
   return (
-    <div className="relative min-h-screen bg-[#05070D] text-[#F8FAFC] selection:bg-[#00E5FF]/20 selection:text-[#00E5FF]">
+    <div className="relative min-h-screen bg-[#040711] text-[#F8FAFC] selection:bg-[#00F2FE]/20 selection:text-[#00F2FE]">
       {/* Precision Custom Cursor */}
       <CustomCursor />
 
-      {/* Cyber Warp Speed Particle Canvas reacting to scroll velocity */}
-      <WarpSpeedCanvas onVelocityChange={handleVelocityChange} />
-
-      {/* Cyber Background Mesh & Atmospheric Lighting */}
+      {/* Lightweight Aurora Background Atmosphere */}
       <BackgroundGrid />
 
-      {/* Scroll Laser & Altitude Telemetry HUD */}
-      <ScrollTelemetryHUD activeSection={activeSection} velocity={scrollVelocity} />
-
       {/* Top Futuristic Navigation Bar */}
-      <Navbar
-        activeSection={activeSection}
-        soundEnabled={soundEnabled}
-        onToggleSound={toggleSound}
-        onHoverSound={playHover}
-        onClickSound={playClick}
-      />
+      <Navbar activeSection={activeSection} />
 
-      {/* Main Thrilling 3D Content Sections */}
+      {/* Interactive Right-side Deck Navigator with Click-To-Stop Snapping */}
+      <SectionDeckNavigator sections={sections} activeSection={activeSection} />
+
+      {/* Main Fast & Fluid Snap Sections */}
       <main className="relative z-10">
-        <HeroSection webglSupported={webglSupported} />
+        <ScrollSnapWrapper id="hero">
+          <HeroSection webglSupported={webglSupported} />
+        </ScrollSnapWrapper>
 
-        <ThrillingSectionWrapper id="beyond-wrapper">
+        <ScrollSnapWrapper id="beyond">
           <BeyondScreenSection webglSupported={webglSupported} />
-        </ThrillingSectionWrapper>
+        </ScrollSnapWrapper>
 
-        <ThrillingSectionWrapper id="about-wrapper">
+        <ScrollSnapWrapper id="about">
           <AboutSection />
-        </ThrillingSectionWrapper>
+        </ScrollSnapWrapper>
 
-        <ThrillingSectionWrapper id="skills-wrapper">
+        <ScrollSnapWrapper id="skills">
           <SkillsSection webglSupported={webglSupported} />
-        </ThrillingSectionWrapper>
+        </ScrollSnapWrapper>
 
-        <ThrillingSectionWrapper id="projects-wrapper">
+        <ScrollSnapWrapper id="projects">
           <ProjectsSection webglSupported={webglSupported} />
-        </ThrillingSectionWrapper>
+        </ScrollSnapWrapper>
 
-        <ThrillingSectionWrapper id="journey-wrapper">
+        <ScrollSnapWrapper id="journey">
           <JourneySection />
-        </ThrillingSectionWrapper>
+        </ScrollSnapWrapper>
 
-        <ThrillingSectionWrapper id="terminal-wrapper">
+        <ScrollSnapWrapper id="terminal">
           <TerminalSection />
-        </ThrillingSectionWrapper>
+        </ScrollSnapWrapper>
 
-        <ThrillingSectionWrapper id="contact-wrapper">
+        <ScrollSnapWrapper id="contact">
           <ContactSection />
-        </ThrillingSectionWrapper>
+        </ScrollSnapWrapper>
       </main>
 
       {/* Bottom Telemetry & Navigation Footer */}
