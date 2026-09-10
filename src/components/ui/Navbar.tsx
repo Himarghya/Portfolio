@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Terminal, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Terminal, ArrowUpRight, Volume2, VolumeX } from 'lucide-react';
 
 interface NavbarProps {
   activeSection: string;
+  soundEnabled: boolean;
+  onToggleSound: () => void;
+  onHoverSound?: () => void;
+  onClickSound?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  activeSection,
+  soundEnabled,
+  onToggleSound,
+  onHoverSound,
+  onClickSound
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -41,6 +51,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         {/* Futuristic Brand Logo */}
         <a
           href="#hero"
+          onMouseEnter={onHoverSound}
+          onClick={onClickSound}
           className="group flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-[#00E5FF]/50 rounded-lg p-1"
         >
           <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-[#0B1120] border border-[#00E5FF]/40 group-hover:border-[#00E5FF] transition-all duration-300 shadow-[0_0_15px_rgba(0,229,255,0.15)] group-hover:shadow-[0_0_20px_rgba(0,229,255,0.4)]">
@@ -68,6 +80,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
               <a
                 key={link.id}
                 href={link.href}
+                onMouseEnter={onHoverSound}
+                onClick={onClickSound}
                 className={`relative px-3.5 py-1.5 rounded-full text-xs font-mono tracking-wide uppercase transition-all duration-200 ${
                   isActive
                     ? 'text-[#00E5FF] font-semibold'
@@ -87,10 +101,44 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           })}
         </nav>
 
-        {/* Action Button & Terminal Quick Launch */}
+        {/* Action Button, Sound FX & Terminal Quick Launch */}
         <div className="hidden sm:flex items-center gap-3">
+          
+          {/* Cyber Audio FX Synthesizer Toggle */}
+          <button
+            onClick={() => {
+              onToggleSound();
+              onClickSound?.();
+            }}
+            onMouseEnter={onHoverSound}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-mono border transition-all ${
+              soundEnabled
+                ? 'bg-[#00E5FF]/15 border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_12px_rgba(0,229,255,0.3)]'
+                : 'bg-[#0B1120] border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
+            title={soundEnabled ? "Mute Cyber FX" : "Enable Cyber Synth Audio FX"}
+          >
+            {soundEnabled ? (
+              <>
+                <Volume2 className="w-3.5 h-3.5 text-[#00E5FF]" />
+                <span className="flex items-end gap-0.5 h-3">
+                  <span className="w-0.5 bg-[#00E5FF] h-full animate-pulse" />
+                  <span className="w-0.5 bg-[#00E5FF] h-2/3 animate-ping" />
+                  <span className="w-0.5 bg-[#00E5FF] h-4/5 animate-pulse" />
+                </span>
+              </>
+            ) : (
+              <>
+                <VolumeX className="w-3.5 h-3.5" />
+                <span>FX OFF</span>
+              </>
+            )}
+          </button>
+
           <a
             href="#terminal"
+            onMouseEnter={onHoverSound}
+            onClick={onClickSound}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-mono bg-[#0B1120] border border-slate-800 text-slate-300 hover:text-[#00E5FF] hover:border-[#00E5FF]/40 transition-all"
             title="Open Interactive Terminal"
           >
@@ -100,6 +148,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
           <a
             href="#contact"
+            onMouseEnter={onHoverSound}
+            onClick={onClickSound}
             className="relative inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono tracking-wider font-semibold text-[#05070D] bg-gradient-to-r from-[#00E5FF] to-[#38BDF8] hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all duration-300 group"
           >
             <span>LET'S TALK</span>
@@ -110,7 +160,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         {/* Mobile Hamburger Button */}
         <div className="flex lg:hidden items-center gap-2">
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => {
+              setMobileMenuOpen(!mobileMenuOpen);
+              onClickSound?.();
+            }}
             className="p-2 rounded-lg bg-[#0B1120] border border-[#00E5FF]/30 text-white hover:text-[#00E5FF] focus:outline-none"
             aria-label="Toggle Navigation"
           >
@@ -136,7 +189,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                   <a
                     key={link.id}
                     href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onClickSound?.();
+                    }}
                     className={`block px-4 py-2.5 rounded-lg font-mono text-sm uppercase tracking-wider transition-colors ${
                       isActive
                         ? 'bg-[#00E5FF]/10 text-[#00E5FF] border-l-2 border-[#00E5FF]'
@@ -148,10 +204,22 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 );
               })}
               <div className="pt-3 flex gap-2">
+                <button
+                  onClick={() => {
+                    onToggleSound();
+                    onClickSound?.();
+                  }}
+                  className="w-1/2 py-2.5 rounded-lg text-xs font-mono bg-slate-900 border border-slate-800 text-slate-300"
+                >
+                  FX: {soundEnabled ? 'ON' : 'OFF'}
+                </button>
                 <a
                   href="#contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-2.5 rounded-lg text-xs font-mono font-semibold text-[#05070D] bg-[#00E5FF] hover:bg-[#00E5FF]/90 transition-colors"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onClickSound?.();
+                  }}
+                  className="w-1/2 text-center py-2.5 rounded-lg text-xs font-mono font-semibold text-[#05070D] bg-[#00E5FF] hover:bg-[#00E5FF]/90 transition-colors"
                 >
                   LET'S TALK ↗
                 </a>
