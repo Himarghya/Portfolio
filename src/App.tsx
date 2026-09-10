@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useWebGLSupport } from './hooks/useWebGLSupport';
 import { NETFLIX_PROFILES, NetflixProfile, NetflixItem, TRENDING_PROJECTS } from './constants/netflixData';
 import { ProfileSelector } from './components/netflix/ProfileSelector';
+import { NetflixIntroAnimation } from './components/netflix/NetflixIntroAnimation';
 import { NetflixNavbar } from './components/netflix/NetflixNavbar';
 import { BillboardHero } from './components/netflix/BillboardHero';
 import { ProjectRow } from './components/netflix/ProjectRow';
@@ -15,6 +16,7 @@ import { NetflixTerminal } from './components/netflix/NetflixTerminal';
 import { ScrollLaserProgress } from './components/ui/ScrollLaserProgress';
 
 export const App: React.FC = () => {
+  const [showIntro, setShowIntro] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState<NetflixProfile | null>(null);
   const [activeModalItem, setActiveModalItem] = useState<NetflixItem | null>(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
@@ -43,6 +45,11 @@ export const App: React.FC = () => {
       
       {/* Top Stream Laser Progress */}
       <ScrollLaserProgress />
+
+      {/* Iconic Netflix Animated "D" Ribbon Opening Sequence */}
+      {showIntro && (
+        <NetflixIntroAnimation onComplete={() => setShowIntro(false)} />
+      )}
 
       {/* "Who's Watching?" Profile Selector Screen on Load */}
       {!selectedProfile ? (
