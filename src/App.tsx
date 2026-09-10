@@ -3,6 +3,7 @@ import { useScrollSpy } from './hooks/useScrollSpy';
 import { useWebGLSupport } from './hooks/useWebGLSupport';
 import { BackgroundGrid } from './components/ui/BackgroundGrid';
 import { CustomCursor } from './components/ui/CustomCursor';
+import { ScrollLaserProgress } from './components/ui/ScrollLaserProgress';
 import { Navbar } from './components/ui/Navbar';
 import { HeroSection } from './components/sections/HeroSection';
 import { BeyondScreenSection } from './components/sections/BeyondScreenSection';
@@ -21,6 +22,9 @@ export const App: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-[#020704] text-[#E2FBE8] selection:bg-[#00FF87]/25 selection:text-[#00FF87]">
+      {/* Top Global Scroll Laser Progress */}
+      <ScrollLaserProgress />
+
       {/* Precision Custom Cursor */}
       <CustomCursor />
 
