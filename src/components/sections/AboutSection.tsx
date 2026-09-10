@@ -1,148 +1,98 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ArrowUpRight, Award, FolderCheck, Users } from 'lucide-react';
 import { PERSONAL_INFO } from '../../constants/portfolioData';
-import { HudBadge } from '../ui/HudBadge';
-import { CheckCircle2, User } from 'lucide-react';
 
 export const AboutSection: React.FC = () => {
   return (
-    <section id="about" className="relative py-24 border-t border-slate-900 overflow-hidden">
+    <section id="about" className="py-20 md:py-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="flex items-center gap-2 mb-12">
-          <HudBadge label="SECTION // 02" variant="cyan" pulse={false} />
-          <span className="text-xs font-mono text-[#00E5FF] uppercase tracking-widest">// DOSSIER</span>
+        {/* Section Pill Label */}
+        <div className="text-xs font-bold tracking-widest text-[#7C3AED] uppercase mb-3">
+          ABOUT ME
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
           
-          {/* Left Column: Futuristic Cybernetic Avatar / Visual Card */}
+          {/* Left Title & Stats Pill Container */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-5 relative"
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-6 space-y-8"
           >
-            <div className="relative rounded-2xl overflow-hidden border border-[#00E5FF]/30 bg-gradient-to-b from-[#0B1120] to-[#05070D] p-6 shadow-[0_0_40px_rgba(0,229,255,0.1)]">
+            <h2 className="text-3xl sm:text-4xl xl:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+              Designing with Precision<br />
+              <span className="text-slate-800">Building with Purpose</span>
+            </h2>
+
+            {/* Stats Capsule Card matching the image */}
+            <div className="frosted-card p-6 sm:p-8 rounded-3xl shadow-glass flex flex-col sm:flex-row items-center justify-between gap-6 border border-white/90">
               
-              {/* Corner Cyber Accents */}
-              <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-[#00E5FF]" />
-              <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[#00E5FF]" />
-              <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[#00E5FF]" />
-              <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#00E5FF]" />
-
-              {/* Holographic Avatar Display */}
-              <div className="relative w-full h-[360px] rounded-xl bg-[#080D1A] border border-slate-800 flex flex-col items-center justify-center overflow-hidden p-6">
-                
-                {/* Background Geometric Grid Animation */}
-                <div className="absolute inset-0 bg-[radial-gradient(#00E5FF_1px,transparent_1px)] [background-size:16px_16px] opacity-20" />
-                
-                {/* Central Futuristic Digital Avatar Emblem */}
-                <div className="relative z-10 w-28 h-28 rounded-full bg-gradient-to-tr from-[#00E5FF]/20 via-[#7C3AED]/30 to-[#A3FF12]/20 border-2 border-[#00E5FF] p-1 flex items-center justify-center shadow-[0_0_30px_rgba(0,229,255,0.4)]">
-                  <div className="w-full h-full rounded-full bg-[#05070D] flex flex-col items-center justify-center">
-                    <User className="w-10 h-10 text-[#00E5FF] mb-1" />
-                    <span className="text-[10px] font-mono font-bold text-white tracking-widest">HD</span>
-                  </div>
+              <div className="flex items-center gap-3.5 text-left w-full sm:w-auto">
+                <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+                  <Award className="w-5 h-5" />
                 </div>
-
-                {/* Identity Telemetry Readout */}
-                <div className="relative z-10 mt-6 text-center space-y-1">
-                  <h3 className="text-xl font-bold font-mono text-white tracking-wide">{PERSONAL_INFO.name}</h3>
-                  <div className="text-xs font-mono text-[#00E5FF]">{PERSONAL_INFO.roleTitle}</div>
-                  <div className="text-[11px] font-mono text-slate-400 mt-2">
-                    STATUS: ACTIVE_DEVELOPER // 2026
-                  </div>
+                <div>
+                  <div className="text-2xl font-extrabold text-slate-900">4+</div>
+                  <div className="text-xs text-slate-500 font-medium">Years Experience</div>
                 </div>
-
-                {/* Cyber Scanner Line */}
-                <div className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent animate-scanline pointer-events-none" />
               </div>
 
-              {/* System Specs Tags */}
-              <div className="grid grid-cols-2 gap-2 mt-4 text-[11px] font-mono">
-                <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 text-slate-300">
-                  <span className="text-[#00E5FF] block text-[9px]">ENGINEERING CORE</span>
-                  Full Stack Systems
+              <div className="hidden sm:block w-px h-10 bg-slate-200" />
+
+              <div className="flex items-center gap-3.5 text-left w-full sm:w-auto">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shrink-0">
+                  <FolderCheck className="w-5 h-5" />
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 text-slate-300">
-                  <span className="text-[#A3FF12] block text-[9px]">ALGORITHMIC CORE</span>
-                  C++ &amp; Problem Solving
+                <div>
+                  <div className="text-2xl font-extrabold text-slate-900">30+</div>
+                  <div className="text-xs text-slate-500 font-medium">Projects Completed</div>
+                </div>
+              </div>
+
+              <div className="hidden sm:block w-px h-10 bg-slate-200" />
+
+              <div className="flex items-center gap-3.5 text-left w-full sm:w-auto">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                  <Users className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-2xl font-extrabold text-slate-900">100%</div>
+                  <div className="text-xs text-slate-500 font-medium">Code Reliability</div>
                 </div>
               </div>
 
             </div>
           </motion.div>
 
-          {/* Right Column: Bio, Philosophy & Metrics */}
+          {/* Right Bio Text & "More About Me" CTA */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-7 space-y-6"
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="lg:col-span-6 space-y-6 lg:pt-2"
           >
-            <div className="space-y-2">
-              <span className="text-xs font-mono text-[#00E5FF] uppercase tracking-wider">// IDENTITY MATRIX</span>
-              <h2 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">
-                WHO <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#00E5FF] to-[#38BDF8]">AM I?</span>
-              </h2>
-            </div>
-
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
-              "{PERSONAL_INFO.bio}"
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+              {PERSONAL_INFO.aboutText}
             </p>
 
-            <p className="text-sm text-slate-400 leading-relaxed">
-              I specialize in bridging the gap between performant lower-level algorithms and high-velocity modern web systems. Whether optimizing spatial geospatial database queries, developing real-time weather analytics platforms, or creating interactive 3D simulations, I focus on clean architecture, precision engineering, and intuitive UX.
-            </p>
-
-            {/* Core Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="glass-panel p-3.5 rounded-xl border border-slate-800">
-                <div className="font-mono text-2xl font-bold text-[#00E5FF]">3+</div>
-                <div className="text-xs font-mono text-white mt-0.5">Major Projects</div>
-                <div className="text-[10px] text-slate-400">Architected &amp; Built</div>
-              </div>
-              <div className="glass-panel p-3.5 rounded-xl border border-slate-800">
-                <div className="font-mono text-2xl font-bold text-[#A3FF12]">Full Stack</div>
-                <div className="text-xs font-mono text-white mt-0.5">Modern Web</div>
-                <div className="text-[10px] text-slate-400">React, Node, APIs</div>
-              </div>
-              <div className="glass-panel p-3.5 rounded-xl border border-slate-800">
-                <div className="font-mono text-2xl font-bold text-[#7C3AED]">C++ / DSA</div>
-                <div className="text-xs font-mono text-white mt-0.5">Logic &amp; Scale</div>
-                <div className="text-[10px] text-slate-400">Memory &amp; Structure</div>
-              </div>
-              <div className="glass-panel p-3.5 rounded-xl border border-slate-800">
-                <div className="font-mono text-2xl font-bold text-[#EC4899]">AI / ML</div>
-                <div className="text-xs font-mono text-white mt-0.5">Data Insights</div>
-                <div className="text-[10px] text-slate-400">Modeling &amp; Vision</div>
-              </div>
+            <div>
+              <a
+                href="#services"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-semibold text-slate-800 bg-white/80 border border-white hover:bg-white shadow-glass-sm hover:shadow-glass transition-all"
+              >
+                <span>More About Me</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
             </div>
-
-            {/* Animated Digital Signature */}
-            <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-mono tracking-widest text-slate-500 uppercase block mb-1">
-                  DIGITAL SIGNATURE VERIFICATION
-                </span>
-                <div className="font-mono text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                  <span className="text-[#00E5FF]">//</span>
-                  <span className="italic hover:text-[#00E5FF] transition-colors">{PERSONAL_INFO.name}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0B1120] border border-emerald-500/30 text-emerald-400 text-xs font-mono">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>VERIFIED IDENTITY</span>
-              </div>
-            </div>
-
           </motion.div>
 
         </div>
+
       </div>
     </section>
   );

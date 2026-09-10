@@ -8,28 +8,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        aurora: {
-          bg: '#040711',
-          surface: '#0A0F1D',
-          card: 'rgba(12, 18, 34, 0.82)',
-          cyan: '#00F2FE',
-          blue: '#4FACFE',
-          violet: '#8B5CF6',
-          fuchsia: '#D946EF',
-          emerald: '#00F5D4',
-          amber: '#F59E0B',
-          text: '#F8FAFC',
-          muted: '#94A3B8',
-          border: 'rgba(0, 242, 254, 0.16)'
+        glass: {
+          bg: '#F3F4F8',
+          card: 'rgba(255, 255, 255, 0.7)',
+          border: 'rgba(255, 255, 255, 0.8)',
+          'border-subtle': 'rgba(226, 232, 240, 0.8)',
+          primary: '#0F172A',
+          secondary: '#6366F1',
+          accent: '#8B5CF6',
+          text: '#0F172A',
+          muted: '#64748B',
+          soft: '#F8FAFC'
         }
       },
       fontFamily: {
-        sans: ['Space Grotesk', 'Inter', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['Plus Jakarta Sans', 'Inter', 'Space Grotesk', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      boxShadow: {
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+        'glass-hover': '0 14px 40px 0 rgba(99, 102, 241, 0.12)',
+        'glass-sm': '0 4px 16px 0 rgba(31, 38, 135, 0.05)',
+        'pill': '0 2px 10px rgba(0, 0, 0, 0.04)',
       },
       backgroundImage: {
-        'aurora-glow': 'radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.12), rgba(139, 92, 246, 0.08) 50%, transparent 80%)',
-        'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
+        'fluid-mesh': 'radial-gradient(at 10% 10%, rgba(224, 231, 255, 0.7) 0px, transparent 50%), radial-gradient(at 90% 15%, rgba(243, 232, 255, 0.8) 0px, transparent 50%), radial-gradient(at 50% 50%, rgba(241, 245, 249, 0.6) 0px, transparent 60%), radial-gradient(at 80% 85%, rgba(224, 242, 254, 0.7) 0px, transparent 50%), radial-gradient(at 15% 90%, rgba(254, 243, 199, 0.5) 0px, transparent 50%)',
       }
     },
   },
