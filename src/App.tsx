@@ -1,42 +1,48 @@
 import React from 'react';
 import { useScrollSpy } from './hooks/useScrollSpy';
-import { FluidBackground } from './components/ui/FluidBackground';
+import { useWebGLSupport } from './hooks/useWebGLSupport';
+import { BackgroundGrid } from './components/ui/BackgroundGrid';
+import { CustomCursor } from './components/ui/CustomCursor';
 import { Navbar } from './components/ui/Navbar';
 import { HeroSection } from './components/sections/HeroSection';
+import { BeyondScreenSection } from './components/sections/BeyondScreenSection';
 import { AboutSection } from './components/sections/AboutSection';
-import { ServicesSection } from './components/sections/ServicesSection';
-import { TechnologiesSection } from './components/sections/TechnologiesSection';
-import { WorkSection } from './components/sections/WorkSection';
-import { ProcessSection } from './components/sections/ProcessSection';
-import { TestimonialsSection } from './components/sections/TestimonialsSection';
+import { SkillsSection } from './components/sections/SkillsSection';
+import { ProjectsSection } from './components/sections/ProjectsSection';
+import { JourneySection } from './components/sections/JourneySection';
+import { TerminalSection } from './components/sections/TerminalSection';
 import { ContactSection } from './components/sections/ContactSection';
 import { Footer } from './components/sections/Footer';
 
 export const App: React.FC = () => {
-  const sectionIds = ['home', 'about', 'services', 'work', 'process', 'testimonials', 'contact'];
-  const activeSection = useScrollSpy(sectionIds, 120);
+  const sectionIds = ['hero', 'beyond', 'about', 'skills', 'projects', 'journey', 'terminal', 'contact'];
+  const activeSection = useScrollSpy(sectionIds, 150);
+  const { isSupported: webglSupported } = useWebGLSupport();
 
   return (
-    <div className="relative min-h-screen bg-[#F4F6FB] text-[#0F172A] selection:bg-indigo-500/20 selection:text-indigo-600">
-      {/* Ethereal Silk & Pastel Glow Atmosphere */}
-      <FluidBackground />
+    <div className="relative min-h-screen bg-[#020704] text-[#E2FBE8] selection:bg-[#00FF87]/25 selection:text-[#00FF87]">
+      {/* Precision Custom Cursor */}
+      <CustomCursor />
 
-      {/* Glass Capsule Sticky Navbar */}
+      {/* Cyber Background Mesh & Atmospheric Lighting */}
+      <BackgroundGrid />
+
+      {/* Top Futuristic Navigation Bar */}
       <Navbar activeSection={activeSection} />
 
-      {/* Main Sections Matching Reference Layout */}
+      {/* Main Content Sections */}
       <main className="relative z-10">
-        <HeroSection />
+        <HeroSection webglSupported={webglSupported} />
+        <BeyondScreenSection webglSupported={webglSupported} />
         <AboutSection />
-        <ServicesSection />
-        <TechnologiesSection />
-        <WorkSection />
-        <ProcessSection />
-        <TestimonialsSection />
+        <SkillsSection webglSupported={webglSupported} />
+        <ProjectsSection webglSupported={webglSupported} />
+        <JourneySection />
+        <TerminalSection />
         <ContactSection />
       </main>
 
-      {/* Clean Minimal Footer */}
+      {/* Bottom Telemetry & Navigation Footer */}
       <Footer />
     </div>
   );

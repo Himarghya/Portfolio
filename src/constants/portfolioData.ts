@@ -1,160 +1,217 @@
+import { Project, SkillItem, TimelineMilestone } from '../types';
+
 export const PERSONAL_INFO = {
   name: "Himarghya Das",
-  roleTitle: "Full Stack Developer & C++ Engineer",
-  subtitle: "Full Stack Developer & C++ Programmer",
-  intro: "I craft intelligent, scalable digital experiences and high-performance systems that are intuitive, beautiful, and built with purpose.",
-  aboutTitle: "Designing with Precision, Building with Purpose",
-  aboutText: "I'm a developer passionate about turning complex problems into simple, intuitive and scalable digital solutions. I enjoy building modern full-stack web applications, exploring AI/ML pipelines, solving intricate algorithmic challenges, and engineering resilient architectures.",
+  roleTitle: "Full Stack Developer & C++ Systems Engineer",
+  roles: [
+    "Full Stack Developer",
+    "C++ Programmer",
+    "AI/ML Enthusiast",
+    "Problem Solver",
+    "Creative Technologist"
+  ],
+  status: "AVAILABLE FOR OPPORTUNITIES",
+  location: "India // Remote Available",
+  bio: "I'm a developer passionate about turning complex problems into elegant digital solutions. I enjoy building full-stack applications, exploring AI/ML, solving algorithmic challenges, and experimenting with emerging technologies.",
   stats: [
-    { value: "4+", label: "Years Experience" },
-    { value: "30+", label: "Projects Completed" },
-    { value: "100%", label: "Code Quality & Tests" }
+    { label: "Major Projects", value: "4+", detail: "Production & Research Scale" },
+    { label: "Core Competency", value: "Full Stack", detail: "React, Node, FastAPI" },
+    { label: "Algorithmic Focus", value: "C++ / DSA", detail: "High Performance & Logic" },
+    { label: "Exploration", value: "AI / ML", detail: "Deep Learning & Vision" }
   ],
   links: {
-    github: "https://github.com/Himarghya",
+    github: "https://github.com",
     linkedin: "https://linkedin.com",
     email: "himarghyadas.dev@example.com",
-    phone: "+91 98765 43210",
-    location: "India // Remote Available"
   },
-  partners: [
-    { name: "Google", logo: "Google" },
-    { name: "Microsoft", logo: "Microsoft" },
-    { name: "PostgreSQL", logo: "PostgreSQL" },
-    { name: "Docker", logo: "Docker" },
-    { name: "React", logo: "React" }
-  ]
+  mission: "Build intelligent systems that solve real-world problems with scalable architecture and immersive experiences."
 };
 
-export const SERVICES = [
+export const PROJECTS: Project[] = [
   {
-    id: "s1",
-    title: "Full Stack Development",
-    description: "Designing and engineering responsive, scalable user interfaces and resilient cloud-backed web applications.",
-    icon: "Layout",
-    color: "from-amber-400 to-orange-500",
-    bgSoft: "bg-amber-50 text-amber-600 border-amber-200/60"
+    id: "varshanet",
+    number: "01",
+    title: "VARSHANET 2.0",
+    subtitle: "Weather Big Data Analytics & Geospatial Intelligence",
+    description: "A real-time weather big data analytics platform designed for multi-modal weather verification, disaster intelligence, and geospatial insights. Features high-velocity satellite & ground telemetry ingestion, predictive rain mapping, and interactive GIS spatial queries.",
+    highlights: [
+      "Multi-modal sensor fusion and real-time precipitation radar mapping",
+      "Geospatial query optimization using PostGIS & spatial indexing",
+      "Predictive disaster risk classification powered by AI/ML pipelines"
+    ],
+    techStack: ["React", "TypeScript", "FastAPI", "PostgreSQL", "PostGIS", "AI/ML", "GIS"],
+    category: "Data / AI",
+    githubUrl: "https://github.com",
+    liveUrl: "https://example.com/varshanet",
+    caseStudyAvailable: true,
+    color: "from-cyan-500/20 via-blue-600/10 to-transparent",
+    accentHex: "#00E5FF",
+    type3D: "weather-globe"
   },
   {
-    id: "s2",
-    title: "C++ & Systems Architecture",
-    description: "Architecting high-performance algorithmic pipelines, STL memory optimizations, and data structures.",
-    icon: "Cpu",
-    color: "from-violet-500 to-indigo-600",
-    bgSoft: "bg-purple-50 text-purple-600 border-purple-200/60"
+    id: "ocean-intelligence",
+    number: "02",
+    title: "OCEAN INTELLIGENCE",
+    subtitle: "Marine Observation & Environmental Telemetry Platform",
+    description: "An ocean monitoring and analytics platform for exploring marine observations, anomalies, and intelligent environmental insights. Processes bathymetric, salinity, and temperature telemetry across maritime sensor nodes.",
+    highlights: [
+      "3D spatial ocean thermal anomaly detection & historical trend analysis",
+      "Containerized microservices architecture with automated telemetry pipelines",
+      "Real-time sensor telemetry dashboard with low-latency streaming"
+    ],
+    techStack: ["React", "FastAPI", "PostgreSQL", "Docker", "Data Analytics"],
+    category: "Full Stack",
+    githubUrl: "https://github.com",
+    liveUrl: "https://example.com/ocean-intelligence",
+    caseStudyAvailable: true,
+    color: "from-blue-500/20 via-indigo-600/10 to-transparent",
+    accentHex: "#38BDF8",
+    type3D: "ocean-sphere"
   },
   {
-    id: "s3",
-    title: "API & Database Systems",
-    description: "Building resilient REST APIs, microservices, and optimized relational schemas with PostgreSQL and FastAPI.",
-    icon: "Database",
-    color: "from-blue-400 to-cyan-500",
-    bgSoft: "bg-blue-50 text-blue-600 border-blue-200/60"
+    id: "hospital-management",
+    number: "03",
+    title: "HOSPITAL MANAGEMENT SYSTEM",
+    subtitle: "Clinical Workflow & Telemetry Management Portal",
+    description: "A full-stack hospital management application designed to streamline patient, doctor, and administrative workflows with role-based access control, prescription tracking, and appointment scheduling.",
+    highlights: [
+      "End-to-end relational schema modeling with strict audit compliance",
+      "Intuitive doctor-patient telemetry interface and electronic health records",
+      "Scalable REST API endpoints built with Express.js and resilient pooling"
+    ],
+    techStack: ["React", "Express.js", "PostgreSQL", "JavaScript", "Tailwind CSS"],
+    category: "Web Systems",
+    githubUrl: "https://github.com",
+    liveUrl: "https://example.com/hospital-system",
+    caseStudyAvailable: true,
+    color: "from-emerald-500/20 via-teal-600/10 to-transparent",
+    accentHex: "#10B981",
+    type3D: "medical-hud"
   },
   {
-    id: "s4",
-    title: "AI/ML & Data Telemetry",
-    description: "Developing intelligent analytics platforms, computer vision pipelines, and geospatial GIS observations.",
+    id: "the-card-catalog",
+    number: "04",
+    title: "THE CARD CATALOG",
+    subtitle: "Interactive Digital Archive & Book Discovery Engine",
+    description: "A visually immersive digital book discovery platform featuring a vintage card-inspired interface, dynamic REST API integrations, and rich catalog search algorithms.",
+    highlights: [
+      "Tactile 3D rotating card deck UI with interactive inspection physics",
+      "Seamless book metadata aggregation through Open Library & Google Books APIs",
+      "Server-rendered dynamic views with PostgreSQL indexing and caching"
+    ],
+    techStack: ["Express.js", "EJS", "PostgreSQL", "Bootstrap", "APIs", "Three.js"],
+    category: "Interactive",
+    githubUrl: "https://github.com",
+    liveUrl: "https://example.com/card-catalog",
+    caseStudyAvailable: true,
+    color: "from-amber-500/20 via-purple-600/10 to-transparent",
+    accentHex: "#F59E0B",
+    type3D: "card-deck"
+  }
+];
+
+export const SKILL_CATEGORIES: {
+  category: SkillItem['category'];
+  description: string;
+  skills: SkillItem[];
+}[] = [
+  {
+    category: "Programming",
+    description: "High performance system level languages and algorithmic foundations",
+    skills: [
+      { name: "C++", category: "Programming", levelText: "Core Systems & Algorithms", iconName: "Code2", color: "#00E5FF", description: "OOP, STL, pointers, memory optimization, competitive problem solving", tags: ["C++17/20", "STL", "Memory Mgmt"] },
+      { name: "Data Structures & Algorithms", category: "Programming", levelText: "Advanced Problem Solving", iconName: "Binary", color: "#A3FF12", description: "Trees, Graphs, DP, Greedy, Time & Space Complexity Optimization", tags: ["Graph Theory", "DP", "Trees"] },
+      { name: "Python", category: "Programming", levelText: "Scripting & Intelligence", iconName: "Terminal", color: "#38BDF8", description: "Data manipulation, automation, AI pipelines, API microservices", tags: ["Python3", "NumPy", "Pandas"] },
+      { name: "JavaScript / TypeScript", category: "Programming", levelText: "Type-Safe Modern Web", iconName: "FileCode2", color: "#FBBF24", description: "ES6+, Async/Await, Generics, strict typing, DOM, Event Loops", tags: ["TypeScript", "ESNext", "Async"] }
+    ]
+  },
+  {
+    category: "Frontend",
+    description: "Responsive, high-fidelity user interfaces and 3D visual experiences",
+    skills: [
+      { name: "React", category: "Frontend", levelText: "Component Architecture", iconName: "Layers", color: "#00E5FF", description: "Hooks, Context API, state machines, custom hooks, performance tuning", tags: ["React 18", "Hooks", "Virtual DOM"] },
+      { name: "TypeScript", category: "Frontend", levelText: "Scalable Type Systems", iconName: "ShieldCheck", color: "#3B82F6", description: "Interface contracts, utility types, strict compilation, clean abstractions", tags: ["Types", "Interfaces", "Strict"] },
+      { name: "Tailwind CSS", category: "Frontend", levelText: "Modern Utility Styling", iconName: "Palette", color: "#06B6D4", description: "Custom design systems, glassmorphism, responsive grids, dark mode", tags: ["Design Systems", "JIT", "Animations"] },
+      { name: "HTML & CSS", category: "Frontend", levelText: "Semantic & Responsive Web", iconName: "Layout", color: "#F97316", description: "Semantic HTML5, CSS Grid, Flexbox, Canvas, View Transitions, a11y", tags: ["HTML5", "CSS3", "Grid/Flex"] }
+    ]
+  },
+  {
+    category: "Backend",
+    description: "Robust server architectures, RESTful APIs, and event-driven backends",
+    skills: [
+      { name: "Node.js", category: "Backend", levelText: "Asynchronous Runtime", iconName: "Server", color: "#22C55E", description: "Non-blocking I/O, Event loop, Streams, Modules, npm ecosystem", tags: ["Runtime", "Async I/O", "Microservices"] },
+      { name: "Express.js", category: "Backend", levelText: "Fast Web APIs", iconName: "Cpu", color: "#94A3B8", description: "Middleware chains, routing, authentication, error handlers, REST APIs", tags: ["Middleware", "Routing", "REST"] },
+      { name: "FastAPI", category: "Backend", levelText: "High Speed Python APIs", iconName: "Zap", color: "#10B981", description: "Pydantic validation, async/await coroutines, OpenAPI specs, speed", tags: ["Pydantic", "Async", "OpenAPI"] },
+      { name: "REST APIs", category: "Backend", levelText: "API Design & Integration", iconName: "Network", color: "#7C3AED", description: "Clean endpoint design, rate limiting, token auth, caching strategies", tags: ["HTTP", "JSON", "Security"] }
+    ]
+  },
+  {
+    category: "Database",
+    description: "Relational modeling, indexing, and spatial data persistence",
+    skills: [
+      { name: "PostgreSQL", category: "Database", levelText: "Relational Heavyweight", iconName: "Database", color: "#3B82F6", description: "Complex joins, indexing, ACID transactions, materialized views", tags: ["RDBMS", "ACID", "Indexes"] },
+      { name: "SQL", category: "Database", levelText: "Query Optimization", iconName: "Table", color: "#A855F7", description: "Schema normalization, CTEs, aggregation pipelines, subqueries", tags: ["Relational", "Queries", "Joins"] }
+    ]
+  },
+  {
+    category: "AI / ML",
+    description: "Predictive modeling, data analytics, and computational perception",
+    skills: [
+      { name: "Machine Learning", category: "AI / ML", levelText: "Predictive Modeling", iconName: "Brain", color: "#EC4899", description: "Regression, classification, feature engineering, model evaluation", tags: ["Scikit-Learn", "Model Training"] },
+      { name: "Computer Vision", category: "AI / ML", levelText: "Visual Data Processing", iconName: "Eye", color: "#8B5CF6", description: "Image filtering, feature detection, object tracking, spatial analysis", tags: ["Image Processing", "Perception"] },
+      { name: "Data Analytics", category: "AI / ML", levelText: "Insights & Visualization", iconName: "BarChart3", color: "#00E5FF", description: "Data exploration, statistical distributions, telemetry aggregation", tags: ["Insights", "Telemetry", "Plots"] }
+    ]
+  },
+  {
+    category: "Tools",
+    description: "DevOps, version control, and development environments",
+    skills: [
+      { name: "Git & GitHub", category: "Tools", levelText: "Distributed Versioning", iconName: "GitBranch", color: "#F43F5E", description: "Branching strategies, merge conflict resolution, CI workflows, PRs", tags: ["VCS", "Collaboration", "CI"] },
+      { name: "Docker", category: "Tools", levelText: "Containerization", iconName: "Box", color: "#0284C7", description: "Dockerfiles, multi-stage builds, container isolation, compose", tags: ["Containers", "Isolation"] },
+      { name: "VS Code", category: "Tools", levelText: "Modern IDE Mastery", iconName: "Wrench", color: "#3B82F6", description: "Debuggers, extensions, terminal integration, linter workflows", tags: ["IDE", "Productivity"] }
+    ]
+  }
+];
+
+export const TIMELINE: TimelineMilestone[] = [
+  {
+    id: "m1",
+    year: "PHASE 01",
+    status: "COMPLETED",
+    title: "The Genesis: Programming & Problem Solving",
+    description: "Commenced deep-dive into C++, object-oriented principles, and algorithmic problem solving. Mastered data structures, time-complexity analysis, and foundational computing architecture.",
+    skills: ["C++", "Data Structures", "Algorithms", "STL", "Problem Solving"],
+    icon: "Terminal",
+    badge: "Foundational Mastery"
+  },
+  {
+    id: "m2",
+    year: "PHASE 02",
+    status: "COMPLETED",
+    title: "Full-Stack Web Engineering",
+    description: "Expanded into modern web systems architecture. Engineered responsive frontends with React and built REST APIs with Node.js, Express, and PostgreSQL, focusing on secure and resilient data flow.",
+    skills: ["React", "Node.js", "Express.js", "PostgreSQL", "REST APIs", "Tailwind CSS"],
+    icon: "Layers",
+    badge: "Full Stack Systems"
+  },
+  {
+    id: "m3",
+    year: "PHASE 03",
+    status: "COMPLETED",
+    title: "AI/ML & Data-Driven Intelligence",
+    description: "Explored machine learning methodologies, computer vision pipelines, and high-performance Python backends using FastAPI. Applied models to real-world structured datasets and environmental signals.",
+    skills: ["Python", "FastAPI", "Machine Learning", "Computer Vision", "Data Analytics"],
     icon: "Brain",
-    color: "from-emerald-400 to-teal-500",
-    bgSoft: "bg-emerald-50 text-emerald-600 border-emerald-200/60"
-  }
-];
-
-export const TECHNOLOGIES = [
-  { name: "C++", category: "Core", icon: "Code2", color: "#00599C" },
-  { name: "React", category: "Frontend", icon: "Layers", color: "#61DAFB" },
-  { name: "TypeScript", category: "Frontend", icon: "FileCode", color: "#3178C6" },
-  { name: "Python", category: "AI / ML", icon: "Terminal", color: "#3776AB" },
-  { name: "Node.js", category: "Backend", icon: "Server", color: "#339933" },
-  { name: "FastAPI", category: "Backend", icon: "Zap", color: "#009688" },
-  { name: "PostgreSQL", category: "Database", icon: "Database", color: "#4169E1" },
-  { name: "Docker", category: "DevOps", icon: "Box", color: "#2496ED" },
-  { name: "Tailwind CSS", category: "Styling", icon: "Palette", color: "#06B6D4" },
-  { name: "Git", category: "Tools", icon: "GitBranch", color: "#F05032" }
-];
-
-export const SELECTED_WORKS = [
-  {
-    id: "w1",
-    title: "VarshaNet 2.0",
-    category: "Weather Big Data Analytics",
-    description: "Real-time weather big data analytics platform with multi-modal weather verification and geospatial GIS insights.",
-    imageBg: "from-blue-100 via-indigo-50 to-purple-100",
-    previewType: "weather",
-    tech: ["React", "TypeScript", "FastAPI", "PostGIS"],
-    link: "https://github.com/Himarghya/Portfolio"
+    badge: "Intelligent Systems"
   },
   {
-    id: "w2",
-    title: "Ocean Intelligence",
-    category: "Marine Telemetry Platform",
-    description: "Marine observation platform for exploring oceanographic anomalies, bathymetry, and environmental telemetry.",
-    imageBg: "from-cyan-100 via-sky-50 to-blue-100",
-    previewType: "ocean",
-    tech: ["React", "FastAPI", "PostgreSQL", "Docker"],
-    link: "https://github.com/Himarghya/Portfolio"
-  },
-  {
-    id: "w3",
-    title: "Hospital Management",
-    category: "Clinical Telemetry & EHR",
-    description: "Full-stack hospital management application streamlining patient records, doctors, and scheduling workflows.",
-    imageBg: "from-emerald-100 via-teal-50 to-cyan-100",
-    previewType: "hospital",
-    tech: ["React", "Express.js", "PostgreSQL", "Tailwind"],
-    link: "https://github.com/Himarghya/Portfolio"
-  }
-];
-
-export const PROCESS_STEPS = [
-  {
-    step: "01",
-    title: "Discover",
-    description: "Deep-dive into system requirements, constraints, and architecture objectives."
-  },
-  {
-    step: "02",
-    title: "Define",
-    description: "Formulate relational schemas, data models, and clean API contracts."
-  },
-  {
-    step: "03",
-    title: "Architect",
-    description: "Engineer core algorithms, memory optimization, and asynchronous pipelines."
-  },
-  {
-    step: "04",
-    title: "Develop",
-    description: "Craft responsive, accessible frontend interfaces and seamless microservices."
-  },
-  {
-    step: "05",
-    title: "Test & Deploy",
-    description: "Rigorous unit testing, CI/CD automation, containerization, and benchmarking."
-  }
-];
-
-export const TESTIMONIALS = [
-  {
-    id: "t1",
-    quote: "Himarghya is an exceptional engineer. He understands complex algorithmic architectures deeply and delivers clean, reliable software on every milestone.",
-    author: "Rohit Sharma",
-    role: "Engineering Lead, Collaborator",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
-  },
-  {
-    id: "t2",
-    quote: "Working with Himarghya was a smooth and inspiring experience. His attention to detail in database modeling and C++ problem solving is truly impressive.",
-    author: "Neha Verma",
-    role: "Senior Software Architect",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200"
-  },
-  {
-    id: "t3",
-    quote: "Himarghya's solutions not only look modern and intuitive, but also scale effortlessly under heavy data workloads. Highly recommended!",
-    author: "Karan Malhotra",
-    role: "Tech Lead & Mentor",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200"
+    id: "m4",
+    year: "PHASE 04",
+    status: "CURRENT FOCUS",
+    title: "Advanced Weather & Ocean Analytics Platforms",
+    description: "Architected cutting-edge big data platforms: VarshaNet 2.0 for real-time weather & disaster intelligence with geospatial GIS queries, and Ocean Intelligence for marine anomaly tracking.",
+    skills: ["PostGIS", "FastAPI", "GIS Spatial Data", "Docker", "Three.js 3D Visuals"],
+    icon: "Globe",
+    badge: "Specialized Engineering"
   }
 ];
