@@ -13,17 +13,17 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal,
   const [muted, setMuted] = useState(true);
 
   return (
-    <section id="home" className="relative w-full min-h-[85vh] lg:min-h-[92vh] flex items-center justify-start overflow-hidden bg-[#141414] select-none pt-20">
+    <section id="home" className="relative w-full min-h-[88vh] lg:min-h-[95vh] flex items-center justify-start overflow-hidden bg-[#141414] select-none pt-24 sm:pt-28 pb-32 sm:pb-40 lg:pb-48">
       
       {/* Background Cinematic Atmosphere & 3D WebGL Canvas */}
       <div className="absolute inset-0 z-0">
         {/* Dark Vignette Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#141414] via-[#141414]/70 to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#141414] via-[#141414]/75 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/50 to-transparent z-10" />
         <div className="absolute inset-0 bg-radial-vignette opacity-80 z-10 pointer-events-none" />
 
         {/* 3D Quantum Core or Gradient Visualizer */}
-        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-3/5 h-full opacity-65 lg:opacity-90 flex items-center justify-center">
+        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-3/5 h-full opacity-65 lg:opacity-90 flex items-center justify-center pointer-events-none">
           {webglSupported ? (
             <HeroQuantumCore />
           ) : (
@@ -33,7 +33,7 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal,
       </div>
 
       {/* Hero Content Container */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-12 w-full py-12">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-12 w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal,
       </div>
 
       {/* Right Side Audio & Maturity Rating Banner */}
-      <div className="absolute right-0 bottom-24 flex items-center gap-3 z-30">
+      <div className="absolute right-0 bottom-32 sm:bottom-40 lg:bottom-48 flex items-center gap-3 z-30">
         <button
           onClick={() => setMuted(!muted)}
           className="p-2 rounded-full border border-white/30 bg-black/40 hover:bg-black/70 text-white transition-all backdrop-blur-sm"

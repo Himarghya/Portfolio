@@ -68,7 +68,7 @@ export const App: React.FC = () => {
             />
 
             {/* Negative Margin Carousel Stacking (Authentic Netflix Layering) */}
-            <div className="relative z-20 -mt-16 sm:-mt-24 lg:-mt-32 space-y-6 sm:space-y-10">
+            <div className="relative z-20 -mt-12 sm:-mt-16 lg:-mt-20 space-y-6 sm:space-y-10">
               
               {/* Row 1: Trending Projects */}
               <div id="projects">

@@ -72,57 +72,57 @@ const CoreMesh: React.FC<CoreSceneProps> = ({ mouse }) => {
       <mesh ref={coreRef}>
         <sphereGeometry args={[0.9, 32, 32]} />
         <meshStandardMaterial
-          color="#00FF87"
-          emissive="#00FF87"
-          emissiveIntensity={1.4}
+          color="#E50914"
+          emissive="#B20710"
+          emissiveIntensity={1.8}
           roughness={0.15}
-          metalness={0.8}
+          metalness={0.85}
         />
       </mesh>
 
       {/* Wireframe Holographic Outer Shell */}
       <mesh ref={wireCoreRef}>
-        <icosahedronGeometry args={[1.3, 2]} />
+        <icosahedronGeometry args={[1.35, 2]} />
         <meshBasicMaterial
-          color="#A3FF12"
+          color="#FF4D58"
           wireframe
           transparent
-          opacity={0.35}
+          opacity={0.3}
         />
       </mesh>
 
-      {/* Ring 1 - Cyber Emerald Metallic */}
+      {/* Ring 1 - Netflix Crimson Metallic */}
       <mesh ref={ring1Ref}>
         <torusGeometry args={[1.75, 0.035, 16, 64]} />
         <meshStandardMaterial
-          color="#00FF87"
-          emissive="#00FF87"
-          emissiveIntensity={0.6}
-          roughness={0.2}
-          metalness={0.9}
-        />
-      </mesh>
-
-      {/* Ring 2 - Toxic Lime Metallic */}
-      <mesh ref={ring2Ref} rotation={[Math.PI / 3, 0, 0]}>
-        <torusGeometry args={[2.05, 0.03, 16, 64]} />
-        <meshStandardMaterial
-          color="#A3FF12"
-          emissive="#A3FF12"
+          color="#E50914"
+          emissive="#E50914"
           emissiveIntensity={0.8}
           roughness={0.2}
           metalness={0.9}
         />
       </mesh>
 
-      {/* Ring 3 - Mint Green Metallic */}
+      {/* Ring 2 - Platinum Silver Metallic */}
+      <mesh ref={ring2Ref} rotation={[Math.PI / 3, 0, 0]}>
+        <torusGeometry args={[2.05, 0.03, 16, 64]} />
+        <meshStandardMaterial
+          color="#FFFFFF"
+          emissive="#666666"
+          emissiveIntensity={0.4}
+          roughness={0.15}
+          metalness={0.95}
+        />
+      </mesh>
+
+      {/* Ring 3 - Deep Ruby Metallic */}
       <mesh ref={ring3Ref} rotation={[0, Math.PI / 4, Math.PI / 6]}>
         <torusGeometry args={[2.35, 0.025, 16, 64]} />
         <meshStandardMaterial
-          color="#6EE7B7"
-          emissive="#6EE7B7"
+          color="#990000"
+          emissive="#E50914"
           emissiveIntensity={0.5}
-          roughness={0.3}
+          roughness={0.25}
           metalness={0.9}
         />
       </mesh>
@@ -131,21 +131,21 @@ const CoreMesh: React.FC<CoreSceneProps> = ({ mouse }) => {
       <Float speed={2} rotationIntensity={1.5} floatIntensity={1.5}>
         <mesh position={[1.8, 0.9, 0.8]}>
           <octahedronGeometry args={[0.15]} />
-          <meshStandardMaterial color="#00FF87" emissive="#00FF87" emissiveIntensity={2} />
+          <meshStandardMaterial color="#E50914" emissive="#E50914" emissiveIntensity={2} />
         </mesh>
       </Float>
 
       <Float speed={2.5} rotationIntensity={1.8} floatIntensity={1.2}>
         <mesh position={[-1.7, -1.1, 0.6]}>
           <dodecahedronGeometry args={[0.14]} />
-          <meshStandardMaterial color="#A3FF12" emissive="#A3FF12" emissiveIntensity={1.5} />
+          <meshStandardMaterial color="#FFFFFF" emissive="#CCCCCC" emissiveIntensity={1.5} />
         </mesh>
       </Float>
 
       <Float speed={1.8} rotationIntensity={1.2} floatIntensity={2}>
         <mesh position={[0.5, -1.9, -0.9]}>
           <tetrahedronGeometry args={[0.16]} />
-          <meshStandardMaterial color="#10B981" emissive="#10B981" emissiveIntensity={2} />
+          <meshStandardMaterial color="#FF4D58" emissive="#E50914" emissiveIntensity={2} />
         </mesh>
       </Float>
 
@@ -153,11 +153,11 @@ const CoreMesh: React.FC<CoreSceneProps> = ({ mouse }) => {
       <Points positions={particlePositions} stride={3}>
         <PointMaterial
           transparent
-          color="#00FF87"
+          color="#E50914"
           size={0.035}
           sizeAttenuation={true}
           depthWrite={false}
-          opacity={0.65}
+          opacity={0.6}
         />
       </Points>
     </group>
@@ -185,25 +185,11 @@ export const HeroQuantumCore: React.FC = () => {
         className="w-full h-full"
       >
         <ambientLight intensity={0.4} />
-        <pointLight position={[5, 5, 5]} intensity={1.5} color="#00FF87" />
-        <pointLight position={[-5, -5, -5]} intensity={1.2} color="#10B981" />
-        <pointLight position={[0, 4, -3]} intensity={0.8} color="#A3FF12" />
+        <pointLight position={[5, 5, 5]} intensity={1.8} color="#E50914" />
+        <pointLight position={[-5, -5, -5]} intensity={1.2} color="#FFFFFF" />
+        <pointLight position={[0, 4, -3]} intensity={1.0} color="#B20710" />
         <CoreMesh mouse={mouse} />
       </Canvas>
-
-      {/* Floating System HUD Overlays */}
-      <div className="absolute top-4 right-4 pointer-events-none">
-        <div className="glass-panel px-3 py-1.5 rounded-md border border-[#00FF87]/30 text-[11px] font-mono text-[#00FF87] flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00FF87] animate-ping" />
-          <span>QUANTUM_CORE // STABLE</span>
-        </div>
-      </div>
-
-      <div className="absolute bottom-4 left-4 pointer-events-none">
-        <div className="glass-panel px-3 py-1.5 rounded-md border border-emerald-900/60 text-[10px] font-mono text-emerald-400">
-          ROT: GYRO_3AXIS // SENSORS: ACTIVE
-        </div>
-      </div>
     </div>
   );
 };
