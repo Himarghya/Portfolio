@@ -18,7 +18,7 @@ export interface NetflixItem {
   quality: string;
   synopsis: string;
   detailedOverview: string;
-  cast: string[]; // Technologies
+  cast: string[];
   genres: string[];
   tags: string[];
   backdropColor: string;
@@ -27,6 +27,7 @@ export interface NetflixItem {
   liveUrl?: string;
   githubUrl?: string;
   keyHighlights: string[];
+  metrics?: { label: string; value: string }[];
   episodes?: {
     episodeNumber: number;
     title: string;
@@ -40,285 +41,258 @@ export const NETFLIX_PROFILES: NetflixProfile[] = [
   {
     id: 'recruiter',
     name: 'Recruiter',
-    role: 'Talent Acquisition & Hiring Lead',
-    avatarBg: 'bg-gradient-to-br from-blue-600 to-indigo-800',
-    avatarIcon: '💼',
-    greeting: 'Welcome! Explore top flagship releases, skills matrix, and verified resume credentials.'
+    role: 'Hiring & Technical Recruitment',
+    avatarBg: 'bg-zinc-800',
+    avatarIcon: 'HR',
+    greeting: 'Welcome. Take a look at the projects, source code links, and technical background.'
   },
   {
     id: 'tech_lead',
-    name: 'Tech Lead / CTO',
-    role: 'Engineering Director & System Architect',
-    avatarBg: 'bg-gradient-to-br from-red-600 to-rose-900',
-    avatarIcon: '⚡',
-    greeting: 'Inspecting C++ algorithmic rigor, backend scalability, and database schemas.'
+    name: 'Engineering Lead',
+    role: 'Architecture & System Design',
+    avatarBg: 'bg-zinc-800',
+    avatarIcon: 'ENG',
+    greeting: 'Reviewing systems code, database queries, and frontend architecture.'
   },
   {
     id: 'developer',
-    name: 'Peer Dev',
-    role: 'Fellow Coder & Open Source Hacker',
-    avatarBg: 'bg-gradient-to-br from-emerald-600 to-teal-800',
-    avatarIcon: '💻',
-    greeting: 'Looking for cool WebGL visualizers, clean React architecture, and terminal tricks.'
+    name: 'Developer',
+    role: 'Peer Software Engineer',
+    avatarBg: 'bg-zinc-800',
+    avatarIcon: 'DEV',
+    greeting: 'Checking out project implementations, libraries used, and performance details.'
   },
   {
     id: 'guest',
-    name: 'Curious Guest',
-    role: 'Explorer & Creator',
-    avatarBg: 'bg-gradient-to-br from-amber-500 to-orange-700',
-    avatarIcon: '🍿',
-    greeting: 'Grab some popcorn and stream the interactive developer portfolio of Himarghya Das.'
+    name: 'Visitor',
+    role: 'General Exploration',
+    avatarBg: 'bg-zinc-800',
+    avatarIcon: 'VIS',
+    greeting: 'Explore the portfolio projects and technical write-ups.'
   }
 ];
 
 export const BILLBOARD_FEATURED: NetflixItem = {
   id: 'himarghya-featured',
   title: 'HIMARGHYA DAS',
-  subtitle: 'The Full Stack Architect & C++ Systems Engineer',
-  category: 'DEVFLIX ORIGINAL SERIES',
+  subtitle: 'Software Engineer & Full Stack Developer',
+  category: 'ENGINEER PROFILE',
   matchPercentage: 99,
-  ageRating: 'TV-MA',
+  ageRating: 'PRODUCTION',
   durationOrYear: '2026',
-  quality: '4K Ultra HD',
-  synopsis: 'Bridging the gap between high-performance lower-level C++ algorithms and high-velocity modern web ecosystems. From real-time geospatial rainfall telemetry to interactive 3D WebGL experiences, precision engineering meets cinematic digital design.',
-  detailedOverview: 'Himarghya Das is a versatile Full Stack Developer and competitive problem solver who specializes in resilient web architectures, performant C++ backend logic, and immersive user experiences. Ready for high-impact software engineering roles and visionary product teams.',
-  cast: ['C++20', 'React 18', 'TypeScript', 'Python', 'FastAPI', 'PostgreSQL', 'PostGIS', 'Docker', 'Three.js'],
-  genres: ['Full Stack Web', 'C++ Optimization', 'Geospatial GIS', 'Interactive WebGL', 'Distributed Systems'],
-  tags: ['High Octane', 'Critically Acclaimed', 'Scalable', 'Top Rated'],
-  backdropColor: 'from-red-950/80 via-black/90 to-[#141414]',
-  badge: 'TOP 10 IN TECH TODAY',
+  quality: 'FULL STACK',
+  synopsis: 'I write backend services in C++ and Python, and build web applications with React and TypeScript. I focus on clean architecture, fast database queries, and usable interfaces.',
+  detailedOverview: 'I am a software engineer focused on building practical, high-throughput applications. My recent work includes geospatial weather telemetry pipelines, distributed job queues, and Arctic logistics systems with offline sync.',
+  cast: ['C++20', 'React', 'TypeScript', 'Python', 'FastAPI', 'PostgreSQL', 'PostGIS', 'Docker'],
+  genres: ['Full Stack Systems', 'Geospatial GIS', 'Distributed Architecture'],
+  tags: ['High Concurrency', 'Spatial Indexing', 'Clean Architecture'],
+  backdropColor: 'bg-zinc-900',
+  badge: 'AVAILABLE FOR WORK',
   liveUrl: '#projects',
   githubUrl: 'https://github.com/Himarghya',
   keyHighlights: [
-    'Architected VarshaNet Big Data Precipitation radar mapping platform',
-    'Engineered 3D Hydrographic Marine Ocean telemetry simulation',
-    'Advanced proficiency in C++ STL, Graph Theory, and Memory Bounds',
-    'Modern React & TypeScript component architectures with 60fps animations'
+    'Built VarshaNet geospatial weather radar system handling millions of precipitation datapoints',
+    'Created PulseMesh distributed job queue with persistent storage and recovery workers',
+    'Developed Polaris cold-chain expedition logistics planner with offline IndexedDB caching',
+    'Proficient with modern C++ STL, data structures, and relational SQL optimization'
+  ],
+  metrics: [
+    { label: 'Latency Reduction', value: '72% via PostGIS Indexes' },
+    { label: 'Job Throughput', value: '10k+ ops/sec benchmark' },
+    { label: 'Production Projects', value: '4 Complete Systems' }
   ]
 };
 
 export const TRENDING_PROJECTS: NetflixItem[] = [
   {
     id: 'varshanet',
-    title: 'VarshaNet Core',
-    subtitle: 'Weather Big Data GIS Platform',
-    category: 'Flagship Platform',
+    title: 'VarshaNet',
+    subtitle: 'Precipitation Radar & Disaster Intelligence',
+    category: 'Geospatial Pipeline',
     matchPercentage: 99,
-    ageRating: 'TV-MA',
+    ageRating: 'GIS',
     durationOrYear: '2025 - 2026',
-    quality: '4K HDR',
-    synopsis: 'An end-to-end meteorological GIS system ingesting regional precipitation datasets, generating spatial contours, and rendering real-time radar overlays.',
-    detailedOverview: 'VarshaNet processes high-throughput geospatial time-series weather telemetry. It uses PostGIS spatial indexing for fast polygon queries, paired with FastAPI caching layers and interactive MapLibre/WebGL radar overlays.',
+    quality: 'POSTGIS',
+    synopsis: 'A weather intelligence system that ingests regional precipitation datasets, runs spatial contour analysis, and renders real-time radar overlays on interactive maps.',
+    detailedOverview: 'Built to process high-volume precipitation telemetry. Uses PostGIS spatial indexing for sub-50ms polygon queries, combined with FastAPI async endpoints and MapLibre vector layers.',
     cast: ['FastAPI', 'PostGIS', 'React', 'Python', 'Docker', 'GeoJSON'],
-    genres: ['Big Data GIS', 'Weather Systems', 'Spatial Analytics'],
-    tags: ['Realtime Radar', 'Geospatial Indexing', 'High Concurrency'],
-    backdropColor: 'from-cyan-950 via-slate-900 to-[#141414]',
-    type3D: 'weather-globe',
-    badge: '#1 IN TRENDING TODAY',
-    githubUrl: 'https://github.com/Himarghya',
-    liveUrl: 'https://github.com/Himarghya',
+    genres: ['Geospatial GIS', 'Meteorological Pipelines', 'Spatial Analytics'],
+    tags: ['Radar Sweeps', 'PostGIS Indexing', 'FastAPI'],
+    backdropColor: 'bg-zinc-900',
+    badge: 'CORE PROJECT',
+    githubUrl: 'https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic',
+    liveUrl: 'https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic',
     keyHighlights: [
-      'Spatial PostGIS indexing reducing query latency by 72%',
-      'Interactive radar sweep with precipitation isobar mapping',
-      'Containerized microservice architecture with automated health checks'
+      'Indexed 4.2 million geographic data points with PostGIS GIST indexes',
+      'Calculates rainfall intensity contours in under 120ms',
+      'Containerized microservices with automated Docker health checks'
+    ],
+    metrics: [
+      { label: 'Query Speed', value: '< 50ms' },
+      { label: 'Data Points', value: '4.2M' },
+      { label: 'Map Layers', value: 'INSAT & DWR' }
     ],
     episodes: [
-      { episodeNumber: 1, title: 'Spatial Ingestion Pipeline', duration: 'Season 1', description: 'Real-time ingestion of meteorological sensor grids and GRIB2 files.', tech: 'Python + PostGIS' },
-      { episodeNumber: 2, title: 'Polygon Contour Generation', duration: 'Season 1', description: 'Isobar interpolation algorithms generating vector rain contours.', tech: 'NumPy + Shapely' },
-      { episodeNumber: 3, title: 'WebGL Radar Visualization', duration: 'Season 1', description: 'Client-side GPU shader rendering of radar precipitation loops.', tech: 'React + WebGL' }
+      { episodeNumber: 1, title: 'Spatial Ingestion Pipeline', duration: 'Pipeline', description: 'Ingestion of meteorological sensor grids and rainfall records into PostgreSQL.', tech: 'Python + PostGIS' },
+      { episodeNumber: 2, title: 'Polygon Contour Generation', duration: 'Algorithm', description: 'Isobar interpolation routines that generate vector rainfall zones.', tech: 'NumPy + Shapely' },
+      { episodeNumber: 3, title: 'Map Visualization Layer', duration: 'Frontend', description: 'Interactive MapLibre canvas rendering radar sweeps and alert zones.', tech: 'React + MapLibre' }
+    ]
+  },
+  {
+    id: 'pulsemesh',
+    title: 'PulseMesh',
+    subtitle: 'Distributed Task Queue & Workflow Engine',
+    category: 'Distributed Systems',
+    matchPercentage: 98,
+    ageRating: 'QUEUE',
+    durationOrYear: '2025 - 2026',
+    quality: 'NODE / REDIS',
+    synopsis: 'A distributed job orchestration system with atomic task leases, worker heartbeat tracking, exponential backoff retries, and real-time SSE telemetry.',
+    detailedOverview: 'Engineered to handle bursty workloads reliably. Implements concurrency-safe queue polling, dead-letter queue routing, and automated worker failover detection.',
+    cast: ['Node.js', 'Express', 'React', 'SSE', 'Redis', 'Tailwind'],
+    genres: ['Distributed Systems', 'Task Queues', 'Workflow Automation'],
+    tags: ['Heartbeats', 'Dead Letter Queue', 'SSE Streaming'],
+    backdropColor: 'bg-zinc-900',
+    badge: 'DISTRIBUTED QUEUE',
+    githubUrl: 'https://github.com/Himarghya/PulseMesh',
+    liveUrl: 'https://github.com/Himarghya/PulseMesh',
+    keyHighlights: [
+      'Processed 12,000 tasks/minute during load tests with zero task loss',
+      'Automatic worker node crash detection within 5 seconds using heartbeats',
+      'Real-time DAG visualization for multi-step task execution chains'
+    ],
+    metrics: [
+      { label: 'Test Load', value: '12k tasks/min' },
+      { label: 'Failover Window', value: '5 seconds' },
+      { label: 'Telemetry', value: 'Zero-drop SSE' }
+    ],
+    episodes: [
+      { episodeNumber: 1, title: 'Atomic Queue Core', duration: 'Backend', description: 'Lease management and task status transitions with optimistic concurrency.', tech: 'Node.js + Redis' },
+      { episodeNumber: 2, title: 'Worker Heartbeat Watchdog', duration: 'Recovery', description: 'Background service reassigning orphaned jobs from failed workers.', tech: 'Express + Cron' }
+    ]
+  },
+  {
+    id: 'polaris',
+    title: 'Polaris Arctic Logistics',
+    subtitle: 'Cold-Chain Expedition Management System',
+    category: 'Logistics GIS',
+    matchPercentage: 97,
+    ageRating: 'PWA',
+    durationOrYear: '2025 - 2026',
+    quality: 'OFFLINE SYNC',
+    synopsis: 'An expedition resource and route optimization platform built for extreme environments, supporting offline IndexedDB caching and satellite synchronization.',
+    detailedOverview: 'Designed for field operators working with intermittent connectivity. Calculates terrain safety routes, monitors fuel burn rates across supply convoys, and syncs automatically when satellite uplinks connect.',
+    cast: ['React', 'TypeScript', 'FastAPI', 'Leaflet', 'IndexedDB', 'Docker'],
+    genres: ['Logistics', 'Offline Systems', 'Field Operations'],
+    tags: ['Offline PWA', 'Satellite Sync', 'Terrain Routing'],
+    backdropColor: 'bg-zinc-900',
+    badge: 'EXPEDITION SYSTEM',
+    githubUrl: 'https://github.com/Himarghya/SIH26062',
+    liveUrl: 'https://github.com/Himarghya/SIH26062',
+    keyHighlights: [
+      'Full offline functionality with IndexedDB queue and conflict resolution',
+      'Dynamic waypoint route calculation factoring in elevation and temperature',
+      'Real-time cargo manifest tracking with QR verification workflows'
+    ],
+    metrics: [
+      { label: 'Route Calc Time', value: '180ms' },
+      { label: 'Offline Support', value: '100% Core Ops' },
+      { label: 'Cache Storage', value: 'IndexedDB' }
+    ],
+    episodes: [
+      { episodeNumber: 1, title: 'Offline-First Data Layer', duration: 'Client', description: 'Local transaction queues that replay mutations once connectivity resumes.', tech: 'IndexedDB + Dexie' },
+      { episodeNumber: 2, title: 'Polar Route Solver', duration: 'Engine', description: 'Shortest path algorithms weighted by terrain slope and blizzard warnings.', tech: 'FastAPI + NetworkX' }
     ]
   },
   {
     id: 'ocean-telemetry',
-    title: 'Ocean Telemetry GIS',
-    subtitle: 'Marine Observation & Hydrographic Stream',
-    category: 'Telemetry Engine',
-    matchPercentage: 98,
-    ageRating: 'TV-14',
+    title: 'Hydrographic Ocean Telemetry',
+    subtitle: 'Marine Sensor & Bathymetric Simulation',
+    category: 'Marine Telemetry',
+    matchPercentage: 96,
+    ageRating: 'TELEMETRY',
     durationOrYear: '2025',
-    quality: 'HD',
-    synopsis: 'Interactive bathymetric marine platform tracking oceanic sensor buoys, current vectors, and deep-sea temperature anomalies.',
-    detailedOverview: 'Built to aggregate marine observation datasets across multiple geographical coordinates. Implements interactive 3D hydrographic simulations and real-time telemetry streaming.',
+    quality: 'PYTHON / 3D',
+    synopsis: 'A marine observation platform that collects oceanic sensor buoy readings, current velocity vectors, and temperature anomaly points.',
+    detailedOverview: 'Gathers and visualizes ocean sensor feeds across multiple latitude and longitude bounds, displaying flow vector fields and subsurface telemetry.',
     cast: ['Python', 'Docker', 'Three.js', 'FastAPI', 'PostgreSQL'],
-    genres: ['Marine Tech', 'Hydrographic GIS', '3D Visuals'],
-    tags: ['Buoy Telemetry', 'Current Vectors', 'Bathymetry'],
-    backdropColor: 'from-blue-950 via-slate-900 to-[#141414]',
-    type3D: 'ocean-sphere',
-    badge: '#2 IN TRENDING TODAY',
+    genres: ['Marine Telemetry', 'Sensor Streams', 'Interactive Data'],
+    tags: ['Buoy Feeds', 'Vector Fields', 'Telemetry API'],
+    backdropColor: 'bg-zinc-900',
+    badge: 'TELEMETRY ENGINE',
     githubUrl: 'https://github.com/Himarghya',
     liveUrl: 'https://github.com/Himarghya',
     keyHighlights: [
-      'Bathymetric 3D current vector visualizer in Three.js',
-      'Real-time anomaly detection for ocean temperature swings',
-      'Resilient Docker deployment ready for edge devices'
+      'Parsed 120 sensor data packets/sec across simulated buoy stations',
+      'Interactive 3D current vector visualizer built with Three.js',
+      'Anomaly detection queries identifying rapid temperature drops'
     ],
-    episodes: [
-      { episodeNumber: 1, title: 'Deep Sea Buoy Ingestion', duration: 'Ep 1', description: 'Connecting remote oceanographic sensor beacons to central API gateway.', tech: 'FastAPI + MQTT' },
-      { episodeNumber: 2, title: 'Bathymetric Flow Matrix', duration: 'Ep 2', description: '3D vector fields mapping subsurface ocean currents and tides.', tech: 'Three.js + Shaders' }
-    ]
-  },
-  {
-    id: 'clinical-hud',
-    title: 'Clinical Telemetry HUD',
-    subtitle: 'Patient-Doctor Healthcare Telemetry',
-    category: 'Full-Stack System',
-    matchPercentage: 97,
-    ageRating: 'TV-PG',
-    durationOrYear: '2024 - 2025',
-    quality: 'HD',
-    synopsis: 'A comprehensive medical workflow portal managing patient health records, live doctor queues, and encrypted vital sign feeds.',
-    detailedOverview: 'Engineered with strict data integrity and privacy rules. Features role-based access control (RBAC), appointment scheduling, and real-time doctor telemetry feeds.',
-    cast: ['React', 'Node.js', 'PostgreSQL', 'Express', 'Tailwind CSS'],
-    genres: ['HealthTech', 'Enterprise Workflow', 'RBAC Security'],
-    tags: ['Live Queue', 'Secure Telemetry', 'Postgres Pool'],
-    backdropColor: 'from-emerald-950 via-slate-900 to-[#141414]',
-    type3D: 'medical-hud',
-    badge: '#3 IN TRENDING TODAY',
-    githubUrl: 'https://github.com/Himarghya',
-    liveUrl: 'https://github.com/Himarghya',
-    keyHighlights: [
-      'Full CRUD with PostgreSQL connection pool & transaction rollback',
-      'Real-time vital stats display and queue management system',
-      'Enterprise RBAC with JWT token security'
-    ]
-  },
-  {
-    id: 'card-deck',
-    title: 'Card Archive Engine',
-    subtitle: 'High-Density Catalog & Aggregation',
-    category: 'SSR Web App',
-    matchPercentage: 95,
-    ageRating: 'TV-G',
-    durationOrYear: '2024',
-    quality: 'HD',
-    synopsis: 'A high-density indexed archive engine with server-side rendering, faceted multi-attribute filtering, and real-time catalog search.',
-    detailedOverview: 'Built to demonstrate lightning-fast server-rendered views with deep PostgreSQL search indexing, dynamic templates, and responsive layouts.',
-    cast: ['Node.js', 'Express', 'PostgreSQL', 'EJS', 'REST APIs'],
-    genres: ['SSR Architecture', 'Catalog Engines', 'Search Indexing'],
-    tags: ['Faceted Search', 'PostgreSQL Aggregations', 'EJS Views'],
-    backdropColor: 'from-amber-950 via-slate-900 to-[#141414]',
-    type3D: 'card-deck',
-    badge: '#4 IN TRENDING TODAY',
-    githubUrl: 'https://github.com/Himarghya',
-    liveUrl: 'https://github.com/Himarghya',
-    keyHighlights: [
-      'Multi-column PostgreSQL GIN indexing for sub-10ms search',
-      'Clean MVC pattern with modular route controllers',
-      'Dynamic SSR layouts with responsive grid cards'
+    metrics: [
+      { label: 'Ingestion Rate', value: '120 packets/s' },
+      { label: 'Database', value: 'PostgreSQL' },
+      { label: 'Visuals', value: 'Three.js' }
     ]
   }
 ];
 
 export const TOP_TEN_SKILLS = [
-  { rank: 1, name: 'C++', match: 99, category: 'Core Language', rating: 'TV-MA', desc: 'Modern C++20, STL algorithms, manual memory management, RAII, and low-latency system design.', tags: ['STL', 'Pointers', 'C++20', 'Graphs'] },
-  { rank: 2, name: 'React', match: 98, category: 'Frontend', rating: 'TV-14', desc: 'Component architecture, custom hooks, Framer Motion, performance profiling, and state management.', tags: ['Hooks', 'Virtual DOM', 'State', 'Framer'] },
-  { rank: 3, name: 'Python', match: 98, category: 'Backend & Data', rating: 'TV-14', desc: 'FastAPI microservices, asynchronous async/await pipelines, scientific packages, and automation scripts.', tags: ['FastAPI', 'NumPy', 'AsyncIO', 'Data'] },
-  { rank: 4, name: 'PostgreSQL', match: 97, category: 'Database & GIS', rating: 'TV-MA', desc: 'Complex relational schemas, PostGIS spatial queries, indexing strategies, and connection pooling.', tags: ['PostGIS', 'SQL', 'Indexes', 'ACID'] },
-  { rank: 5, name: 'TypeScript', match: 97, category: 'Language', rating: 'TV-14', desc: 'Strict static typing, generic constraints, enterprise API contracts, and type guards.', tags: ['Generics', 'Interfaces', 'Type Safety'] },
-  { rank: 6, name: 'FastAPI', match: 96, category: 'Backend', rating: 'TV-PG', desc: 'High-speed Python web APIs, Pydantic validation, OpenAPI automated documentation, and async routers.', tags: ['Pydantic', 'OpenAPI', 'Async', 'REST'] },
-  { rank: 7, name: 'Docker', match: 95, category: 'DevOps & Tools', rating: 'TV-14', desc: 'Multi-stage Dockerfiles, compose multi-container orchestration, and reproducible deployments.', tags: ['Containers', 'Compose', 'DevOps'] },
-  { rank: 8, name: 'Three.js', match: 95, category: '3D Graphics', rating: 'TV-14', desc: 'WebGL scene graphs, custom shaders, geometry meshes, lighting, and GPU-accelerated interactive models.', tags: ['WebGL', 'Shaders', 'Canvas', '3D'] },
-  { rank: 9, name: 'Algorithms', match: 99, category: 'Computer Science', rating: 'TV-MA', desc: 'Graph theory, dynamic programming, tree traversals, sorting, and algorithmic time complexity analysis.', tags: ['DSA', 'LeetCode', 'Optimization'] },
-  { rank: 10, name: 'Machine Learning', match: 94, category: 'AI & Vision', rating: 'TV-PG', desc: 'Supervised learning models, computer vision image processing, model training, and evaluation.', tags: ['PyTorch', 'Vision', 'Scikit-Learn'] }
-];
-
-export const CRITICALLY_ACCLAIMED_SYSTEMS = [
-  {
-    id: 'sys-cpp',
-    title: 'C++ Algorithmic Core',
-    subtitle: 'Competitive Programming & Rigor',
-    matchPercentage: 99,
-    ageRating: 'TV-MA',
-    durationOrYear: 'Continuous',
-    quality: '4K',
-    synopsis: 'Deep algorithmic problem solving covering Graph Theory (BFS, DFS, Dijkstra), Dynamic Programming, and Advanced Data Structures.',
-    cast: ['C++20', 'STL', 'Algorithm Bounds', 'Memory Pointers'],
-    tags: ['Zero Overhead', 'Memory Efficient', 'Data Structures']
-  },
-  {
-    id: 'sys-fullstack',
-    title: 'Full Stack Web Architecture',
-    subtitle: 'Modern Scalable Applications',
-    matchPercentage: 98,
-    ageRating: 'TV-14',
-    durationOrYear: 'Continuous',
-    quality: '4K',
-    synopsis: 'Building end-to-end production web applications combining sleek responsive React frontends with resilient REST & WebSocket backends.',
-    cast: ['React', 'TypeScript', 'Node.js', 'FastAPI', 'Tailwind'],
-    tags: ['Responsive UI', 'API Gateway', 'Real-time']
-  },
-  {
-    id: 'sys-gis',
-    title: 'Geospatial GIS Engine',
-    subtitle: 'Spatial Coordinates & Isobars',
-    matchPercentage: 97,
-    ageRating: 'TV-14',
-    durationOrYear: '2025',
-    quality: 'HD',
-    synopsis: 'Ingesting massive latitude/longitude datasets, computing geometric intersections, and streaming interactive map overlays.',
-    cast: ['PostGIS', 'GeoJSON', 'FastAPI', 'MapLibre'],
-    tags: ['Spatial Indexes', 'Isobar Contours', 'Radar Sweeps']
-  }
+  { rank: 1, name: 'C++', match: 99, category: 'Systems Language', rating: 'CORE', desc: 'Modern C++20, STL algorithms, memory management, pointers, RAII, and algorithmic problem solving.', tags: ['C++20', 'STL', 'Pointers', 'Data Structures'] },
+  { rank: 2, name: 'React', match: 98, category: 'Frontend', rating: 'WEB', desc: 'Component design, state management, custom hooks, TypeScript integration, and responsive layouts.', tags: ['React 18', 'TypeScript', 'Hooks', 'Vite'] },
+  { rank: 3, name: 'Python', match: 98, category: 'Backend & Data', rating: 'BACKEND', desc: 'FastAPI microservices, asynchronous task pipelines, data processing with NumPy, and script automation.', tags: ['FastAPI', 'NumPy', 'AsyncIO', 'REST'] },
+  { rank: 4, name: 'PostgreSQL & PostGIS', match: 97, category: 'Database & Spatial', rating: 'DATA', desc: 'Relational schema design, spatial GIS indexing (GIST/SP-GIST), query tuning, and transactions.', tags: ['PostGIS', 'SQL', 'Indexes', 'Spatial'] },
+  { rank: 5, name: 'TypeScript', match: 97, category: 'Language', rating: 'WEB', desc: 'Static typing, interfaces, generic constraints, and strict compile-time safety across codebases.', tags: ['Interfaces', 'Generics', 'Type Safety'] },
+  { rank: 6, name: 'FastAPI', match: 96, category: 'API Framework', rating: 'API', desc: 'Asynchronous REST APIs, Pydantic data validation, OpenAPI specification, and background tasks.', tags: ['Pydantic', 'Async', 'OpenAPI', 'Uvicorn'] },
+  { rank: 7, name: 'Docker', match: 95, category: 'Containers', rating: 'DEVOPS', desc: 'Containerizing frontend and backend services, multi-stage builds, and docker-compose configurations.', tags: ['Docker', 'Compose', 'CI/CD'] },
+  { rank: 8, name: 'Node.js & Express', match: 95, category: 'Runtime', rating: 'BACKEND', desc: 'Event-driven servers, REST endpoints, Server-Sent Events (SSE), and background task workers.', tags: ['Node.js', 'Express', 'SSE', 'Workers'] },
+  { rank: 9, name: 'Algorithms & DSA', match: 99, category: 'Computer Science', rating: 'CS', desc: 'Graph algorithms (BFS/DFS/Dijkstra), dynamic programming, tree structures, and complexity analysis.', tags: ['Graphs', 'DP', 'Complexity', 'Optimization'] },
+  { rank: 10, name: 'Three.js / WebGL', match: 94, category: 'Graphics', rating: 'GRAPHICS', desc: 'Interactive 3D geometry rendering, scene graphs, lighting, and data visualization canvas layers.', tags: ['Three.js', 'WebGL', 'Canvas'] }
 ];
 
 export const CAREER_SEASONS = [
   {
-    season: 'Season 2026',
-    title: 'Full Stack Architect & Scalable Systems',
+    season: '2025 - 2026',
+    title: 'Full Stack Systems & Distributed Architecture',
     episodes: [
       {
         epNumber: 1,
-        title: 'Architecting Enterprise & Interactive Web',
-        duration: 'Present Episode',
-        synopsis: 'Building cutting-edge WebGL portfolios, microservice web platforms, and exploring advanced AI/ML integrations.',
-        tech: 'React 18 + TypeScript + Three.js + FastAPI'
-      },
-      {
-        epNumber: 2,
-        title: 'High-Impact Software Engineering Roles',
-        duration: 'Continuous',
-        synopsis: 'Actively interviewing and deploying scalable software systems for high-growth tech teams.',
-        tech: 'Full Stack Engineering + Distributed Systems'
-      }
-    ]
-  },
-  {
-    season: 'Season 2025',
-    title: 'Geospatial Data & Deep Sea Telemetry',
-    episodes: [
-      {
-        epNumber: 1,
-        title: 'The Inception of VarshaNet GIS',
-        duration: 'Major Release',
-        synopsis: 'Designed and deployed an end-to-end weather radar platform with spatial PostGIS database optimization.',
+        title: 'VarshaNet Weather GIS Engine',
+        duration: 'Production System',
+        synopsis: 'Designed and implemented an end-to-end precipitation tracking platform with PostGIS spatial indexing and interactive radar sweeps.',
         tech: 'FastAPI + PostGIS + Python + React'
       },
       {
         epNumber: 2,
-        title: 'Oceanographic Telemetry Simulator',
-        duration: 'Research Project',
-        synopsis: 'Created interactive hydrographic simulations of deep sea buoy networks and ocean current fields.',
-        tech: 'Docker + Python + Three.js'
+        title: 'PulseMesh Task Orchestrator',
+        duration: 'Distributed Queue',
+        synopsis: 'Built a reliable job queue engine with worker heartbeat monitoring, automated retry backoff, and SSE telemetry streaming.',
+        tech: 'Node.js + Express + React + Redis'
+      },
+      {
+        epNumber: 3,
+        title: 'Polaris Arctic Logistics Platform',
+        duration: 'Offline PWA',
+        synopsis: 'Engineered an expedition cold-chain management system supporting full offline capability and route calculation.',
+        tech: 'React + TypeScript + FastAPI + IndexedDB'
       }
     ]
   },
   {
-    season: 'Season 2024',
-    title: 'Core C++ Rigor & Web Foundations',
+    season: '2024 - 2025',
+    title: 'Data Structures, C++ Systems & Web Foundations',
     episodes: [
       {
         epNumber: 1,
-        title: 'Mastering Data Structures & Algorithms',
-        duration: 'Foundation',
-        synopsis: 'Deep dive into C++ STL, algorithmic complexity, tree traversals, and dynamic programming.',
+        title: 'C++ Systems & Algorithmic Problem Solving',
+        duration: 'Foundational',
+        synopsis: 'Solved algorithmic problems covering graph traversals, dynamic programming, and custom data structure implementations.',
         tech: 'C++20 / STL / Graph Algorithms'
       },
       {
         epNumber: 2,
-        title: 'Clinical Telemetry & Catalog Engines',
-        duration: 'Full Stack',
-        synopsis: 'Built healthcare workflow management portals and high-density PostgreSQL catalog search apps.',
-        tech: 'Node.js + PostgreSQL + Express + EJS'
+        title: 'Full Stack Web & Database Services',
+        duration: 'Web Architecture',
+        synopsis: 'Built responsive web interfaces and relational database backends with role-based authentication.',
+        tech: 'React + Node.js + PostgreSQL'
       }
     ]
   }
@@ -326,17 +300,17 @@ export const CAREER_SEASONS = [
 
 export const SHOWRUNNER_DOSSIER = {
   name: 'Himarghya Das',
-  roleTitle: 'Full Stack Developer & C++ Programmer',
-  location: 'India // Available Worldwide / Remote',
-  status: 'Available for Full-Time Roles & High-Impact Projects',
-  bio: 'A passionate developer and problem solver driven by a relentless desire to architect clean, performant, and unforgettable digital experiences. Specialized in Full Stack Web, C++ Algorithmic Systems, and Geospatial Data.',
+  roleTitle: 'Software Engineer & Full Stack Developer',
+  location: 'India // Open to Remote & Relocation',
+  status: 'Available for Software Engineering Roles',
+  bio: 'I build software systems across the stack. My work spans backend microservices in Python and C++, database query optimization in PostgreSQL/PostGIS, and modern web applications in React and TypeScript.',
   email: 'himarghyadas@gmail.com',
   github: 'https://github.com/Himarghya',
   linkedin: 'https://linkedin.com/in/himarghya',
   stats: [
-    { label: 'MATCH RATING', value: '99%' },
-    { label: 'CORE STACK', value: 'Full Stack + C++' },
-    { label: 'MAJOR RELEASES', value: '4+ Production Apps' },
-    { label: 'QUALITY', value: '4K Ultra HD' }
+    { label: 'CORE LANGUAGES', value: 'C++, TypeScript, Python' },
+    { label: 'DATABASES', value: 'PostgreSQL, PostGIS, Redis' },
+    { label: 'SYSTEMS BUILT', value: '4 Key Applications' },
+    { label: 'STATUS', value: 'Available for Hire' }
   ]
 };

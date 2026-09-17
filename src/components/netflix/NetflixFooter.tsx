@@ -1,6 +1,6 @@
 import React from 'react';
 import { SHOWRUNNER_DOSSIER } from '../../constants/netflixData';
-import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 export const NetflixFooter: React.FC = () => {
   const scrollToTop = () => {
@@ -8,62 +8,53 @@ export const NetflixFooter: React.FC = () => {
   };
 
   return (
-    <footer className="bg-[#101010] text-gray-500 py-12 px-4 sm:px-12 border-t border-white/5 text-xs select-none">
+    <footer className="bg-[#0e0e11] text-zinc-500 py-12 px-4 sm:px-12 border-t border-zinc-800 text-xs select-none">
       <div className="max-w-6xl mx-auto space-y-6">
         
-        {/* Questions hotline */}
-        <div className="text-gray-400">
-          Questions? Direct email to <a href={`mailto:${SHOWRUNNER_DOSSIER.email}`} className="text-white hover:underline">{SHOWRUNNER_DOSSIER.email}</a>
+        {/* Email link */}
+        <div className="text-zinc-400">
+          Direct email: <a href={`mailto:${SHOWRUNNER_DOSSIER.email}`} className="text-zinc-200 hover:text-white underline">{SHOWRUNNER_DOSSIER.email}</a>
         </div>
 
-        {/* Multi-column link grid */}
+        {/* Link grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-          <div className="space-y-2.5">
-            <a href="#home" className="block hover:underline">Billboard Home</a>
-            <a href="#projects" className="block hover:underline">Trending Projects</a>
-            <a href="#skills" className="block hover:underline">Top 10 Stack</a>
-            <a href="#timeline" className="block hover:underline">Episodes &amp; Seasons</a>
+          <div className="space-y-2">
+            <a href="#home" className="block hover:text-zinc-300 transition-colors">Home</a>
+            <a href="#projects" className="block hover:text-zinc-300 transition-colors">Projects</a>
+            <a href="#skills" className="block hover:text-zinc-300 transition-colors">Stack</a>
+            <a href="#timeline" className="block hover:text-zinc-300 transition-colors">Timeline</a>
           </div>
 
-          <div className="space-y-2.5">
-            <a href={SHOWRUNNER_DOSSIER.github} target="_blank" rel="noopener noreferrer" className="block hover:underline">GitHub Repository</a>
-            <a href={SHOWRUNNER_DOSSIER.linkedin} target="_blank" rel="noopener noreferrer" className="block hover:underline">LinkedIn Network</a>
-            <a href="#about" className="block hover:underline">About Showrunner</a>
-            <a href="#contact" className="block hover:underline">Contact / Hire</a>
+          <div className="space-y-2">
+            <a href={SHOWRUNNER_DOSSIER.github} target="_blank" rel="noopener noreferrer" className="block hover:text-zinc-300 transition-colors">GitHub</a>
+            <a href={SHOWRUNNER_DOSSIER.linkedin} target="_blank" rel="noopener noreferrer" className="block hover:text-zinc-300 transition-colors">LinkedIn</a>
+            <a href="#about" className="block hover:text-zinc-300 transition-colors">About</a>
+            <a href="#contact" className="block hover:text-zinc-300 transition-colors">Contact</a>
           </div>
 
-          <div className="space-y-2.5">
-            <span className="block text-gray-400 font-semibold">Technical Specs</span>
-            <span className="block">React 18 + TypeScript</span>
-            <span className="block">Three.js WebGL Core</span>
-            <span className="block">Tailwind CSS 3.4</span>
+          <div className="space-y-2">
+            <span className="block text-zinc-400 font-semibold">Core Technologies</span>
+            <span className="block">React &amp; TypeScript</span>
+            <span className="block">C++20 &amp; Python</span>
+            <span className="block">PostgreSQL &amp; PostGIS</span>
           </div>
 
-          <div className="space-y-2.5">
-            <span className="block text-gray-400 font-semibold">Quality &amp; Audio</span>
-            <span className="block">4K Ultra HD Streaming</span>
-            <span className="block">Dolby 5.1 Telemetry</span>
+          <div className="space-y-2">
+            <span className="block text-zinc-400 font-semibold">Navigation</span>
             <button
               onClick={scrollToTop}
-              className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#181818] hover:bg-[#252525] text-gray-300 hover:text-white border border-white/10 transition-colors"
+              className="mt-1 flex items-center gap-1.5 px-3 py-1.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700 transition-colors"
             >
               <ArrowUp className="w-3.5 h-3.5" />
-              <span>Back to Top</span>
+              <span>Back to top</span>
             </button>
           </div>
         </div>
 
-        {/* Service Code Button */}
-        <div className="pt-4">
-          <div className="inline-block px-2 py-1 border border-gray-700 text-gray-400 text-[10px] font-mono hover:border-gray-500 cursor-pointer">
-            SERVICE CODE: HD-2026-DEVFLIX
-          </div>
-        </div>
-
-        {/* Copyright & Disclaimer */}
-        <div className="pt-2 text-[11px] text-gray-600 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>&copy; {new Date().getFullYear()} HIMARGHYA DAS // DEVFLIX PORTFOLIO EDITION. ALL RIGHTS RESERVED.</span>
-          <span>DESIGNED WITH PASSION &amp; RIGOR</span>
+        {/* Copyright */}
+        <div className="pt-4 border-t border-zinc-800/80 text-[11px] text-zinc-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>&copy; {new Date().getFullYear()} Himarghya Das. All rights reserved.</span>
+          <span>Open source &amp; scalable engineering.</span>
         </div>
 
       </div>

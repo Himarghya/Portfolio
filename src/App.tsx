@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useWebGLSupport } from './hooks/useWebGLSupport';
 import { NETFLIX_PROFILES, NetflixProfile, NetflixItem, TRENDING_PROJECTS } from './constants/netflixData';
 import { ProfileSelector } from './components/netflix/ProfileSelector';
-import { NetflixIntroAnimation } from './components/netflix/NetflixIntroAnimation';
 import { NetflixNavbar } from './components/netflix/NetflixNavbar';
 import { BillboardHero } from './components/netflix/BillboardHero';
 import { ProjectRow } from './components/netflix/ProjectRow';
@@ -13,15 +11,12 @@ import { NetflixContact } from './components/netflix/NetflixContact';
 import { NetflixFooter } from './components/netflix/NetflixFooter';
 import { NetflixDetailModal } from './components/netflix/NetflixDetailModal';
 import { NetflixTerminal } from './components/netflix/NetflixTerminal';
-import { ScrollLaserProgress } from './components/ui/ScrollLaserProgress';
 
 export const App: React.FC = () => {
-  const [showIntro, setShowIntro] = useState(true);
-  const [selectedProfile, setSelectedProfile] = useState<NetflixProfile | null>(null);
+  const [selectedProfile, setSelectedProfile] = useState<NetflixProfile | null>(NETFLIX_PROFILES[0]);
   const [activeModalItem, setActiveModalItem] = useState<NetflixItem | null>(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const { isSupported: webglSupported } = useWebGLSupport();
 
   const handleSelectProfile = (profile: NetflixProfile) => {
     setSelectedProfile(profile);
@@ -41,17 +36,9 @@ export const App: React.FC = () => {
     : TRENDING_PROJECTS;
 
   return (
-    <div className="relative min-h-screen bg-[#141414] text-white selection:bg-[#E50914]/30 selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#0e0e11] text-zinc-100 selection:bg-[#E50914] selection:text-white font-sans antialiased overflow-x-hidden">
       
-      {/* Top Stream Laser Progress */}
-      <ScrollLaserProgress />
-
-      {/* Iconic Netflix Animated "D" Ribbon Opening Sequence */}
-      {showIntro && (
-        <NetflixIntroAnimation onComplete={() => setShowIntro(false)} />
-      )}
-
-      {/* "Who's Watching?" Profile Selector Screen on Load */}
+      {/* Profile Selector Screen */}
       {!selectedProfile ? (
         <ProfileSelector onSelectProfile={handleSelectProfile} />
       ) : (
@@ -65,54 +52,54 @@ export const App: React.FC = () => {
             onOpenTerminal={() => setTerminalOpen(true)}
           />
 
-          {/* Main Streaming Dashboard */}
-          <main className="relative z-10 pb-12">
+          {/* Main Content Area */}
+          <main className="relative z-10 pb-16">
             
             {/* Billboard Hero Section */}
             <BillboardHero
               onOpenDetailModal={setActiveModalItem}
-              webglSupported={webglSupported}
+              webglSupported={false}
             />
 
-            {/* Negative Margin Carousel Stacking (Authentic Netflix Layering) */}
-            <div className="relative z-20 -mt-12 sm:-mt-16 lg:-mt-20 space-y-6 sm:space-y-10">
+            {/* Consistent Spacing Section Flow */}
+            <div className="space-y-12">
               
-              {/* Row 1: Trending Projects */}
+              {/* Row 1: Projects */}
               <div id="projects">
                 <ProjectRow
-                  title="Trending Now: Flagship Releases"
-                  subtitle="HIGH-CONCURRENCY & PRODUCTION READY"
+                  title="Production Projects"
+                  subtitle="SYSTEMS ARCHITECTURE &amp; DATA PIPELINES"
                   items={filteredProjects}
                   onOpenDetailModal={setActiveModalItem}
                 />
               </div>
 
-              {/* Row 2: Top 10 Technologies */}
+              {/* Row 2: Top Technologies */}
               <TopTenRow />
 
-              {/* Row 3: Seasons & Episodes (Career Journey) */}
+              {/* Row 3: Career Journey */}
               <SeasonsEpisodeTimeline />
 
-              {/* Showrunner Dossier / About Section */}
+              {/* About Section */}
               <NetflixAbout />
 
-              {/* Contact / Hire Section */}
+              {/* Contact Section */}
               <NetflixContact />
 
             </div>
           </main>
 
-          {/* Netflix Footer */}
+          {/* Footer */}
           <NetflixFooter />
 
           {/* Item Detail Modal */}
           <NetflixDetailModal
             item={activeModalItem}
             onClose={() => setActiveModalItem(null)}
-            webglSupported={webglSupported}
+            webglSupported={false}
           />
 
-          {/* Developer Debug Terminal Console */}
+          {/* Developer CLI Modal */}
           <NetflixTerminal
             isOpen={terminalOpen}
             onClose={() => setTerminalOpen(false)}

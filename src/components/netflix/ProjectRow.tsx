@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { NetflixItem } from '../../constants/netflixData';
-import { ChevronLeft, ChevronRight, Play, Info, Github, Plus, ThumbsUp, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Info, Github } from 'lucide-react';
 
 interface ProjectRowProps {
   title: string;
@@ -29,147 +29,118 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({
   };
 
   return (
-    <div className="relative py-6 sm:py-8 px-4 sm:px-12 select-none group/row">
+    <div className="relative py-8 px-4 sm:px-12 select-none group/row">
       {/* Row Title */}
-      <div className="flex items-baseline justify-between mb-3 sm:mb-4">
+      <div className="flex items-baseline justify-between mb-4">
         <div className="flex items-baseline gap-2">
-          <h3 className="text-lg sm:text-2xl font-bold text-white tracking-wide hover:text-[#E50914] transition-colors cursor-pointer">
+          <h3 className="text-xl sm:text-2xl font-bold text-white tracking-wide">
             {title}
           </h3>
           {subtitle && (
-            <span className="text-xs text-gray-500 font-mono hidden md:inline">
+            <span className="text-xs text-zinc-500 font-mono hidden md:inline">
               // {subtitle}
             </span>
           )}
         </div>
-        <span className="text-xs font-semibold text-[#E50914] opacity-0 group-hover/row:opacity-100 transition-opacity duration-300 cursor-pointer">
-          Explore All &gt;
-        </span>
       </div>
 
       {/* Left Slider Arrow */}
       <button
         onClick={() => scroll('left')}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/60 hover:bg-black/90 text-white flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all duration-300 rounded-r"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-zinc-900/90 hover:bg-zinc-800 text-white flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all rounded-r border-y border-r border-zinc-700"
         aria-label="Scroll left"
       >
-        <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" />
+        <ChevronLeft className="w-6 h-6" />
       </button>
 
       {/* Right Slider Arrow */}
       <button
         onClick={() => scroll('right')}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/60 hover:bg-black/90 text-white flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all duration-300 rounded-l"
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-zinc-900/90 hover:bg-zinc-800 text-white flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all rounded-l border-y border-l border-zinc-700"
         aria-label="Scroll right"
       >
-        <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
+        <ChevronRight className="w-6 h-6" />
       </button>
 
       {/* Scrollable Row */}
       <div
         ref={rowRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar py-4 scroll-smooth"
+        className="flex gap-4 overflow-x-auto no-scrollbar py-2 scroll-smooth"
       >
         {items.map((item) => (
           <div
             key={item.id}
-            className="w-64 sm:w-80 lg:w-96 shrink-0 group relative cursor-pointer"
+            className="w-72 sm:w-80 lg:w-96 shrink-0 group relative cursor-pointer"
             onClick={() => onOpenDetailModal(item)}
           >
             {/* Card Shell */}
-            <div className="relative rounded-lg overflow-hidden bg-[#181818] border border-white/10 group-hover:border-[#E50914]/60 transition-all duration-300 shadow-lg group-hover:shadow-2xl">
+            <div className="rounded-lg bg-[#15161a] border border-zinc-800 hover:border-zinc-600 transition-colors p-5 flex flex-col justify-between h-full space-y-4">
               
-              {/* Card Banner Thumbnail */}
-              <div className={`w-full h-40 sm:h-48 bg-gradient-to-br ${item.backdropColor} p-4 flex flex-col justify-between relative overflow-hidden`}>
-                
-                {/* Top Badge */}
-                <div className="flex items-center justify-between z-10">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-bebas text-lg font-bold text-[#E50914]">N</span>
-                    <span className="text-[10px] font-mono text-gray-300 uppercase tracking-widest">{item.category}</span>
-                  </div>
-                  {item.badge && (
-                    <span className="px-2 py-0.5 rounded bg-[#E50914] text-white text-[9px] font-bold shadow">
-                      {item.badge}
-                    </span>
-                  )}
+              {/* Header */}
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <span className="text-[11px] font-mono text-[#E50914] font-bold uppercase tracking-wider">
+                    {item.category}
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono text-[10px] border border-zinc-700">
+                    {item.durationOrYear}
+                  </span>
                 </div>
 
-                {/* Center Title Display */}
-                <div className="z-10 my-auto">
-                  <h4 className="text-xl sm:text-2xl font-bold font-bebas text-white tracking-wider leading-tight drop-shadow-md">
-                    {item.title}
-                  </h4>
-                  <p className="text-xs text-gray-300 font-mono line-clamp-1">{item.subtitle}</p>
-                </div>
-
-                {/* Bottom Meta */}
-                <div className="flex items-center justify-between text-[11px] font-semibold text-gray-300 z-10 border-t border-white/10 pt-1.5">
-                  <span className="text-emerald-400">{item.matchPercentage}% Match</span>
-                  <span className="px-1 border border-gray-500 rounded text-[9px]">{item.ageRating}</span>
-                  <span>{item.quality}</span>
-                </div>
-
-                {/* Subtle gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+                <h4 className="text-lg sm:text-xl font-bold text-white group-hover:text-[#E50914] transition-colors leading-tight">
+                  {item.title}
+                </h4>
+                <p className="text-xs text-zinc-400 font-mono mt-0.5">{item.subtitle}</p>
               </div>
 
-              {/* Card Hover Details Area */}
-              <div className="p-3.5 sm:p-4 bg-[#181818] space-y-2">
-                
-                {/* Quick Action Buttons */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {item.liveUrl && (
-                      <a
-                        href={item.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-8 h-8 rounded-full bg-white hover:bg-white/80 text-black flex items-center justify-center transition-transform hover:scale-110 shadow"
-                        title="Live Demo"
-                      >
-                        <Play className="w-4 h-4 fill-black" />
-                      </a>
-                    )}
-                    {item.githubUrl && (
-                      <a
-                        href={item.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-8 h-8 rounded-full border border-gray-600 hover:border-white bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-transform hover:scale-110"
-                        title="Source Code"
-                      >
-                        <Github className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-                    <button
-                      onClick={(e) => { e.stopPropagation(); onOpenDetailModal(item); }}
-                      className="w-8 h-8 rounded-full border border-gray-600 hover:border-white bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-transform hover:scale-110"
-                      title="More Info"
-                    >
-                      <Info className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+              {/* Synopsis */}
+              <p className="text-xs text-zinc-300 line-clamp-3 leading-relaxed font-normal">
+                {item.synopsis}
+              </p>
 
-                  <span className="text-[10px] font-mono text-gray-500 uppercase">{item.durationOrYear}</span>
+              {/* Concrete Proof Metrics */}
+              {item.metrics && item.metrics.length > 0 && (
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-800">
+                  {item.metrics.slice(0, 2).map((m) => (
+                    <div key={m.label} className="p-2 rounded bg-zinc-900/90 border border-zinc-800/80">
+                      <div className="text-[9px] font-mono text-zinc-400 uppercase">{m.label}</div>
+                      <div className="text-xs font-bold text-white mt-0.5">{m.value}</div>
+                    </div>
+                  ))}
                 </div>
+              )}
 
-                {/* Synopsis snippet */}
-                <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed font-normal">
-                  {item.synopsis}
-                </p>
-
-                {/* Genre Tags */}
-                <div className="flex flex-wrap gap-1 pt-1">
-                  {item.genres.slice(0, 3).map((g) => (
-                    <span key={g} className="text-[10px] text-gray-300 font-mono after:content-['•'] after:ml-1 after:text-gray-600 last:after:content-none">
-                      {g}
+              {/* Tech Stack Chips & Action Links */}
+              <div className="pt-2 border-t border-zinc-800 flex items-center justify-between">
+                <div className="flex flex-wrap gap-1">
+                  {item.cast.slice(0, 3).map((c) => (
+                    <span key={c} className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700/50">
+                      {c}
                     </span>
                   ))}
                 </div>
 
+                <div className="flex items-center gap-2">
+                  {item.githubUrl && (
+                    <a
+                      href={item.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-1.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-colors"
+                      title="GitHub"
+                    >
+                      <Github className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onOpenDetailModal(item); }}
+                    className="p-1.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-colors"
+                    title="Details"
+                  >
+                    <Info className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
 
             </div>
