@@ -215,3 +215,44 @@ export const TIMELINE: TimelineMilestone[] = [
     badge: "Specialized Engineering"
   }
 ];
+
+export const PROCESS_STEPS = [
+  { step: "01", title: "Discover & Scope", description: "Deep architectural mapping, user requirements analysis, and system boundary definition." },
+  { step: "02", title: "Schema & Systems Design", description: "Designing database schemas, ACID invariants, and low-latency API contracts." },
+  { step: "03", title: "High-Performance Build", description: "Developing robust full-stack applications with TypeScript, React, Node/FastAPI." },
+  { step: "04", title: "Resilience & Testing", description: "Chaos engineering, unit test verification, and automated CI/CD pipeline integration." },
+  { step: "05", title: "Deploy & Optimize", description: "Production containerization, monitoring, telemetry streaming, and continuous delivery." }
+];
+
+export const SERVICES = [
+  { id: "s1", title: "Full-Stack Development", description: "Building scalable web platforms with React, TypeScript, Node.js, and FastAPI.", icon: "Layout", bgSoft: "bg-purple-50 border-purple-100 text-purple-600" },
+  { id: "s2", title: "Systems & Backend Engineering", description: "Designing distributed workflows, database schemas, and high-concurrency architectures.", icon: "Cpu", bgSoft: "bg-blue-50 border-blue-100 text-blue-600" },
+  { id: "s3", title: "Database & GIS Solutions", description: "Relational modeling with PostgreSQL, PostGIS spatial queries, and real-time telemetry.", icon: "Database", bgSoft: "bg-emerald-50 border-emerald-100 text-emerald-600" },
+  { id: "s4", title: "AI & Machine Learning", description: "Integrating multi-modal AI pipelines, computer vision forensics, and predictive intelligence.", icon: "Brain", bgSoft: "bg-amber-50 border-amber-100 text-amber-600" }
+];
+
+export const TECHNOLOGIES = [
+  { name: "C++", icon: "Code2" },
+  { name: "React", icon: "Layers" },
+  { name: "TypeScript", icon: "FileCode" },
+  { name: "Python", icon: "Terminal" },
+  { name: "Node.js", icon: "Server" },
+  { name: "FastAPI", icon: "Zap" },
+  { name: "PostgreSQL", icon: "Database" },
+  { name: "Docker", icon: "Box" },
+  { name: "Tailwind", icon: "Palette" },
+  { name: "Git", icon: "GitBranch" }
+];
+
+export const TESTIMONIALS = [
+  { id: "t1", quote: "Himarghya demonstrates exceptional engineering rigor, combining deep algorithmic mastery with modern full-stack velocity.", author: "Academic Mentor", role: "Computer Science Dept.", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" },
+  { id: "t2", quote: "Incredible attention to detail in distributed systems, real-time telemetry, and UI animations that captivate users.", author: "Project Collaborator", role: "Senior Software Engineer", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" },
+  { id: "t3", quote: "Built robust, production-grade architectures with zero tolerance for broken invariants and race conditions.", author: "Hackathon Judge", role: "Tech Lead", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80" }
+];
+
+export const SELECTED_WORKS = [
+  { id: "w1", title: "VARSHANET 2.0", category: "AI & Weather Intelligence", imageBg: "from-blue-500/20 to-cyan-500/20", previewType: "weather" },
+  { id: "w2", title: "Ocean Intelligence", category: "Marine Telemetry Grid", imageBg: "from-cyan-500/20 to-teal-500/20", previewType: "ocean" },
+  { id: "w3", title: "PulseMesh Engine", category: "Distributed Task Orchestrator", imageBg: "from-emerald-500/20 to-indigo-500/20", previewType: "hospital" }
+];
+
