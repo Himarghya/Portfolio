@@ -1,71 +1,36 @@
-# Himarghya Das — Futuristic 3D Developer Portfolio
+# Himarghya Das — Portfolio
 
-A next-generation, high-performance, futuristic 3D developer portfolio website built for **Himarghya Das** (Full Stack Developer, C++ Programmer, and Problem Solver). Designed with a sci-fi command center aesthetic, interactive 3D WebGL canvases, glassmorphism telemetry panels, and Unix developer CLI.
+A software engineering portfolio showcasing distributed systems, real-time telemetry pipelines, offline-first applications, and full-stack web platforms. Built with React, TypeScript, and Tailwind CSS using a flat dark interface.
+
+---
+
+## Featured Systems & Projects
+
+1. **VARSHANET**: Geospatial weather intelligence and disaster response platform. Real-time citizen reports processed with convolutional neural networks and CAP emergency broadcast feeds across Indian meteorological grids.
+2. **POLARIS**: Offline-first polar logistics and life support management for Antarctic research stations (Bharati, Maitri, Himadri). Features 2.4 kbps narrowband satellite delta sync, LSTM fuel burn predictions, and multi-resource survival solvers.
+3. **PULSEMESH**: Distributed task orchestration engine and queue manager. Engineered for 12,000 tasks/min throughput with SSE live streaming, worker heartbeats, and dead-letter queue isolation.
+4. **HYDRO SHIELD**: Flood hazard prediction system combining satellite radar data with local rainfall sensors for sub-50ms emergency alerts.
 
 ---
 
 ## Tech Stack
 
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Framer Motion
-- **3D Graphics**: Three.js, React Three Fiber (`@react-three/fiber`), `@react-three/drei`
-- **Icons**: Lucide React
-- **Typography**: Space Grotesk, JetBrains Mono, Inter
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
+- **Design System**: Flat `#0e0e11` matte dark palette, `#E50914` accent, Inter typography, 1.65 body line height
+- **Security & Quality**: Strict form input validation, zero external data leakage, and sanitized client-side routing
 
 ---
 
-## Features & Sections
-
-1. **Hero Section — Quantum Core**:
-   - Status badge ("AVAILABLE FOR OPPORTUNITIES") with live telemetry.
-   - Dynamic role cycling glitch text.
-   - Interactive 3D Quantum Core with 3-axis gyroscopic gimbal rings, inner energy sphere, and reactive cursor physics.
-   - Floating HUD telemetry status card.
-
-2. **Beyond The Screen — 3D Spatial Environment**:
-   - Interactive 3D orbital cosmos with central neural planet, layer rings, and clickable system nodes.
-   - Orbit, drag, zoom controls, and active node spec inspector.
-
-3. **About Me Dossier**:
-   - Futuristic cybernetic identity preview.
-   - Core stats: 3+ Major Projects, Full Stack Development, C++ / DSA, AI/ML.
-   - Verified digital signature.
-
-4. **The Technology Stack (Skills)**:
-   - Dual-view mode: 2D Matrix Grid and 3D Interactive Constellation.
-   - Categories: Programming, Frontend, Backend, Database, AI/ML, Tools.
-   - No fake percentages — real competency and stack breakdown.
-
-5. **Selected Works (Project Showcase)**:
-   - **VARSHANET 2.0**: Weather big data analytics & geospatial intelligence (with 3D weather radar globe).
-   - **OCEAN INTELLIGENCE**: Marine observation and environmental telemetry platform (with 3D ocean sphere).
-   - **HOSPITAL MANAGEMENT SYSTEM**: Full-stack clinical telemetry and management portal.
-   - **THE CARD CATALOG**: Interactive digital book discovery platform.
-   - Interactive modal case studies with architecture specs.
-
-6. **My Journey**:
-   - Glowing vertical timeline with evolutionary milestones.
-
-7. **Code. Build. Repeat. (Interactive Terminal)**:
-   - Functional Unix-style terminal emulator supporting commands like `help`, `whoami`, `skills`, `projects`, `contact`, `neofetch`, `clear`.
-   - GitHub telemetry links and clipboard copy utilities.
-
-8. **Contact Terminal**:
-   - Encrypted transmission terminal with form validation and direct channels.
-
----
-
-## Quick Start & Setup
+## Quickstart
 
 ```bash
-# 1. Clone or navigate to the directory
-cd himarghya-portfolio
-
-# 2. Install dependencies
+# 1. Install dependencies
 npm install
 
-# 3. Start development server
+# 2. Run local development server
 npm run dev
 
-# 4. Build for production
+# 3. Build for production
 npm run build
 ```
+
