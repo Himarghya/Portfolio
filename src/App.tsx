@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { NETFLIX_PROFILES, NetflixProfile, NetflixItem, TRENDING_PROJECTS } from './constants/netflixData';
+import { PortfolioIntroAnimation } from './components/portfolio/PortfolioIntroAnimation';
 import { ProfileSelector } from './components/netflix/ProfileSelector';
 import { NetflixNavbar } from './components/netflix/NetflixNavbar';
 import { BillboardHero } from './components/netflix/BillboardHero';
@@ -13,6 +15,7 @@ import { NetflixDetailModal } from './components/netflix/NetflixDetailModal';
 import { NetflixTerminal } from './components/netflix/NetflixTerminal';
 
 export const App: React.FC = () => {
+  const [showIntro, setShowIntro] = useState(true);
   const [selectedProfile, setSelectedProfile] = useState<NetflixProfile | null>(NETFLIX_PROFILES[0]);
   const [activeModalItem, setActiveModalItem] = useState<NetflixItem | null>(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
@@ -38,6 +41,13 @@ export const App: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-[#0e0e11] text-zinc-100 selection:bg-[#E50914] selection:text-white font-sans antialiased overflow-x-hidden">
       
+      {/* Portfolio Intro Opening Animation */}
+      <AnimatePresence mode="wait">
+        {showIntro && (
+          <PortfolioIntroAnimation onComplete={() => setShowIntro(false)} />
+        )}
+      </AnimatePresence>
+
       {/* Profile Selector Screen */}
       {!selectedProfile ? (
         <ProfileSelector onSelectProfile={handleSelectProfile} />

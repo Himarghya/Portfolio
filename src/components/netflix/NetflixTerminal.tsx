@@ -13,8 +13,8 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
   const [history, setHistory] = useState<{ id: string; command: string; output: string | string[] }[]>([
     {
       id: 'init-1',
-      command: 'devflix --version',
-      output: 'Devflix Terminal Diagnostic Engine v2026.1 (x86_64-netflix-core)'
+      command: 'portfolio --version',
+      output: 'Himarghya Das Portfolio Diagnostic Engine v2026.1 (x86_64-portfolio-core)'
     },
     {
       id: 'init-2',
@@ -50,7 +50,7 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
     switch (cmd) {
       case 'help':
         response = [
-          'DEVFLIX CONSOLE COMMANDS:',
+          'PORTFOLIO CONSOLE COMMANDS:',
           '  whoami       - Display showrunner / developer profile',
           '  projects     - List all streaming releases & live projects',
           '  skills       - View top 10 stack rankings',
@@ -120,7 +120,7 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
             <div className="w-3 h-3 rounded-full bg-green-600" />
             <span className="ml-2 text-xs text-gray-300 font-bold flex items-center gap-1.5">
               <TerminalIcon className="w-3.5 h-3.5 text-[#E50914]" />
-              <span>devflix-cli:~ (zsh)</span>
+              <span>portfolio-cli:~ (zsh)</span>
             </span>
           </div>
 
@@ -146,7 +146,7 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
           {history.map(item => (
             <div key={item.id} className="space-y-1">
               <div className="flex items-center gap-2 text-gray-400">
-                <span className="text-[#E50914] font-bold">himarghya@devflix:~$</span>
+                <span className="text-[#E50914] font-bold">himarghya@portfolio:~$</span>
                 <span className="text-white font-semibold">{item.command}</span>
               </div>
               <div className="pl-4 text-gray-300">
@@ -161,7 +161,7 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
 
           {/* Prompt Form */}
           <form onSubmit={handleCommand} className="flex items-center gap-2 pt-2">
-            <span className="text-[#E50914] font-bold shrink-0">himarghya@devflix:~$</span>
+            <span className="text-[#E50914] font-bold shrink-0">himarghya@portfolio:~$</span>
             <input
               ref={inputRef}
               type="text"
