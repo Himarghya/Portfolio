@@ -116,19 +116,18 @@ export const DragonCursor: React.FC = () => {
       });
     }
 
-    // --- FEATHERED RAY WINGS ---
+    // --- CLASSIC DRACONIC WINGS (Pair of Sleek Wings with 4 Webbed Struts) ---
     const createWingRays = (side: 1 | -1): WingRay[] => {
       const rays: WingRay[] = [];
-      const NUM_RAYS = 10;
+      const NUM_RAYS = 4;
 
       for (let i = 0; i < NUM_RAYS; i++) {
         const progress = i / (NUM_RAYS - 1);
-        const segIdx = Math.floor(3 + progress * 4);
-        const baseOffset = (Math.PI * 0.38 + progress * Math.PI * 0.52) * side;
+        const segIdx = Math.floor(3 + progress * 2);
+        const baseOffset = (Math.PI * 0.35 + progress * Math.PI * 0.42) * side;
 
-        const lenMultiplier = Math.sin(progress * Math.PI);
-        const rayLen = 22 + lenMultiplier * 55 + (1 - progress) * 12;
-        const curve = (0.35 + progress * 0.4) * side;
+        const rayLen = 28 + (1 - progress * 0.35) * 36;
+        const curve = (0.28 + progress * 0.32) * side;
 
         const joints = [
           { x: posX, y: posY },
@@ -367,9 +366,10 @@ export const DragonCursor: React.FC = () => {
       }
       ctx.globalAlpha = 1;
 
-      // --- RENDER CELESTIAL RAY WINGS ---
+      // --- RENDER CLASSIC DRACONIC WINGS (Pair of Sleek Wings) ---
       const updateAndDrawWings = (rays: WingRay[], side: 1 | -1) => {
-        rays.forEach((ray, rIdx) => {
+        // 1. Calculate joint positions for all struts
+        rays.forEach((ray) => {
           const baseSeg = segments[ray.baseSegIdx];
           if (!baseSeg) return;
 
@@ -391,7 +391,38 @@ export const DragonCursor: React.FC = () => {
             ray.joints[j].x += (targetJX - ray.joints[j].x) * 0.42;
             ray.joints[j].y += (targetJY - ray.joints[j].y) * 0.42;
           }
+        });
 
+        // 2. Draw scalloped wing membrane webbing between struts
+        for (let rIdx = 1; rIdx < rays.length; rIdx++) {
+          const currRay = rays[rIdx];
+          const prevRay = rays[rIdx - 1];
+
+          // Scalloped arched web edge
+          const midTipX = (currRay.joints[2].x + prevRay.joints[2].x) * 0.5 - Math.cos(segments[3].angle) * (6 * side);
+          const midTipY = (currRay.joints[2].y + prevRay.joints[2].y) * 0.5 - Math.sin(segments[3].angle) * (6 * side);
+
+          ctx.beginPath();
+          ctx.moveTo(prevRay.joints[0].x, prevRay.joints[0].y);
+          ctx.lineTo(prevRay.joints[2].x, prevRay.joints[2].y);
+          ctx.quadraticCurveTo(midTipX, midTipY, currRay.joints[2].x, currRay.joints[2].y);
+          ctx.lineTo(currRay.joints[0].x, currRay.joints[0].y);
+          ctx.closePath();
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
+          ctx.fill();
+
+          // Delicate scalloped edge stroke
+          ctx.beginPath();
+          ctx.moveTo(prevRay.joints[2].x, prevRay.joints[2].y);
+          ctx.quadraticCurveTo(midTipX, midTipY, currRay.joints[2].x, currRay.joints[2].y);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+
+        // 3. Draw clean wing bone struts & leading elbow claw
+        rays.forEach((ray, rIdx) => {
           ctx.beginPath();
           ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
           ctx.quadraticCurveTo(
@@ -400,20 +431,21 @@ export const DragonCursor: React.FC = () => {
             ray.joints[2].x,
             ray.joints[2].y
           );
-          ctx.strokeStyle = rIdx % 2 === 0 ? '#FFFFFF' : 'rgba(212, 212, 216, 0.85)';
-          ctx.lineWidth = 1.0;
+          ctx.strokeStyle = rIdx === 0 ? '#FFFFFF' : '#D4D4D8';
+          ctx.lineWidth = rIdx === 0 ? 1.4 : 0.9;
           ctx.stroke();
 
-          if (rIdx > 0) {
-            const prevRay = rays[rIdx - 1];
+          // Sharp wing thumb / elbow claw on leading edge spar
+          if (rIdx === 0) {
+            const elbowX = ray.joints[1].x;
+            const elbowY = ray.joints[1].y;
+            const clawAngle = segments[3].angle + (Math.PI * 0.75) * side;
             ctx.beginPath();
-            ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
-            ctx.lineTo(ray.joints[2].x, ray.joints[2].y);
-            ctx.lineTo(prevRay.joints[2].x, prevRay.joints[2].y);
-            ctx.lineTo(prevRay.joints[0].x, prevRay.joints[0].y);
-            ctx.closePath();
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-            ctx.fill();
+            ctx.moveTo(elbowX, elbowY);
+            ctx.lineTo(elbowX + Math.cos(clawAngle) * 4.5, elbowY + Math.sin(clawAngle) * 4.5);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1.1;
+            ctx.stroke();
           }
         });
       };
