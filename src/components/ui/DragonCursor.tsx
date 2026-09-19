@@ -66,13 +66,15 @@ export const DragonCursor: React.FC = () => {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    // Movement Tracking
+    // Movement & Scroll Tracking
     let mouseX = width / 2;
     let mouseY = height / 2;
     let prevMouseX = mouseX;
     let prevMouseY = mouseY;
     let lastMouseMoveTime = performance.now();
     let isMouseMoving = false;
+    let isScrolling = false;
+    let lastScrollTime = 0;
 
     const onMouseMove = (e: MouseEvent) => {
       const dx = e.clientX - prevMouseX;
@@ -97,8 +99,14 @@ export const DragonCursor: React.FC = () => {
       }
     };
 
+    const onScroll = () => {
+      isScrolling = true;
+      lastScrollTime = performance.now();
+    };
+
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     // --- CELESTIAL DRAGON SPINE CONFIGURATION ---
     const NUM_SEGMENTS = 28;
@@ -251,18 +259,23 @@ export const DragonCursor: React.FC = () => {
 
       ctx.clearRect(0, 0, width, height);
 
-      // Check mouse activity
-      if (currentTime - lastMouseMoveTime > 650) {
+      // Check scroll & mouse activity
+      if (currentTime - lastScrollTime > 800) {
+        isScrolling = false;
+      }
+      if (currentTime - lastMouseMoveTime > 500) {
         isMouseMoving = false;
       }
 
-      // Continuous full-page autonomous roaming when mouse is stationary
-      if (!isMouseMoving) {
+      // If scrolling or mouse is still, autonomously roam across the screen
+      const isAutonomous = !isMouseMoving || isScrolling;
+
+      if (isAutonomous) {
         const dTargetX = targetX - posX;
         const dTargetY = targetY - posY;
         const distSq = dTargetX * dTargetX + dTargetY * dTargetY;
 
-        if (distSq < 130 * 130 || currentTime - waypointSetTime > 3200) {
+        if (distSq < 130 * 130 || currentTime - waypointSetTime > 2800) {
           pickNextQuadrantWaypoint();
         }
       } else {
@@ -303,28 +316,34 @@ export const DragonCursor: React.FC = () => {
       const toTargetY = targetY - posY;
       const distToTarget = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
 
-      if (isMouseMoving) {
-        // Surge speed dynamically when cursor is far away
-        targetCruisingSpeed = Math.min(18.0, 5.8 + distToTarget * 0.042);
-        // Snappy responsive turn rate
-        turnRate = Math.min(0.22, 0.09 + distToTarget * 0.0006);
+      if (!isAutonomous) {
+        // Active mouse chasing
+        targetCruisingSpeed = Math.min(16.0, 5.5 + distToTarget * 0.038);
+        turnRate = Math.min(0.20, 0.09 + distToTarget * 0.0005);
       } else {
-        targetCruisingSpeed = 5.0;
-        turnRate = 0.055;
+        // Smooth continuous cruising flight during scroll or idle
+        targetCruisingSpeed = isScrolling ? 6.2 : 5.2;
+        turnRate = 0.06;
       }
 
       currentSpeed += (targetCruisingSpeed - currentSpeed) * 0.12;
-      currentSpeed = Math.min(Math.max(currentSpeed, 4.2), 20.0);
+      currentSpeed = Math.min(Math.max(currentSpeed, 4.2), 18.0);
 
-      // Steering
-      if (distToTarget > 15) {
-        const desiredAngle = Math.atan2(toTargetY, toTargetX);
-        let angleDiff = desiredAngle - currentAngle;
-        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-
-        currentAngle += angleDiff * turnRate;
+      // --- SMOOTH TANGENT ORBIT STEERING (Prevents Point-Oscillation Stalls) ---
+      const baseAngle = Math.atan2(toTargetY, toTargetX);
+      
+      // When close to target point, apply a gentle orbital tangent offset so it swoops in a wide circle rather than stalling
+      let desiredAngle = baseAngle;
+      if (!isAutonomous && distToTarget < 75) {
+        const orbitFactor = Math.max(0, 1 - distToTarget / 75);
+        desiredAngle = baseAngle + orbitFactor * 0.55;
       }
+
+      let angleDiff = desiredAngle - currentAngle;
+      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+
+      currentAngle += angleDiff * turnRate;
 
       // Soft Edge repellent
       const edgePadding = 70;
@@ -390,7 +409,6 @@ export const DragonCursor: React.FC = () => {
 
       // --- 2. BATCHED FEATHERED RAY WINGS (Lionfish Quills) ---
       const updateAndDrawWings = (rays: WingRay[], side: 1 | -1) => {
-        // Calculate all joints
         rays.forEach((ray) => {
           const baseSeg = segments[ray.baseSegIdx];
           if (!baseSeg) return;
@@ -641,6 +659,7 @@ export const DragonCursor: React.FC = () => {
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
