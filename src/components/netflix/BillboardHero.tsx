@@ -23,24 +23,19 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
           className="lg:col-span-7 space-y-5 sm:space-y-6"
         >
           {/* Header Tag & Portrait Avatar Identity */}
-          <div className="flex items-center gap-3.5 sm:gap-5">
+          <div className="flex items-center gap-4 sm:gap-6">
             <div className="relative group/avatar shrink-0">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-2xl overflow-hidden border-2 border-white/20 shadow-[0_0_25px_rgba(229,9,20,0.4)] bg-black/60 relative">
+              <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden border-2 border-white/20 shadow-[0_0_30px_rgba(229,9,20,0.4)] bg-black/60 relative">
                 <img
                   src="/profile/himarghya-portrait.jpg"
                   alt="Himarghya Das"
                   className="w-full h-full object-cover object-center group-hover/avatar:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-30" />
               </div>
-              {/* Active Pulse Status Beacon */}
-              <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-[#12131a]" />
-              </span>
             </div>
 
-            <div className="space-y-0.5 sm:space-y-1">
+            <div className="space-y-1 sm:space-y-2">
               <div className="flex items-center gap-2">
                 <span className="font-bebas text-lg sm:text-2xl text-[#E50914] font-bold tracking-wider drop-shadow-[0_0_12px_rgba(229,9,20,0.5)]">
                   H
@@ -49,7 +44,7 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   SOFTWARE ENGINEER PORTFOLIO
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight uppercase font-bebas leading-none drop-shadow-md">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight uppercase font-bebas leading-none drop-shadow-md">
                 HIMARGHYA DAS
               </h1>
             </div>

@@ -47,21 +47,16 @@ export const NetflixAbout: React.FC = () => {
             <div className="rounded-2xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.12)] p-6 sm:p-7 space-y-6">
               
               {/* Photo & Identity Hero Frame */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 pb-5 border-b border-white/10">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 pb-5 border-b border-white/10">
                 <div className="relative group/photo shrink-0">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-white/20 shadow-[0_0_25px_rgba(229,9,20,0.35)] relative bg-black/60">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-white/20 shadow-[0_0_30px_rgba(229,9,20,0.35)] relative bg-black/60">
                     <img
                       src="/profile/himarghya-portrait.jpg"
                       alt="Himarghya Das"
                       className="w-full h-full object-cover object-center group-hover/photo:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-30" />
                   </div>
-                  {/* Status Indicator Pip */}
-                  <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-[#12131a]" />
-                  </span>
                 </div>
 
                 <div className="text-center sm:text-left space-y-1">
