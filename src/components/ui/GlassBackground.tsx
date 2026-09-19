@@ -1,61 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 export const GlassBackground: React.FC = () => {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
-      {/* Subtle Cyber Grid */}
+      {/* Subtle Cyber Grid with Perspective */}
       <div
-        className="absolute inset-0 opacity-[0.07]"
+        className="absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px)
+            linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px)
           `,
-          backgroundSize: '64px 64px'
+          backgroundSize: '48px 48px'
         }}
       />
 
-      {/* Primary Crimson Neon Light Orb (Top-Right) */}
+      {/* Interactive Cursor Spotlight Glow */}
+      <div
+        className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-[#E50914]/15 via-purple-600/10 to-transparent blur-[120px] transition-transform duration-300 ease-out -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        style={{
+          left: `${mousePos.x}px`,
+          top: `${mousePos.y}px`,
+        }}
+      />
+
+      {/* Cyber Scanning Laser Line Accent */}
       <motion.div
         animate={{
-          x: [0, 25, -15, 0],
-          y: [0, -30, 15, 0],
-          scale: [1, 1.08, 0.96, 1],
-          opacity: [0.35, 0.45, 0.35]
+          y: ['-10%', '110%'],
+          opacity: [0, 0.6, 0.8, 0.6, 0]
         }}
         transition={{
-          duration: 18,
+          duration: 12,
+          repeat: Infinity,
+          ease: 'linear'
+        }}
+        className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#E50914]/50 to-transparent shadow-[0_0_15px_rgba(229,9,20,0.6)]"
+      />
+
+      {/* Primary Crimson Neon Light Orb (Top-Right Hero Glow) */}
+      <motion.div
+        animate={{
+          x: [0, 30, -20, 0],
+          y: [0, -35, 20, 0],
+          scale: [1, 1.12, 0.94, 1],
+          opacity: [0.4, 0.55, 0.4]
+        }}
+        transition={{
+          duration: 16,
           repeat: Infinity,
           ease: 'easeInOut'
         }}
         style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute -top-[10%] right-[5%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#E50914]/45 via-red-600/25 to-transparent blur-[110px] will-change-transform"
+        className="absolute -top-[12%] right-[5%] w-[680px] h-[680px] rounded-full bg-gradient-to-br from-[#E50914]/50 via-red-600/30 to-transparent blur-[120px] will-change-transform"
       />
 
-      {/* Deep Violet / Indigo Accent Light Orb (Center-Left) */}
+      {/* Deep Violet / Sapphire Accent Light Orb (Center-Left) */}
       <motion.div
         animate={{
-          x: [0, -30, 20, 0],
-          y: [0, 40, -20, 0],
-          scale: [0.95, 1.1, 1, 0.95],
-          opacity: [0.22, 0.32, 0.22]
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: 'easeInOut'
-        }}
-        style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute top-[35%] -left-[10%] w-[650px] h-[650px] rounded-full bg-gradient-to-tr from-[#4f46e5]/30 via-[#7c3aed]/20 to-transparent blur-[120px] will-change-transform"
-      />
-
-      {/* Crimson / Ruby Glow Orb (Bottom-Right) */}
-      <motion.div
-        animate={{
-          x: [0, 25, -20, 0],
-          y: [0, -25, 30, 0],
-          scale: [1, 0.95, 1.08, 1],
+          x: [0, -35, 25, 0],
+          y: [0, 45, -25, 0],
+          scale: [0.92, 1.15, 1, 0.92],
           opacity: [0.25, 0.38, 0.25]
         }}
         transition={{
@@ -64,27 +80,69 @@ export const GlassBackground: React.FC = () => {
           ease: 'easeInOut'
         }}
         style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute bottom-[10%] right-[15%] w-[550px] h-[550px] rounded-full bg-gradient-to-tl from-[#E50914]/35 via-red-900/25 to-transparent blur-[110px] will-change-transform"
+        className="absolute top-[30%] -left-[12%] w-[700px] h-[700px] rounded-full bg-gradient-to-tr from-[#4f46e5]/35 via-[#7c3aed]/25 to-transparent blur-[130px] will-change-transform"
       />
 
-      {/* Subtle Cyan / Blue Sparkle Orb (Bottom-Left) */}
+      {/* Ruby / Crimson Deep Orb (Bottom-Right) */}
       <motion.div
         animate={{
-          x: [0, 20, -15, 0],
-          y: [0, 15, -20, 0],
-          opacity: [0.12, 0.22, 0.12]
+          x: [0, 30, -25, 0],
+          y: [0, -30, 35, 0],
+          scale: [1, 0.92, 1.1, 1],
+          opacity: [0.28, 0.42, 0.28]
         }}
         transition={{
-          duration: 16,
+          duration: 18,
           repeat: Infinity,
           ease: 'easeInOut'
         }}
         style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute -bottom-[10%] left-[10%] w-[450px] h-[450px] rounded-full bg-gradient-to-r from-blue-600/18 to-teal-500/12 blur-[100px] will-change-transform"
+        className="absolute bottom-[8%] right-[12%] w-[600px] h-[600px] rounded-full bg-gradient-to-tl from-[#E50914]/40 via-red-950/30 to-transparent blur-[115px] will-change-transform"
       />
 
-      {/* Top Vignette / Depth Gradient */}
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#0e0e11]/50 to-[#0e0e11]/90 pointer-events-none" />
+      {/* Cyan / Teal Ambient Glow (Bottom-Left) */}
+      <motion.div
+        animate={{
+          x: [0, 25, -20, 0],
+          y: [0, 20, -25, 0],
+          opacity: [0.15, 0.28, 0.15]
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: 'easeInOut'
+        }}
+        style={{ transform: 'translate3d(0,0,0)' }}
+        className="absolute -bottom-[8%] left-[8%] w-[500px] h-[500px] rounded-full bg-gradient-to-r from-blue-600/22 to-cyan-500/18 blur-[110px] will-change-transform"
+      />
+
+      {/* Ambient Floating Dust Stars */}
+      <div className="absolute inset-0 opacity-40">
+        {[...Array(18)].map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.8, 0.2],
+              scale: [0.8, 1.2, 0.8]
+            }}
+            transition={{
+              duration: 4 + (i % 5) * 1.5,
+              repeat: Infinity,
+              delay: (i % 6) * 0.8,
+              ease: 'easeInOut'
+            }}
+            style={{
+              left: `${(i * 19 + 7) % 96}%`,
+              top: `${(i * 23 + 11) % 92}%`
+            }}
+            className="absolute w-1 h-1 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+          />
+        ))}
+      </div>
+
+      {/* Radial Vignette Mask */}
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#0e0e11]/40 to-[#0e0e11]/85 pointer-events-none" />
     </div>
   );
 };

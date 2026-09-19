@@ -72,7 +72,7 @@ export const App: React.FC = () => {
             {/* Billboard Hero Section */}
             <BillboardHero
               onOpenDetailModal={setActiveModalItem}
-              webglSupported={false}
+              webglSupported={true}
             />
 
             {/* Consistent Spacing Section Flow */}
