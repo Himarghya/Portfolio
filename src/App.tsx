@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { NETFLIX_PROFILES, NetflixProfile, NetflixItem, TRENDING_PROJECTS } from './constants/netflixData';
 import { PortfolioIntroAnimation } from './components/portfolio/PortfolioIntroAnimation';
 import { GlassBackground } from './components/ui/GlassBackground';
+import { DragonCursor } from './components/ui/DragonCursor';
 import { ProfileSelector } from './components/netflix/ProfileSelector';
 import { NetflixNavbar } from './components/netflix/NetflixNavbar';
 import { BillboardHero } from './components/netflix/BillboardHero';
@@ -44,6 +45,9 @@ export const App: React.FC = () => {
       
       {/* Ambient Glassmorphism Background Lights */}
       <GlassBackground />
+
+      {/* Animated Cyber Fire Dragon Cursor Tracker */}
+      <DragonCursor />
 
       {/* Portfolio Intro Opening Animation */}
       <AnimatePresence mode="wait">
