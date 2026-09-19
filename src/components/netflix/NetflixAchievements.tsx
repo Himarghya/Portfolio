@@ -112,35 +112,35 @@ export const NetflixAchievements: React.FC = () => {
             />
 
             {/* Card Content Header & Preview */}
-            <div className="p-6 sm:p-7 flex-1 flex flex-col">
-              <div className="flex items-start justify-between gap-3 mb-4">
-                <div className="flex items-center gap-3">
+            <div className="p-5 sm:p-7 flex-1 flex flex-col">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 sm:gap-3 mb-4">
+                <div className="flex items-start sm:items-center gap-2.5 sm:gap-3 min-w-0">
                   <div
-                    className="p-2.5 rounded-xl border flex items-center justify-center shrink-0"
+                    className="p-2 sm:p-2.5 rounded-xl border flex items-center justify-center shrink-0 mt-0.5 sm:mt-0"
                     style={{
                       backgroundColor: `${item.accentColor}18`,
                       borderColor: `${item.accentColor}40`,
                       color: item.accentColor
                     }}
                   >
-                    <Trophy className="w-5 h-5" />
+                    <Trophy className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                       <span className="text-[11px] font-mono font-semibold tracking-wider text-zinc-300 uppercase">
                         {item.issuer}
                       </span>
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/[0.08] text-zinc-300 border border-white/10">
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white/[0.08] text-zinc-300 border border-white/10 whitespace-nowrap">
                         {item.issuerBadge}
                       </span>
                     </div>
-                    <span className="text-xs text-zinc-500">{item.date}</span>
+                    <span className="text-xs text-zinc-500 block mt-0.5">{item.date}</span>
                   </div>
                 </div>
 
-                {/* Rank Badge */}
+                {/* Rank Badge (Responsive on mobile) */}
                 <span
-                  className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shrink-0 border"
+                  className="self-start sm:self-auto px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold flex items-center gap-1.5 shrink-0 border"
                   style={{
                     backgroundColor: `${item.accentColor}18`,
                     borderColor: `${item.accentColor}40`,

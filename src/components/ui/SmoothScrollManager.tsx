@@ -84,11 +84,11 @@ export const SmoothScrollManager: React.FC = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
           transition={{ duration: 0.25 }}
-          className="fixed bottom-6 right-6 z-40 select-none"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none"
         >
           <button
             onClick={scrollToToggle}
-            className="group relative flex items-center justify-center w-12 h-12 rounded-full bg-[#101116]/90 hover:bg-[#16171f] backdrop-blur-2xl border border-white/15 hover:border-[#E50914]/70 shadow-[0_10px_30px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all duration-300 cursor-pointer active:scale-95"
+            className="group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#101116]/90 hover:bg-[#16171f] backdrop-blur-2xl border border-white/15 hover:border-[#E50914]/70 shadow-[0_8px_25px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all duration-300 cursor-pointer active:scale-95"
             title={isNearBottom ? 'Scroll to Top' : 'Scroll to Bottom'}
             aria-label="Toggle smooth scroll position"
           >
