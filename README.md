@@ -36,8 +36,8 @@
 
 | Title / Recognition | Issuer / Organization | Credential ID / Team | Category | Actions |
 | :--- | :--- | :--- | :--- | :--- |
-| **🥇 CAN YOU HACK IT (Sept. 13, 2025) — 1st Position (Winners)** | THINKBUILDSHIP & Globus Infocom | Team *Still Standing* (Quick Teams) | 24-Hour Hackathon Sprint | [View Instagram Story ↗](https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTE0NDAwNTQ3MTkyMjk5?story_media_id=3716531304344154391_48185590868&stkn=Znh0YWNsc3pzb3Aw) • [Inspect ↗](https://portfolio-3k34.onrender.com/#achievements) |
-| **🥉 RoboRush 3.0 (2025) — 3rd Position** | Electronics & Robotics Society (ERS), IIITDM Jabalpur | Team *Super Strikers* | Robotics & Embedded | [View Certificate Image ↗](https://portfolio-3k34.onrender.com/#certificates) |
+| **🥇 CAN YOU HACK IT (Sept. 13, 2025) — 1st Position (Winners)** | THINKBUILDSHIP & Globus Infocom | Team *Still Standing* (Himarghya Das, Shreeshant Shetty, Alok Kumar Mishra, Anshuman Singh) | 24-Hour Hackathon Sprint | [View Instagram Story ↗](https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTE0NDAwNTQ3MTkyMjk5?story_media_id=3716531304344154391_48185590868&stkn=Znh0YWNsc3pzb3Aw) • [Inspect ↗](https://portfolio-3k34.onrender.com/#achievements) |
+| **🥉 RoboRush 3.0 (2025) — 3rd Position** | Electronics & Robotics Society (ERS), IIITDM Jabalpur | Team *Super Strikers* (Himarghya Das, Aditya Rajput, Harshal Paranjiya, Anuj) | Robotics & Embedded | [View Certificate Image ↗](https://portfolio-3k34.onrender.com/#achievements) |
 | **📜 The Complete Full-Stack Web Development Bootcamp** | Udemy (Dr. Angela Yu) | `UC-629e3310-b94c-4f76-a91e-1b90d378d496` | 62-Hour Full-Stack | [Verify on Udemy ↗](https://ude.my/UC-629e3310-b94c-4f76-a91e-1b90d378d496) |
 
 ---

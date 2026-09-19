@@ -30,6 +30,7 @@ const ACHIEVEMENTS_DATA: AchievementItem[] = [
     date: 'Sept. 13, 2025',
     awardRank: '1st Place (Winners 🥇)',
     team: 'Still Standing (Quick Teams)',
+    teamMembers: ['Himarghya Das', 'Shreeshant Shetty', 'Alok Kumar Mishra', 'Anshuman Singh'],
     imageUrl: '/certificates/canyouhackit-winners.jpg',
     galleryImages: [
       '/certificates/canyouhackit-winners.jpg',
@@ -333,6 +334,9 @@ export const NetflixAchievements: React.FC = () => {
                 <div className="text-xs text-zinc-400">
                   <span>
                     Team: <strong className="text-zinc-200">{selectedItem.team}</strong>
+                    {selectedItem.teamMembers && (
+                      <span className="text-zinc-300 ml-1">({selectedItem.teamMembers.join(', ')})</span>
+                    )}
                   </span>
                 </div>
 

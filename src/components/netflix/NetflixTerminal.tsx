@@ -68,7 +68,8 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
       case 'awards':
         response = [
           '🏆 ACCREDITATIONS & ACHIEVEMENTS:',
-          '  • [🥇 1st Place Winner] CAN YOU HACK IT (24-Hour Hackathon, Sept. 13, 2025) — THINKBUILDSHIP & Globus Infocom (Team Still Standing)',
+          '  • [🥇 1st Place Winner] CAN YOU HACK IT (24-Hour Hackathon, Sept. 13, 2025) — THINKBUILDSHIP & Globus Infocom',
+          '    Team Still Standing: Himarghya Das, Shreeshant Shetty, Alok Kumar Mishra, Anshuman Singh',
           '  • [🥉 3rd Place] RoboRush 3.0 (2025) — ERS, IIITDM Jabalpur (Team Super Strikers)',
           '  • [📜 Verified 62-Hour Fullstack] The Complete Full-Stack Web Development Bootcamp (Udemy / Dr. Angela Yu)',
           '    Credential ID: UC-629e3310-b94c-4f76-a91e-1b90d378d496'
