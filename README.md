@@ -36,8 +36,9 @@
 
 | Title / Recognition | Issuer / Organization | Credential ID / Team | Category | Actions |
 | :--- | :--- | :--- | :--- | :--- |
-| **RoboRush 3.0 (2025) — 3rd Position** | Electronics & Robotics Society (ERS), IIITDM Jabalpur | Team *Super Strikers* | Robotics & Embedded | [View Certificate Image ↗](https://portfolio-3k34.onrender.com/#certificates) |
-| **The Complete Full-Stack Web Development Bootcamp** | Udemy (Dr. Angela Yu) | `UC-629e3310-b94c-4f76-a91e-1b90d378d496` | 62-Hour Full-Stack | [Verify on Udemy ↗](https://ude.my/UC-629e3310-b94c-4f76-a91e-1b90d378d496) |
+| **🥇 CAN YOU HACK IT — 1st Position (Winners)** | THINKBUILDSHIP & Globus Infocom | Team *Still Standing* (Quick Teams) | 24-Hour Hackathon Sprint | [View Instagram Story ↗](https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTE0NDAwNTQ3MTkyMjk5?story_media_id=3716531304344154391_48185590868&stkn=Znh0YWNsc3pzb3Aw) • [Inspect ↗](https://portfolio-3k34.onrender.com/#certificates) |
+| **🥉 RoboRush 3.0 (2025) — 3rd Position** | Electronics & Robotics Society (ERS), IIITDM Jabalpur | Team *Super Strikers* | Robotics & Embedded | [View Certificate Image ↗](https://portfolio-3k34.onrender.com/#certificates) |
+| **📜 The Complete Full-Stack Web Development Bootcamp** | Udemy (Dr. Angela Yu) | `UC-629e3310-b94c-4f76-a91e-1b90d378d496` | 62-Hour Full-Stack | [Verify on Udemy ↗](https://ude.my/UC-629e3310-b94c-4f76-a91e-1b90d378d496) |
 
 ---
 
