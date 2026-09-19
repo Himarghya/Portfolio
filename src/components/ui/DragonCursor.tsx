@@ -45,10 +45,11 @@ export const DragonCursor: React.FC = () => {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    // Cursor tracking
+    // Cursor & Scroll Tracking
     let mouseX = width / 2;
     let mouseY = height / 2;
     let lastMouseMoveTime = performance.now();
+    let lastScrollTime = 0;
     let hasInteracted = false;
 
     const onMouseMove = (e: MouseEvent) => {
@@ -67,8 +68,13 @@ export const DragonCursor: React.FC = () => {
       }
     };
 
+    const onScroll = () => {
+      lastScrollTime = performance.now();
+    };
+
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     // --- DRAGON STATE ---
     const NUM_SEGMENTS = 26;
@@ -77,7 +83,7 @@ export const DragonCursor: React.FC = () => {
 
     let posX = width / 2;
     let posY = height / 2;
-    let vx = 5.5;
+    let vx = 5.0;
     let vy = 0;
     let angle = 0;
 
@@ -137,10 +143,14 @@ export const DragonCursor: React.FC = () => {
     // --- EMBERS ---
     const embers: Ember[] = [];
 
-    // --- UNSTOPPABLE BEACON FLIGHT ENGINE ---
+    // --- SEAMLESS BEACON FLIGHT ENGINE ---
     let orbitAngle = 0;
     let time = 0;
     let lastTime = performance.now();
+
+    // Continuously interpolated beacon coordinates (NEVER jumps or teleports)
+    let beaconX = width / 2;
+    let beaconY = height / 2;
 
     // Flapping flight state
     let flapTimer = 0;
@@ -152,36 +162,45 @@ export const DragonCursor: React.FC = () => {
       const dt = Math.min((currentTime - lastTime) / 1000, 0.05);
       lastTime = currentTime;
       
-      // Delta-time normalization factor: exactly 1.0 at 60fps, 0.5 at 120fps, 0.416 at 144fps
       const timeScale = Math.min(Math.max(dt * 60, 0.35), 2.0);
       time += dt * 1.8;
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. DYNAMIC ORBIT BEACON (Smooth, steady constant circular orbit)
-      const isIdle = !hasInteracted || (currentTime - lastMouseMoveTime > 1800);
-      
-      orbitAngle += dt * (isIdle ? 0.85 : 1.25);
+      // 1. SEAMLESS DYNAMIC TARGETING (Scroll Soaring & Cursor Tracking)
+      const isScrolling = currentTime - lastScrollTime < 750;
+      const isMouseActive = !isScrolling && (hasInteracted && currentTime - lastMouseMoveTime < 1400);
 
-      let beaconX: number;
-      let beaconY: number;
+      let targetBeaconX: number;
+      let targetBeaconY: number;
 
-      if (!isIdle) {
-        // Smooth 80px orbit around the cursor at a relaxed, steady pace
-        const orbitRadius = 80;
-        beaconX = mouseX + Math.cos(orbitAngle) * orbitRadius;
-        beaconY = mouseY + Math.sin(orbitAngle) * orbitRadius;
-      } else {
-        // Majestic sweeping Lissajous infinity curves across the full screen
-        const centerX = width * 0.5;
-        const centerY = height * 0.5;
-        const spanX = width * 0.36;
+      if (isScrolling) {
+        // While scrolling down: Soar dynamically across the screen in fluid S-curves
+        orbitAngle += dt * 1.6;
+        const spanX = width * 0.38;
         const spanY = height * 0.30;
-        beaconX = centerX + Math.sin(time * 0.5) * spanX;
-        beaconY = centerY + Math.sin(time * 1.0) * spanY;
+        targetBeaconX = width * 0.5 + Math.sin(time * 0.8) * spanX;
+        targetBeaconY = height * 0.5 + Math.cos(time * 1.1) * spanY;
+      } else if (isMouseActive) {
+        // While moving mouse: Orbit smoothly around cursor at 80px
+        orbitAngle += dt * 1.3;
+        targetBeaconX = mouseX + Math.cos(orbitAngle) * 80;
+        targetBeaconY = mouseY + Math.sin(orbitAngle) * 80;
+      } else {
+        // Idle screen patrol: Elegant continuous Lissajous curves
+        orbitAngle += dt * 0.8;
+        const spanX = width * 0.36;
+        const spanY = height * 0.28;
+        targetBeaconX = width * 0.5 + Math.sin(time * 0.45) * spanX;
+        targetBeaconY = height * 0.5 + Math.sin(time * 0.9) * spanY;
       }
 
-      // 2. STEERING & CONSTANT CRUISE PROPULSION (Smooth, controlled, not too fast)
+      // Smooth continuous exponential interpolation (Guarantees zero jerky snaps or lost flow)
+      const blendRate = Math.min(dt * 3.2, 0.12);
+      beaconX += (targetBeaconX - beaconX) * blendRate;
+      beaconY += (targetBeaconY - beaconY) * blendRate;
+
+      // 2. STEERING & CONSTANT CRUISE PROPULSION (Smooth, controlled, never stopping)
       const dx = beaconX - posX;
       const dy = beaconY - posY;
       const distToBeacon = Math.hypot(dx, dy);
@@ -205,18 +224,18 @@ export const DragonCursor: React.FC = () => {
         flapWave = Math.sin(time * 1.8) * 0.10;
       }
 
-      // Steady cruising speed (Graceful 3.6 to 5.8 px/frame, steady & constant)
-      const targetSpeed = Math.min(5.8, 3.6 + distToBeacon * 0.012);
+      // Constant, smooth cruising speed (3.8 to 5.8 px/frame)
+      const targetSpeed = Math.min(5.8, 3.8 + distToBeacon * 0.012);
       const desiredVx = (dx / (distToBeacon || 1)) * targetSpeed;
       const desiredVy = (dy / (distToBeacon || 1)) * targetSpeed;
 
-      // Reynolds steering force (smooth acceleration curve)
-      const steerFactor = (isIdle ? 0.045 : 0.075) * timeScale;
+      // Reynolds steering force (smooth banking arcs)
+      const steerFactor = (isScrolling ? 0.065 : (isMouseActive ? 0.075 : 0.045)) * timeScale;
       vx += (desiredVx - vx) * steerFactor;
       vy += (desiredVy - vy) * steerFactor;
 
-      // Maintain steady cruising momentum (never halts, capped to prevent rushing)
-      const currentSpeed = Math.max(3.2, Math.min(5.8, Math.hypot(vx, vy)));
+      // Maintain steady cruising momentum (unbroken forward velocity)
+      const currentSpeed = Math.max(3.6, Math.min(5.8, Math.hypot(vx, vy)));
       const normVx = vx / (Math.hypot(vx, vy) || 1);
       const normVy = vy / (Math.hypot(vx, vy) || 1);
       vx = normVx * currentSpeed;
@@ -523,6 +542,7 @@ export const DragonCursor: React.FC = () => {
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
