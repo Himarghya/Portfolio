@@ -151,34 +151,37 @@ export const DragonCursor: React.FC = () => {
     const render = (currentTime: number) => {
       const dt = Math.min((currentTime - lastTime) / 1000, 0.05);
       lastTime = currentTime;
-      time += dt * 2.5;
+      
+      // Delta-time normalization factor: exactly 1.0 at 60fps, 0.5 at 120fps, 0.416 at 144fps
+      const timeScale = Math.min(Math.max(dt * 60, 0.35), 2.0);
+      time += dt * 1.8;
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. DYNAMIC ORBIT BEACON (Ensures target is ALWAYS moving in a smooth continuous circle)
-      const isIdle = !hasInteracted || (currentTime - lastMouseMoveTime > 1600);
+      // 1. DYNAMIC ORBIT BEACON (Smooth, steady constant circular orbit)
+      const isIdle = !hasInteracted || (currentTime - lastMouseMoveTime > 1800);
       
-      orbitAngle += dt * (isIdle ? 1.2 : 2.0);
+      orbitAngle += dt * (isIdle ? 0.85 : 1.25);
 
       let beaconX: number;
       let beaconY: number;
 
       if (!isIdle) {
-        // Smooth 75px orbit around the cursor
-        const orbitRadius = 75;
+        // Smooth 80px orbit around the cursor at a relaxed, steady pace
+        const orbitRadius = 80;
         beaconX = mouseX + Math.cos(orbitAngle) * orbitRadius;
         beaconY = mouseY + Math.sin(orbitAngle) * orbitRadius;
       } else {
         // Majestic sweeping Lissajous infinity curves across the full screen
         const centerX = width * 0.5;
         const centerY = height * 0.5;
-        const spanX = width * 0.38;
-        const spanY = height * 0.32;
-        beaconX = centerX + Math.sin(time * 0.7) * spanX;
-        beaconY = centerY + Math.sin(time * 1.4) * spanY;
+        const spanX = width * 0.36;
+        const spanY = height * 0.30;
+        beaconX = centerX + Math.sin(time * 0.5) * spanX;
+        beaconY = centerY + Math.sin(time * 1.0) * spanY;
       }
 
-      // 2. STEERING & CONTINUOUS FORWARD PROPULSION
+      // 2. STEERING & CONSTANT CRUISE PROPULSION (Smooth, controlled, not too fast)
       const dx = beaconX - posX;
       const dy = beaconY - posY;
       const distToBeacon = Math.hypot(dx, dy);
@@ -192,28 +195,28 @@ export const DragonCursor: React.FC = () => {
 
       let flapWave = 0;
       if (flapMode === 'FLAP') {
-        flapTimer += dt * 3.5;
-        flapWave = Math.sin(flapTimer * 8.5) * 0.65;
+        flapTimer += dt * 2.8;
+        flapWave = Math.sin(flapTimer * 7.5) * 0.55;
         if (flapTimer >= flapDuration) {
           flapMode = 'GLIDE';
-          nextFlapTime = currentTime + 2200 + Math.random() * 3000;
+          nextFlapTime = currentTime + 2400 + Math.random() * 3200;
         }
       } else {
-        flapWave = Math.sin(time * 2.2) * 0.12;
+        flapWave = Math.sin(time * 1.8) * 0.10;
       }
 
-      // Cruising speed (ALWAYS positive, never 0)
-      const targetSpeed = Math.min(13.5, 5.5 + distToBeacon * 0.025);
+      // Steady cruising speed (Graceful 3.6 to 5.8 px/frame, steady & constant)
+      const targetSpeed = Math.min(5.8, 3.6 + distToBeacon * 0.012);
       const desiredVx = (dx / (distToBeacon || 1)) * targetSpeed;
       const desiredVy = (dy / (distToBeacon || 1)) * targetSpeed;
 
       // Reynolds steering force (smooth acceleration curve)
-      const steerFactor = isIdle ? 0.055 : 0.095;
+      const steerFactor = (isIdle ? 0.045 : 0.075) * timeScale;
       vx += (desiredVx - vx) * steerFactor;
       vy += (desiredVy - vy) * steerFactor;
 
-      // Maintain guaranteed cruising momentum (never halts or drops below 4.5px/frame)
-      const currentSpeed = Math.max(4.5, Math.hypot(vx, vy));
+      // Maintain steady cruising momentum (never halts, capped to prevent rushing)
+      const currentSpeed = Math.max(3.2, Math.min(5.8, Math.hypot(vx, vy)));
       const normVx = vx / (Math.hypot(vx, vy) || 1);
       const normVy = vy / (Math.hypot(vx, vy) || 1);
       vx = normVx * currentSpeed;
@@ -223,17 +226,18 @@ export const DragonCursor: React.FC = () => {
 
       // Gentle screen edge bounce
       const pad = 40;
-      if (posX < pad) vx += 0.4;
-      if (posX > width - pad) vx -= 0.4;
-      if (posY < pad) vy += 0.4;
-      if (posY > height - pad) vy -= 0.4;
+      if (posX < pad) vx += 0.3 * timeScale;
+      if (posX > width - pad) vx -= 0.3 * timeScale;
+      if (posY < pad) vy += 0.3 * timeScale;
+      if (posY > height - pad) vy -= 0.3 * timeScale;
 
       // Sinuous swimming wave
-      const swimWave = Math.sin(time * 4.2) * 0.08;
+      const swimWave = Math.sin(time * 3.4) * 0.06;
       const swimAngle = angle + swimWave;
 
-      posX += Math.cos(swimAngle) * currentSpeed;
-      posY += Math.sin(swimAngle) * currentSpeed;
+      // Frame-rate independent constant velocity update
+      posX += Math.cos(swimAngle) * currentSpeed * timeScale;
+      posY += Math.sin(swimAngle) * currentSpeed * timeScale;
 
       posX = Math.max(20, Math.min(width - 20, posX));
       posY = Math.max(20, Math.min(height - 20, posY));
