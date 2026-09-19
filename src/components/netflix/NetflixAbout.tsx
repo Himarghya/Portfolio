@@ -26,7 +26,7 @@ export const NetflixAbout: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <h3 className="text-3xl sm:text-4xl font-extrabold font-bebas text-white tracking-wide uppercase leading-none">
-                Engineering Background // Himarghya Das
+                Engineering Background • Himarghya Das
               </h3>
               <p className="text-xs sm:text-sm text-zinc-400 font-mono mt-1">
                 Full Stack Developer &amp; Systems Engineer based in India.
@@ -88,8 +88,9 @@ export const NetflixAbout: React.FC = () => {
           {/* Right Column: Engineering Focus */}
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-3">
-              <span className="text-xs font-mono text-[#E50914] uppercase tracking-widest font-semibold drop-shadow-[0_0_8px_rgba(229,9,20,0.4)]">
-                // WHAT I WORK ON
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#E50914] uppercase tracking-widest font-semibold drop-shadow-[0_0_8px_rgba(229,9,20,0.4)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E50914]" />
+                WHAT I WORK ON
               </span>
               <h4 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-sans">
                 Reliable backends, fast databases, and clean web frontends

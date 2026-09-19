@@ -19,13 +19,14 @@ export const TopTenRow: React.FC = () => {
   return (
     <div id="skills" className="relative py-8 px-4 sm:px-12 select-none group/top10">
       {/* Row Title */}
-      <div className="flex items-baseline justify-between mb-4">
-        <div className="flex items-baseline gap-2">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
           <h3 className="text-xl sm:text-2xl font-bold text-white tracking-wide">
             Top Technologies &amp; Systems
           </h3>
-          <span className="text-xs text-zinc-500 font-mono hidden md:inline">
-            // CORE TECHNICAL STACK
+          <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[11px] font-mono text-zinc-400 tracking-wider">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E50914] shadow-[0_0_6px_rgba(229,9,20,0.8)]" />
+            CORE TECHNICAL STACK
           </span>
         </div>
       </div>

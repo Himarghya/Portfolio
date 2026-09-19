@@ -11,7 +11,7 @@ export const PERSONAL_INFO = {
     "Creative Technologist"
   ],
   status: "AVAILABLE FOR OPPORTUNITIES",
-  location: "India // Remote Available",
+  location: "India • Remote Available",
   bio: "I'm a developer passionate about turning complex problems into elegant digital solutions. I enjoy building full-stack applications, exploring AI/ML, solving algorithmic challenges, and experimenting with emerging technologies.",
   stats: [
     { label: "Major Projects", value: "4+", detail: "Production & Research Scale" },

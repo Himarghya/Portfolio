@@ -124,7 +124,7 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
                 <span className="text-[11px] font-mono text-zinc-300 font-bold uppercase tracking-wider">
-                  SYS.TELEMETRY // LIVE
+                  SYS.TELEMETRY • LIVE STREAM
                 </span>
               </div>
               <span className="px-2.5 py-0.5 rounded-full bg-white/[0.06] backdrop-blur-md text-[#E50914] font-mono text-[10px] font-bold border border-red-500/20 shadow-[0_0_8px_rgba(229,9,20,0.25)]">

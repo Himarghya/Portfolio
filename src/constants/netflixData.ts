@@ -334,7 +334,7 @@ export const CAREER_SEASONS = [
 export const SHOWRUNNER_DOSSIER = {
   name: 'Himarghya Das',
   roleTitle: 'Software Engineer & Full Stack Developer',
-  location: 'India // Open to Remote & Relocation',
+  location: 'India • Open to Remote & Relocation',
   status: 'Available for Software Engineering Roles',
   bio: 'I build software systems across the stack. My work spans backend microservices in Python and C++, database query optimization in PostgreSQL/PostGIS, and modern web applications in React and TypeScript.',
   email: 'himarghyadas@gmail.com',
