@@ -1,15 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  radius: number;
-  color: string;
-  baseAlpha: number;
-}
 
 export const GlassBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,22 +22,16 @@ export const GlassBackground: React.FC = () => {
 
     window.addEventListener('resize', handleResize, { passive: true });
 
-    // Initialize interactive particles (optimized count)
-    const particleCount = Math.min(Math.floor((width * height) / 28000), 45);
-    const particles: Particle[] = [];
-    const colors = ['#E50914', '#FF3B47', '#A855F7', '#6366F1', '#00E5FF'];
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: Math.random() * 1.8 + 0.8,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        baseAlpha: Math.random() * 0.35 + 0.15
-      });
-    }
+    // Ultra-lightweight background particle nodes
+    const particleCount = 28;
+    const particles = Array.from({ length: particleCount }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      radius: Math.random() * 1.5 + 0.8,
+      color: '#E50914'
+    }));
 
     let mouseX = -1000;
     let mouseY = -1000;
@@ -57,7 +40,6 @@ export const GlassBackground: React.FC = () => {
       mouseX = e.clientX;
       mouseY = e.clientY;
 
-      // Update cursor spotlight directly on the DOM transform without React state re-renders
       if (spotlightRef.current) {
         spotlightRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
         spotlightRef.current.style.opacity = '1';
@@ -78,63 +60,56 @@ export const GlassBackground: React.FC = () => {
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Render & connect particles (Zero-shadowBlur high-speed pass)
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      // 1. Single-pass connection lines
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 0.5;
 
-        // Move particle
+      for (let i = 0; i < particleCount; i++) {
+        const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
 
-        // Bounce off edges
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
 
-        // Mouse magnetic interaction
-        const dxMouse = mouseX - p.x;
-        const dyMouse = mouseY - p.y;
-        const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-
-        if (distMouse < 180) {
-          // Draw connection beam to cursor
-          const alpha = (1 - distMouse / 180) * 0.45;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouseX, mouseY);
-          ctx.strokeStyle = `rgba(229, 9, 20, ${alpha})`;
-          ctx.lineWidth = 0.9;
-          ctx.stroke();
-
-          // Gentle magnetic drift
-          p.x -= (dxMouse / distMouse) * 0.5;
-          p.y -= (dyMouse / distMouse) * 0.5;
-        }
-
-        // Draw inter-particle constellation lines
-        for (let j = i + 1; j < particles.length; j++) {
+        for (let j = i + 1; j < particleCount; j++) {
           const p2 = particles[j];
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 110) {
-            ctx.beginPath();
+          if (dx * dx + dy * dy < 10000) { // 100px squared
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            const lineAlpha = (1 - dist / 110) * 0.15;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
           }
         }
+      }
+      ctx.stroke();
 
-        // Draw particle node with crisp alpha (Zero shadowBlur overhead)
+      // 2. Single-pass particle nodes
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(229, 9, 20, 0.4)';
+      for (let i = 0; i < particleCount; i++) {
+        const p = particles[i];
+        ctx.moveTo(p.x + p.radius, p.y);
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
+
+      // 3. Mouse connection beam if near
+      if (mouseX > 0) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * (distMouse < 160 ? 1.4 : 1), 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = distMouse < 160 ? 0.85 : p.baseAlpha;
-        ctx.fill();
-        ctx.globalAlpha = 1;
+        ctx.strokeStyle = 'rgba(229, 9, 20, 0.25)';
+        ctx.lineWidth = 0.8;
+        for (let i = 0; i < particleCount; i++) {
+          const p = particles[i];
+          const dx = mouseX - p.x;
+          const dy = mouseY - p.y;
+          if (dx * dx + dy * dy < 22500) { // 150px squared
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouseX, mouseY);
+          }
+        }
+        ctx.stroke();
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -152,76 +127,58 @@ export const GlassBackground: React.FC = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
-      {/* Subtle Cyber Grid with Perspective */}
+      {/* Subtle Cyber Grid */}
       <div
-        className="absolute inset-0 opacity-[0.07]"
+        className="absolute inset-0 opacity-[0.06]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px)
+            linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
           `,
           backgroundSize: '52px 52px'
         }}
       />
 
-      {/* Interactive Cursor Spotlight Glow (DOM Ref transform for zero React re-render overhead) */}
+      {/* GPU Zero-Blur Radial Gradient Light Orbs (100% Zero-Blur Filter Overhead) */}
+      <div
+        className="absolute -top-[15%] right-[0%] w-[650px] h-[650px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(229, 9, 20, 0.18) 0%, rgba(229, 9, 20, 0.05) 45%, transparent 70%)'
+        }}
+      />
+      <div
+        className="absolute top-[35%] -left-[12%] w-[700px] h-[700px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(79, 70, 229, 0.14) 0%, rgba(124, 58, 237, 0.04) 50%, transparent 70%)'
+        }}
+      />
+      <div
+        className="absolute bottom-[5%] right-[8%] w-[600px] h-[600px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(229, 9, 20, 0.12) 0%, rgba(153, 27, 27, 0.04) 45%, transparent 70%)'
+        }}
+      />
+
+      {/* Interactive Cursor Spotlight Glow */}
       <div
         ref={spotlightRef}
-        className="absolute w-[520px] h-[520px] rounded-full bg-gradient-to-r from-[#E50914]/18 via-[#8B5CF6]/12 to-transparent blur-[120px] opacity-40 pointer-events-none will-change-transform"
+        className="absolute w-[450px] h-[450px] rounded-full opacity-40 pointer-events-none"
         style={{
           left: 0,
           top: 0,
-          transform: 'translate3d(-1000px, -1000px, 0)'
+          transform: 'translate3d(-1000px, -1000px, 0)',
+          background: 'radial-gradient(circle, rgba(229, 9, 20, 0.12) 0%, rgba(139, 92, 246, 0.06) 40%, transparent 70%)'
         }}
       />
 
-      {/* Interactive 60FPS Constellation Node Canvas */}
+      {/* Single-Pass Constellation Node Canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{
-          transform: 'translate3d(0,0,0)',
-          willChange: 'transform',
-          contain: 'strict'
-        }}
-      />
-
-      {/* Primary Crimson Ambient Light Orb */}
-      <motion.div
-        animate={{
-          x: [0, 20, -15, 0],
-          y: [0, -20, 15, 0],
-          scale: [1, 1.08, 0.96, 1],
-          opacity: [0.3, 0.45, 0.3]
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: 'easeInOut'
-        }}
-        style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute -top-[10%] right-[5%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#E50914]/40 via-red-600/20 to-transparent blur-[110px] will-change-transform"
-      />
-
-      {/* Deep Violet Accent Light Orb */}
-      <motion.div
-        animate={{
-          x: [0, -25, 15, 0],
-          y: [0, 30, -15, 0],
-          scale: [0.95, 1.1, 1, 0.95],
-          opacity: [0.2, 0.32, 0.2]
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: 'easeInOut'
-        }}
-        style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute top-[35%] -left-[8%] w-[620px] h-[620px] rounded-full bg-gradient-to-tr from-[#4f46e5]/25 via-[#7c3aed]/18 to-transparent blur-[115px] will-change-transform"
       />
 
       {/* Radial Depth Vignette */}
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#0e0e11]/35 to-[#0e0e11]/85 pointer-events-none" />
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#0e0e11]/30 to-[#0e0e11]/80 pointer-events-none" />
     </div>
   );
 };

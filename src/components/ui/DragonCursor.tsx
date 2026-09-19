@@ -53,7 +53,6 @@ export const DragonCursor: React.FC = () => {
     let prevW = width;
     let prevH = height;
 
-    // Avoid canvas buffer reallocation during mobile address bar expansion
     const onResize = () => {
       if (!canvas) return;
       const newW = window.innerWidth;
@@ -67,7 +66,7 @@ export const DragonCursor: React.FC = () => {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    // Mouse & Movement Tracking
+    // Movement Tracking
     let mouseX = width / 2;
     let mouseY = height / 2;
     let prevMouseX = mouseX;
@@ -101,9 +100,9 @@ export const DragonCursor: React.FC = () => {
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
 
-    // --- CELESTIAL DRAGON SPINE CONFIGURATION (Grayscale & White) ---
-    const NUM_SEGMENTS = 32;
-    const SEGMENT_DIST = 9.0;
+    // --- CELESTIAL DRAGON SPINE CONFIGURATION ---
+    const NUM_SEGMENTS = 28;
+    const SEGMENT_DIST = 8.5;
     const segments: Segment[] = [];
 
     let posX = width / 2;
@@ -112,10 +111,10 @@ export const DragonCursor: React.FC = () => {
     let currentSpeed = 5.2;
 
     for (let i = 0; i < NUM_SEGMENTS; i++) {
-      let r = 12;
-      if (i < 3) r = 7.5 + i * 2.0; // Head & neck
-      else if (i < 10) r = 13.5 - (i - 3) * 0.45; // Torso
-      else r = Math.max(10.5 - (i - 10) * 0.42, 1.5); // Sinuous tail taper
+      let r = 10;
+      if (i < 3) r = 6.5 + i * 1.8;
+      else if (i < 9) r = 11.5 - (i - 3) * 0.4;
+      else r = Math.max(9.0 - (i - 9) * 0.38, 1.4);
 
       segments.push({
         x: posX - i * SEGMENT_DIST,
@@ -125,19 +124,19 @@ export const DragonCursor: React.FC = () => {
       });
     }
 
-    // --- FEATHERED RAY WINGS (Lionfish Celestial Wing Quills) ---
+    // --- FEATHERED RAY WINGS (Lionfish Quills) ---
     const createWingRays = (side: 1 | -1): WingRay[] => {
       const rays: WingRay[] = [];
-      const NUM_RAYS = 14;
+      const NUM_RAYS = 12;
 
       for (let i = 0; i < NUM_RAYS; i++) {
         const progress = i / (NUM_RAYS - 1);
-        const segIdx = Math.floor(3 + progress * 5);
+        const segIdx = Math.floor(3 + progress * 4);
         const baseOffset = (Math.PI * 0.35 + progress * Math.PI * 0.55) * side;
 
         const lenMultiplier = Math.sin(progress * Math.PI);
-        const rayLen = 35 + lenMultiplier * 85 + (1 - progress) * 18;
-        const curve = (0.35 + progress * 0.42) * side;
+        const rayLen = 30 + lenMultiplier * 75 + (1 - progress) * 15;
+        const curve = (0.35 + progress * 0.4) * side;
 
         const joints = [
           { x: posX, y: posY },
@@ -151,7 +150,7 @@ export const DragonCursor: React.FC = () => {
           baseOffsetAngle: baseOffset,
           length: rayLen,
           curveFactor: curve,
-          thickness: Math.max(1.8 - progress * 1.0, 0.7),
+          thickness: Math.max(1.6 - progress * 0.9, 0.7),
           joints,
         });
       }
@@ -161,16 +160,16 @@ export const DragonCursor: React.FC = () => {
     const leftWingRays = createWingRays(-1);
     const rightWingRays = createWingRays(1);
 
-    // --- DORSAL & VENTRAL SPINE NEEDLE QUILLS ---
+    // --- DORSAL & VENTRAL SPINE QUILLS ---
     const spineQuills: Quill[] = [];
-    for (let i = 8; i < NUM_SEGMENTS - 2; i += 2) {
-      const prog = (i - 8) / (NUM_SEGMENTS - 10);
-      const qLen = (1 - prog) * 28 + 8;
+    for (let i = 7; i < NUM_SEGMENTS - 2; i += 2) {
+      const prog = (i - 7) / (NUM_SEGMENTS - 9);
+      const qLen = (1 - prog) * 24 + 6;
       spineQuills.push({ segIdx: i, side: -1, length: qLen, angleOffset: Math.PI * 0.78 });
       spineQuills.push({ segIdx: i, side: 1, length: qLen, angleOffset: -Math.PI * 0.78 });
     }
 
-    // --- DRAGON SNOUT WHISKERS ---
+    // --- SNOUT WHISKERS ---
     const NUM_WHISKER_JOINTS = 6;
     const createWhisker = (): Whisker => {
       const joints: { x: number; y: number }[] = [];
@@ -182,22 +181,22 @@ export const DragonCursor: React.FC = () => {
     const leftWhisker = createWhisker();
     const rightWhisker = createWhisker();
 
-    // Soft Silver Stardust Embers
+    // Embers
     const embers: Ember[] = [];
     const spawnEmber = (x: number, y: number, vx: number, vy: number) => {
-      if (embers.length > 40) return;
+      if (embers.length > 25) return;
       embers.push({
         x,
         y,
-        vx: vx + (Math.random() - 0.5) * 0.9,
-        vy: vy + (Math.random() - 0.5) * 0.9,
-        radius: Math.random() * 1.6 + 0.5,
-        alpha: Math.random() * 0.55 + 0.35,
-        decay: Math.random() * 0.025 + 0.02,
+        vx: vx + (Math.random() - 0.5) * 0.8,
+        vy: vy + (Math.random() - 0.5) * 0.8,
+        radius: Math.random() * 1.4 + 0.5,
+        alpha: Math.random() * 0.5 + 0.35,
+        decay: Math.random() * 0.03 + 0.02,
       });
     };
 
-    // --- CONTINUOUS WHOLE-PAGE ROAMING ENGINE ---
+    // Continuous Whole-Page Roaming
     let targetX = width * 0.3;
     let targetY = height * 0.3;
     let currentQuadrant = 0;
@@ -296,17 +295,17 @@ export const DragonCursor: React.FC = () => {
         flapAngleDelta = Math.sin(time * 2.4) * 0.13;
       }
 
-      // Smooth constant forward cruising speed (Never halts during scroll!)
+      // Cruising speed
       const targetCruisingSpeed = isMouseMoving ? 6.2 : 5.0;
       currentSpeed += (targetCruisingSpeed - currentSpeed) * 0.05;
-      currentSpeed = Math.min(Math.max(currentSpeed, 4.2), 8.2);
+      currentSpeed = Math.min(Math.max(currentSpeed, 4.2), 8.0);
 
-      // Steering towards target
+      // Steering
       const toTargetX = targetX - posX;
       const toTargetY = targetY - posY;
       const distToTarget = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
 
-      if (distToTarget > 22) {
+      if (distToTarget > 20) {
         const desiredAngle = Math.atan2(toTargetY, toTargetX);
         let angleDiff = desiredAngle - currentAngle;
         while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
@@ -316,23 +315,22 @@ export const DragonCursor: React.FC = () => {
         currentAngle += angleDiff * turnRate;
       }
 
-      // Edge repellent steering
-      const edgePadding = 75;
-      if (posX < edgePadding) currentAngle += 0.065;
-      if (posX > width - edgePadding) currentAngle -= 0.065;
-      if (posY < edgePadding) currentAngle += 0.065;
-      if (posY > height - edgePadding) currentAngle -= 0.065;
+      // Soft Edge repellent
+      const edgePadding = 70;
+      if (posX < edgePadding) currentAngle += 0.06;
+      if (posX > width - edgePadding) currentAngle -= 0.06;
+      if (posY < edgePadding) currentAngle += 0.06;
+      if (posY > height - edgePadding) currentAngle -= 0.06;
 
       // Sinuous swimming wave
-      const waveAmplitude = Math.min(currentSpeed * 0.32, 3.0);
+      const waveAmplitude = Math.min(currentSpeed * 0.32, 2.8);
       const waveAngle = Math.sin(time * 4.0) * (waveAmplitude * 0.04);
 
-      // Forward motion
       posX += Math.cos(currentAngle + waveAngle) * currentSpeed;
       posY += Math.sin(currentAngle + waveAngle) * currentSpeed;
 
-      posX = Math.max(35, Math.min(width - 35, posX));
-      posY = Math.max(35, Math.min(height - 35, posY));
+      posX = Math.max(30, Math.min(width - 30, posX));
+      posY = Math.max(30, Math.min(height - 30, posY));
 
       // --- SPINE PROPAGATION (Inverse Kinematics) ---
       segments[0].x = posX;
@@ -357,11 +355,11 @@ export const DragonCursor: React.FC = () => {
 
       // Spawn tail embers
       const tail = segments[NUM_SEGMENTS - 1];
-      if (Math.random() < 0.35) {
-        spawnEmber(tail.x, tail.y, -Math.cos(tail.angle) * 0.9, -Math.sin(tail.angle) * 0.9);
+      if (Math.random() < 0.3) {
+        spawnEmber(tail.x, tail.y, -Math.cos(tail.angle) * 0.8, -Math.sin(tail.angle) * 0.8);
       }
 
-      // --- RENDER EMBERS ---
+      // --- 1. BATCHED STARDUST EMBERS ---
       for (let i = embers.length - 1; i >= 0; i--) {
         const e = embers[i];
         e.x += e.vx;
@@ -379,9 +377,10 @@ export const DragonCursor: React.FC = () => {
       }
       ctx.globalAlpha = 1;
 
-      // --- RENDER FEATHERED RAY WINGS (Lionfish Celestial Quills) ---
+      // --- 2. BATCHED FEATHERED RAY WINGS (Lionfish Quills) ---
       const updateAndDrawWings = (rays: WingRay[], side: 1 | -1) => {
-        rays.forEach((ray, rIdx) => {
+        // Calculate all joints
+        rays.forEach((ray) => {
           const baseSeg = segments[ray.baseSegIdx];
           if (!baseSeg) return;
 
@@ -400,51 +399,57 @@ export const DragonCursor: React.FC = () => {
             const targetJX = ray.joints[j - 1].x + Math.cos(jointAngle) * segLen;
             const targetJY = ray.joints[j - 1].y + Math.sin(jointAngle) * segLen;
 
-            ray.joints[j].x += (targetJX - ray.joints[j].x) * 0.4;
-            ray.joints[j].y += (targetJY - ray.joints[j].y) * 0.4;
-          }
-
-          // Needle Ray Quill Stroke
-          ctx.beginPath();
-          ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
-          ctx.quadraticCurveTo(
-            ray.joints[1].x,
-            ray.joints[1].y,
-            ray.joints[2].x,
-            ray.joints[2].y
-          );
-          ctx.quadraticCurveTo(
-            ray.joints[2].x,
-            ray.joints[2].y,
-            ray.joints[3].x,
-            ray.joints[3].y
-          );
-          ctx.strokeStyle = rIdx % 2 === 0 ? '#FFFFFF' : 'rgba(212, 212, 216, 0.85)';
-          ctx.lineWidth = ray.thickness;
-          ctx.stroke();
-
-          // Translucent membrane veil between adjacent rays
-          if (rIdx > 0) {
-            const prevRay = rays[rIdx - 1];
-            ctx.beginPath();
-            ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
-            ctx.lineTo(ray.joints[2].x, ray.joints[2].y);
-            ctx.lineTo(prevRay.joints[2].x, prevRay.joints[2].y);
-            ctx.lineTo(prevRay.joints[0].x, prevRay.joints[0].y);
-            ctx.closePath();
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-            ctx.fill();
+            ray.joints[j].x += (targetJX - ray.joints[j].x) * 0.42;
+            ray.joints[j].y += (targetJY - ray.joints[j].y) * 0.42;
           }
         });
+
+        // Batched translucent membranes
+        ctx.beginPath();
+        for (let rIdx = 1; rIdx < rays.length; rIdx++) {
+          const curr = rays[rIdx];
+          const prev = rays[rIdx - 1];
+          ctx.moveTo(curr.joints[0].x, curr.joints[0].y);
+          ctx.lineTo(curr.joints[2].x, curr.joints[2].y);
+          ctx.lineTo(prev.joints[2].x, prev.joints[2].y);
+          ctx.lineTo(prev.joints[0].x, prev.joints[0].y);
+        }
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+        ctx.fill();
+
+        // Batched Quill Strokes
+        ctx.beginPath();
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 1.0;
+        rays.forEach((ray, rIdx) => {
+          if (rIdx % 2 === 0) {
+            ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
+            ctx.quadraticCurveTo(ray.joints[1].x, ray.joints[1].y, ray.joints[2].x, ray.joints[2].y);
+            ctx.quadraticCurveTo(ray.joints[2].x, ray.joints[2].y, ray.joints[3].x, ray.joints[3].y);
+          }
+        });
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(212, 212, 216, 0.8)';
+        ctx.lineWidth = 0.8;
+        rays.forEach((ray, rIdx) => {
+          if (rIdx % 2 !== 0) {
+            ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
+            ctx.quadraticCurveTo(ray.joints[1].x, ray.joints[1].y, ray.joints[2].x, ray.joints[2].y);
+            ctx.quadraticCurveTo(ray.joints[2].x, ray.joints[2].y, ray.joints[3].x, ray.joints[3].y);
+          }
+        });
+        ctx.stroke();
       };
 
       updateAndDrawWings(leftWingRays, -1);
       updateAndDrawWings(rightWingRays, 1);
 
-      // --- RENDER DORSAL & VENTRAL SPINE NEEDLE QUILLS ---
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.42)';
-      ctx.lineWidth = 0.85;
+      // --- 3. BATCHED SPINE NEEDLE QUILLS ---
       ctx.beginPath();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.42)';
+      ctx.lineWidth = 0.8;
       spineQuills.forEach((q) => {
         const seg = segments[q.segIdx];
         if (!seg) return;
@@ -466,7 +471,8 @@ export const DragonCursor: React.FC = () => {
       });
       ctx.stroke();
 
-      // --- RENDER ARTICULATED CHEVRON SCALE BODY ---
+      // --- 4. BATCHED CHEVRON SCALES & VERTEBRAE ---
+      ctx.beginPath();
       for (let i = NUM_SEGMENTS - 1; i >= 0; i--) {
         const seg = segments[i];
         const r = seg.radius;
@@ -475,133 +481,119 @@ export const DragonCursor: React.FC = () => {
 
         const p1x = seg.x + cosA * (r * 0.85);
         const p1y = seg.y + sinA * (r * 0.85);
-
         const leftPerpX = -sinA * r;
         const leftPerpY = cosA * r;
 
         const p2x = seg.x - cosA * (r * 0.8) + leftPerpX * 0.95;
         const p2y = seg.y - sinA * (r * 0.8) + leftPerpY * 0.95;
-
         const p3x = seg.x - cosA * (r * 0.35);
         const p3y = seg.y - sinA * (r * 0.35);
-
         const p4x = seg.x - cosA * (r * 0.8) - leftPerpX * 0.95;
         const p4y = seg.y - sinA * (r * 0.8) - leftPerpY * 0.95;
 
-        ctx.beginPath();
         ctx.moveTo(p1x, p1y);
         ctx.lineTo(p2x, p2y);
         ctx.lineTo(p3x, p3y);
         ctx.lineTo(p4x, p4y);
         ctx.closePath();
-
-        ctx.fillStyle = i < 3 ? '#27272A' : '#18181B';
-        ctx.fill();
-
-        ctx.strokeStyle = `rgba(255, 255, 255, ${0.32 + (1 - i / NUM_SEGMENTS) * 0.55})`;
-        ctx.lineWidth = 0.85;
-        ctx.stroke();
       }
+      ctx.fillStyle = '#18181B';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
 
-      // --- RENDER CRESCENT SPLIT TAIL FIN ---
+      // --- 5. CRESCENT SPLIT TAIL FIN ---
       const tailSeg = segments[NUM_SEGMENTS - 1];
       const tailCos = Math.cos(tailSeg.angle);
       const tailSin = Math.sin(tailSeg.angle);
       const tailPerpX = -tailSin;
       const tailPerpY = tailCos;
 
+      ctx.beginPath();
       [-1, 1].forEach((side) => {
-        const finTipX = tailSeg.x - tailCos * 32 + tailPerpX * (side * 16);
-        const finTipY = tailSeg.y - tailSin * 32 + tailPerpY * (side * 16);
+        const finTipX = tailSeg.x - tailCos * 28 + tailPerpX * (side * 15);
+        const finTipY = tailSeg.y - tailSin * 28 + tailPerpY * (side * 15);
 
-        ctx.beginPath();
         ctx.moveTo(tailSeg.x, tailSeg.y);
         ctx.quadraticCurveTo(
-          tailSeg.x - tailCos * 16 + tailPerpX * (side * 8),
-          tailSeg.y - tailSin * 16 + tailPerpY * (side * 8),
+          tailSeg.x - tailCos * 15 + tailPerpX * (side * 7),
+          tailSeg.y - tailSin * 15 + tailPerpY * (side * 7),
           finTipX,
           finTipY
         );
         ctx.quadraticCurveTo(
-          tailSeg.x - tailCos * 20,
-          tailSeg.y - tailSin * 20,
-          tailSeg.x - tailCos * 6,
-          tailSeg.y - tailSin * 6
+          tailSeg.x - tailCos * 18,
+          tailSeg.y - tailSin * 18,
+          tailSeg.x - tailCos * 5,
+          tailSeg.y - tailSin * 5
         );
         ctx.closePath();
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-        ctx.lineWidth = 0.85;
-        ctx.stroke();
       });
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
 
-      // --- RENDER DRAGON HEAD, HORNS & MASK ---
+      // --- 6. DRAGON HEAD, HORNS & MASK ---
       const head = segments[0];
       ctx.save();
       ctx.translate(head.x, head.y);
       ctx.rotate(head.angle);
 
       ctx.beginPath();
-      ctx.moveTo(16, 0);
-      ctx.quadraticCurveTo(12, -7, 0, -8);
-      ctx.lineTo(-10, -15); // Horn tip left
-      ctx.lineTo(-5, -5);
-      ctx.lineTo(-10, 0);
-      ctx.lineTo(-5, 5);
-      ctx.lineTo(-10, 15); // Horn tip right
-      ctx.lineTo(0, 8);
-      ctx.quadraticCurveTo(12, 7, 16, 0);
+      ctx.moveTo(15, 0);
+      ctx.quadraticCurveTo(11, -6, 0, -7);
+      ctx.lineTo(-9, -14); // Horn tip left
+      ctx.lineTo(-4, -4);
+      ctx.lineTo(-9, 0);
+      ctx.lineTo(-4, 4);
+      ctx.lineTo(-9, 14); // Horn tip right
+      ctx.lineTo(0, 7);
+      ctx.quadraticCurveTo(11, 6, 15, 0);
       ctx.closePath();
 
       ctx.fillStyle = '#18181B';
       ctx.fill();
-
       ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 1.1;
-      ctx.stroke();
-
-      // Silver horn ridge
-      ctx.beginPath();
-      ctx.moveTo(-3, -5);
-      ctx.lineTo(-10, -15);
-      ctx.moveTo(-3, 5);
-      ctx.lineTo(-10, 15);
-      ctx.strokeStyle = '#E4E4E7';
       ctx.lineWidth = 1.0;
       ctx.stroke();
 
-      // Luminous Slit Eyes
+      // Horn ridges
+      ctx.beginPath();
+      ctx.moveTo(-2, -4);
+      ctx.lineTo(-9, -14);
+      ctx.moveTo(-2, 4);
+      ctx.lineTo(-9, 14);
+      ctx.strokeStyle = '#E4E4E7';
+      ctx.lineWidth = 0.9;
+      ctx.stroke();
+
+      // Glowing Slit Eyes
       [-1, 1].forEach((side) => {
         ctx.beginPath();
-        ctx.ellipse(6, 4.2 * side, 2.4, 1.3, 0, 0, Math.PI * 2);
+        ctx.ellipse(5.5, 3.8 * side, 2.2, 1.2, 0, 0, Math.PI * 2);
         ctx.fillStyle = '#FFFFFF';
         ctx.fill();
 
         ctx.beginPath();
-        ctx.ellipse(6.3, 4.2 * side, 1.4, 0.6, 0, 0, Math.PI * 2);
+        ctx.ellipse(5.8, 3.8 * side, 1.3, 0.5, 0, 0, Math.PI * 2);
         ctx.fillStyle = '#09090B';
         ctx.fill();
       });
 
-      // Snout White Sparks
-      ctx.beginPath();
-      ctx.arc(13, -1.8, 1.0, 0, Math.PI * 2);
-      ctx.arc(13, 1.8, 1.0, 0, Math.PI * 2);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fill();
-
       ctx.restore();
 
-      // --- RENDER FLOWING SINUOUS WHISKERS ---
+      // --- 7. FLOWING SINUOUS WHISKERS ---
       const updateAndDrawWhisker = (whisker: Whisker, side: 1 | -1) => {
         const headCos = Math.cos(head.angle);
         const headSin = Math.sin(head.angle);
         const perpX = -headSin;
         const perpY = headCos;
 
-        const snoutRootX = head.x + headCos * 12 + perpX * (side * 2.5);
-        const snoutRootY = head.y + headSin * 12 + perpY * (side * 2.5);
+        const snoutRootX = head.x + headCos * 11 + perpX * (side * 2.2);
+        const snoutRootY = head.y + headSin * 11 + perpY * (side * 2.2);
 
         whisker.joints[0].x = snoutRootX;
         whisker.joints[0].y = snoutRootY;
@@ -611,8 +603,8 @@ export const DragonCursor: React.FC = () => {
 
         for (let j = 1; j < NUM_WHISKER_JOINTS; j++) {
           const wAngle = head.angle + Math.PI + Math.sin(time * 3.5 - j * 0.6) * 0.45 + (side * 0.28);
-          const targetX = whisker.joints[j - 1].x + Math.cos(wAngle) * 6.5;
-          const targetY = whisker.joints[j - 1].y + Math.sin(wAngle) * 6.5;
+          const targetX = whisker.joints[j - 1].x + Math.cos(wAngle) * 6.0;
+          const targetY = whisker.joints[j - 1].y + Math.sin(wAngle) * 6.0;
 
           whisker.joints[j].x += (targetX - whisker.joints[j].x) * 0.42;
           whisker.joints[j].y += (targetY - whisker.joints[j].y) * 0.42;
@@ -621,7 +613,7 @@ export const DragonCursor: React.FC = () => {
         }
 
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-        ctx.lineWidth = 0.8;
+        ctx.lineWidth = 0.75;
         ctx.stroke();
       };
 
