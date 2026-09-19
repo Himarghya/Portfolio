@@ -65,16 +65,19 @@
 .netflix-top10-rank {
   font-family: 'Bebas Neue', Impact, sans-serif;
   font-size: 8rem;
-  line-height: 0.8;
+  line-height: 0.75;
   font-weight: 900;
   color: #0e0e11;
   -webkit-text-stroke: 3px #3f3f46;
   user-select: none;
+  pointer-events: none;
+  letter-spacing: -2px;
 }
 
 @media (min-width: 640px) {
   .netflix-top10-rank {
-    font-size: 10rem;
+    font-size: 9.5rem;
+    line-height: 0.75;
     -webkit-text-stroke: 4px #3f3f46;
   }
 }

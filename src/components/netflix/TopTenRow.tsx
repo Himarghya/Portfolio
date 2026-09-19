@@ -52,15 +52,15 @@ export const TopTenRow: React.FC = () => {
       {/* Top 10 Cards Slider */}
       <div
         ref={rowRef}
-        className="flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth pl-2 items-end"
+        className="flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth pl-4 pr-12 items-end"
       >
         {TOP_TEN_SKILLS.map((skill) => (
           <div
             key={skill.rank}
-            className="flex items-end shrink-0 relative group/card cursor-pointer"
+            className="flex items-end shrink-0 relative group/card cursor-pointer pl-10 sm:pl-14"
           >
-            {/* Giant Outlined Rank Number */}
-            <div className="netflix-top10-rank translate-y-3 sm:translate-y-5 -mr-4 sm:-mr-6 z-0 select-none pointer-events-none opacity-80">
+            {/* Giant Outlined Rank Number - Uniform Left Anchor */}
+            <div className="netflix-top10-rank absolute left-0 bottom-0 z-0 select-none pointer-events-none opacity-80 group-hover/card:opacity-100 transition-opacity">
               {skill.rank}
             </div>
 
