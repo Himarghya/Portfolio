@@ -72,20 +72,21 @@ export const DragonCursor: React.FC = () => {
     let prevMouseX = mouseX;
     let prevMouseY = mouseY;
     let lastMouseMoveTime = performance.now();
-    let isMouseMoving = false;
-    let isScrolling = false;
-    let lastScrollTime = 0;
+    let hasInteracted = false;
+
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
 
     const onMouseMove = (e: MouseEvent) => {
       const dx = e.clientX - prevMouseX;
       const dy = e.clientY - prevMouseY;
-      if (dx * dx + dy * dy > 3) {
+      if (dx * dx + dy * dy > 2) {
         mouseX = e.clientX;
         mouseY = e.clientY;
         prevMouseX = mouseX;
         prevMouseY = mouseY;
         lastMouseMoveTime = performance.now();
-        isMouseMoving = true;
+        hasInteracted = true;
       }
     };
 
@@ -95,13 +96,14 @@ export const DragonCursor: React.FC = () => {
         mouseX = t.clientX;
         mouseY = t.clientY;
         lastMouseMoveTime = performance.now();
-        isMouseMoving = true;
+        hasInteracted = true;
       }
     };
 
     const onScroll = () => {
-      isScrolling = true;
-      lastScrollTime = performance.now();
+      const curY = window.scrollY;
+      scrollVelocity = (curY - lastScrollY) * 0.6;
+      lastScrollY = curY;
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -109,14 +111,14 @@ export const DragonCursor: React.FC = () => {
     window.addEventListener('scroll', onScroll, { passive: true });
 
     // --- CELESTIAL DRAGON SPINE CONFIGURATION ---
-    const NUM_SEGMENTS = 28;
-    const SEGMENT_DIST = 8.5;
+    const NUM_SEGMENTS = 26;
+    const SEGMENT_DIST = 9.0;
     const segments: Segment[] = [];
 
     let posX = width / 2;
     let posY = height / 2;
     let currentAngle = -Math.PI / 4;
-    let currentSpeed = 5.2;
+    let currentSpeed = 5.6;
 
     for (let i = 0; i < NUM_SEGMENTS; i++) {
       let r = 10;
@@ -135,7 +137,7 @@ export const DragonCursor: React.FC = () => {
     // --- FEATHERED RAY WINGS (Lionfish Quills) ---
     const createWingRays = (side: 1 | -1): WingRay[] => {
       const rays: WingRay[] = [];
-      const NUM_RAYS = 12;
+      const NUM_RAYS = 10;
 
       for (let i = 0; i < NUM_RAYS; i++) {
         const progress = i / (NUM_RAYS - 1);
@@ -143,7 +145,7 @@ export const DragonCursor: React.FC = () => {
         const baseOffset = (Math.PI * 0.35 + progress * Math.PI * 0.55) * side;
 
         const lenMultiplier = Math.sin(progress * Math.PI);
-        const rayLen = 30 + lenMultiplier * 75 + (1 - progress) * 15;
+        const rayLen = 28 + lenMultiplier * 70 + (1 - progress) * 14;
         const curve = (0.35 + progress * 0.4) * side;
 
         const joints = [
@@ -158,7 +160,7 @@ export const DragonCursor: React.FC = () => {
           baseOffsetAngle: baseOffset,
           length: rayLen,
           curveFactor: curve,
-          thickness: Math.max(1.6 - progress * 0.9, 0.7),
+          thickness: Math.max(1.5 - progress * 0.8, 0.7),
           joints,
         });
       }
@@ -170,9 +172,9 @@ export const DragonCursor: React.FC = () => {
 
     // --- DORSAL & VENTRAL SPINE QUILLS ---
     const spineQuills: Quill[] = [];
-    for (let i = 7; i < NUM_SEGMENTS - 2; i += 2) {
-      const prog = (i - 7) / (NUM_SEGMENTS - 9);
-      const qLen = (1 - prog) * 24 + 6;
+    for (let i = 6; i < NUM_SEGMENTS - 2; i += 2) {
+      const prog = (i - 6) / (NUM_SEGMENTS - 8);
+      const qLen = (1 - prog) * 22 + 5;
       spineQuills.push({ segIdx: i, side: -1, length: qLen, angleOffset: Math.PI * 0.78 });
       spineQuills.push({ segIdx: i, side: 1, length: qLen, angleOffset: -Math.PI * 0.78 });
     }
@@ -192,57 +194,32 @@ export const DragonCursor: React.FC = () => {
     // Embers
     const embers: Ember[] = [];
     const spawnEmber = (x: number, y: number, vx: number, vy: number) => {
-      if (embers.length > 25) return;
+      if (embers.length > 20) return;
       embers.push({
         x,
         y,
-        vx: vx + (Math.random() - 0.5) * 0.8,
-        vy: vy + (Math.random() - 0.5) * 0.8,
-        radius: Math.random() * 1.4 + 0.5,
-        alpha: Math.random() * 0.5 + 0.35,
+        vx: vx + (Math.random() - 0.5) * 0.7,
+        vy: vy + (Math.random() - 0.5) * 0.7,
+        radius: Math.random() * 1.3 + 0.5,
+        alpha: Math.random() * 0.45 + 0.3,
         decay: Math.random() * 0.03 + 0.02,
       });
     };
 
-    // Continuous Whole-Page Roaming
-    let targetX = width * 0.3;
-    let targetY = height * 0.3;
-    let currentQuadrant = 0;
-    let waypointSetTime = performance.now();
+    // Smooth Screen Patrol / Roaming Waypoints
+    let wanderX = width * 0.3;
+    let wanderY = height * 0.3;
+    let nextWanderTime = performance.now();
 
-    const pickNextQuadrantWaypoint = () => {
-      currentQuadrant = (currentQuadrant + 1 + Math.floor(Math.random() * 2)) % 4;
-      const marginX = width * 0.12;
-      const marginY = height * 0.12;
-
-      let qMinX = marginX;
-      let qMaxX = width * 0.5;
-      let qMinY = marginY;
-      let qMaxY = height * 0.5;
-
-      if (currentQuadrant === 1) {
-        qMinX = width * 0.5;
-        qMaxX = width - marginX;
-        qMinY = marginY;
-        qMaxY = height * 0.5;
-      } else if (currentQuadrant === 2) {
-        qMinX = width * 0.5;
-        qMaxX = width - marginX;
-        qMinY = height * 0.5;
-        qMaxY = height - marginY;
-      } else if (currentQuadrant === 3) {
-        qMinX = marginX;
-        qMaxX = width * 0.5;
-        qMinY = height * 0.5;
-        qMaxY = height - marginY;
-      }
-
-      targetX = qMinX + Math.random() * (qMaxX - qMinX);
-      targetY = qMinY + Math.random() * (qMaxY - qMinY);
-      waypointSetTime = performance.now();
+    const pickNewWanderTarget = () => {
+      const padX = width * 0.12;
+      const padY = height * 0.12;
+      wanderX = padX + Math.random() * (width - padX * 2);
+      wanderY = padY + Math.random() * (height - padY * 2);
+      nextWanderTime = performance.now() + 2500 + Math.random() * 2000;
     };
 
-    // Realistic Flapping Flight Engine
+    // Flapping State Machine
     let flapMode: 'GLIDE' | 'FLAPPING' = 'GLIDE';
     let flapTimer = 0;
     let nextFlapBurstTime = performance.now() + 1800;
@@ -257,110 +234,93 @@ export const DragonCursor: React.FC = () => {
       lastTime = currentTime;
       time += dt * 2.4;
 
+      scrollVelocity *= 0.90;
+
       ctx.clearRect(0, 0, width, height);
 
-      // Check scroll & mouse activity
-      if (currentTime - lastScrollTime > 800) {
-        isScrolling = false;
-      }
-      if (currentTime - lastMouseMoveTime > 500) {
-        isMouseMoving = false;
-      }
+      const isIdle = !hasInteracted || (currentTime - lastMouseMoveTime > 1400);
 
-      // If scrolling or mouse is still, autonomously roam across the screen
-      const isAutonomous = !isMouseMoving || isScrolling;
+      // Target selection
+      let targetX = mouseX;
+      let targetY = mouseY;
 
-      if (isAutonomous) {
-        const dTargetX = targetX - posX;
-        const dTargetY = targetY - posY;
-        const distSq = dTargetX * dTargetX + dTargetY * dTargetY;
-
-        if (distSq < 130 * 130 || currentTime - waypointSetTime > 2800) {
-          pickNextQuadrantWaypoint();
+      if (isIdle) {
+        if (currentTime > nextWanderTime) {
+          pickNewWanderTarget();
         }
-      } else {
-        targetX = mouseX;
-        targetY = mouseY;
+        targetX = wanderX;
+        targetY = wanderY;
+      }
+
+      // Airflow reaction during scrolling
+      if (Math.abs(scrollVelocity) > 2) {
+        targetY -= Math.min(Math.max(scrollVelocity * 0.15, -90), 90);
       }
 
       // Flapping state machine
       if (currentTime > nextFlapBurstTime && flapMode === 'GLIDE') {
         flapMode = 'FLAPPING';
         flapTimer = 0;
-        flapDuration = 1.2 + Math.random() * 0.9;
+        flapDuration = 1.1 + Math.random() * 0.8;
       }
 
       let flapAngleDelta = 0;
       if (flapMode === 'FLAPPING') {
         flapTimer += dt * 3.4;
-        wingBeatProgress = Math.sin(flapTimer * 8.8);
-        flapAngleDelta = wingBeatProgress * 0.7;
+        wingBeatProgress = Math.sin(flapTimer * 9.0);
+        flapAngleDelta = wingBeatProgress * 0.65;
 
         if (wingBeatProgress > 0.15) {
-          currentSpeed += 0.15;
+          currentSpeed += 0.14;
         }
 
         if (flapTimer >= flapDuration) {
           flapMode = 'GLIDE';
-          nextFlapBurstTime = currentTime + 2200 + Math.random() * 3800;
+          nextFlapBurstTime = currentTime + 2400 + Math.random() * 3200;
         }
       } else {
-        flapAngleDelta = Math.sin(time * 2.4) * 0.13;
+        flapAngleDelta = Math.sin(time * 2.4) * 0.12;
       }
 
-      // Dynamic Pursuit Acceleration & Cruising Speed
-      let targetCruisingSpeed = 5.2;
-      let turnRate = 0.06;
+      // Distance calculation to target
+      const dTargetX = targetX - posX;
+      const dTargetY = targetY - posY;
+      const distToTarget = Math.sqrt(dTargetX * dTargetX + dTargetY * dTargetY);
 
-      const toTargetX = targetX - posX;
-      const toTargetY = targetY - posY;
-      const distToTarget = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
+      // Dynamic Speed & Responsiveness
+      const baseSpeed = isIdle ? 4.8 : 5.8;
+      const targetSpeed = Math.min(14.0, baseSpeed + distToTarget * 0.024);
+      currentSpeed += (targetSpeed - currentSpeed) * 0.1;
+      currentSpeed = Math.max(4.2, Math.min(15.0, currentSpeed));
 
-      if (!isAutonomous) {
-        // Active mouse chasing
-        targetCruisingSpeed = Math.min(16.0, 5.5 + distToTarget * 0.038);
-        turnRate = Math.min(0.20, 0.09 + distToTarget * 0.0005);
-      } else {
-        // Smooth continuous cruising flight during scroll or idle
-        targetCruisingSpeed = isScrolling ? 6.2 : 5.2;
-        turnRate = 0.06;
+      // Aerodynamic steering (glides straight past close targets instead of flipping 180° back and forth)
+      if (distToTarget > 24) {
+        const desiredAngle = Math.atan2(dTargetY, dTargetX);
+        let angleDiff = desiredAngle - currentAngle;
+        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+
+        const turnRate = isIdle ? 0.065 : Math.min(0.16, 0.085 + distToTarget * 0.0003);
+        currentAngle += angleDiff * turnRate;
       }
 
-      currentSpeed += (targetCruisingSpeed - currentSpeed) * 0.12;
-      currentSpeed = Math.min(Math.max(currentSpeed, 4.2), 18.0);
+      // Soft edge avoidance
+      const edgePadding = 50;
+      if (posX < edgePadding) currentAngle += 0.05;
+      if (posX > width - edgePadding) currentAngle -= 0.05;
+      if (posY < edgePadding) currentAngle += 0.05;
+      if (posY > height - edgePadding) currentAngle -= 0.05;
 
-      // --- SMOOTH TANGENT ORBIT STEERING (Prevents Point-Oscillation Stalls) ---
-      const baseAngle = Math.atan2(toTargetY, toTargetX);
-      
-      // When close to target point, apply a gentle orbital tangent offset so it swoops in a wide circle rather than stalling
-      let desiredAngle = baseAngle;
-      if (!isAutonomous && distToTarget < 75) {
-        const orbitFactor = Math.max(0, 1 - distToTarget / 75);
-        desiredAngle = baseAngle + orbitFactor * 0.55;
-      }
-
-      let angleDiff = desiredAngle - currentAngle;
-      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-
-      currentAngle += angleDiff * turnRate;
-
-      // Soft Edge repellent
-      const edgePadding = 70;
-      if (posX < edgePadding) currentAngle += 0.06;
-      if (posX > width - edgePadding) currentAngle -= 0.06;
-      if (posY < edgePadding) currentAngle += 0.06;
-      if (posY > height - edgePadding) currentAngle -= 0.06;
-
-      // Sinuous swimming wave
-      const waveAmplitude = Math.min(currentSpeed * 0.32, 2.8);
+      // Natural sinuous swimming undulating wave
+      const waveAmplitude = Math.min(currentSpeed * 0.3, 2.6);
       const waveAngle = Math.sin(time * 4.0) * (waveAmplitude * 0.04);
 
+      // Continuous flight update (always moving forward, never stopping)
       posX += Math.cos(currentAngle + waveAngle) * currentSpeed;
       posY += Math.sin(currentAngle + waveAngle) * currentSpeed;
 
-      posX = Math.max(30, Math.min(width - 30, posX));
-      posY = Math.max(30, Math.min(height - 30, posY));
+      posX = Math.max(25, Math.min(width - 25, posX));
+      posY = Math.max(25, Math.min(height - 25, posY));
 
       // --- SPINE PROPAGATION (Inverse Kinematics) ---
       segments[0].x = posX;
