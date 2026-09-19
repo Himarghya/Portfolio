@@ -14,17 +14,17 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onSelectProfil
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0e0e11] text-white px-4 select-none overflow-y-auto min-h-screen"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0e0e11]/80 backdrop-blur-3xl text-white px-4 select-none overflow-y-auto min-h-screen"
     >
       {/* Brand Top */}
       <div className="absolute top-6 sm:top-8 left-6 sm:left-12 flex items-center gap-2">
-        <span className="font-bebas text-2xl sm:text-3xl text-[#E50914] font-bold tracking-wider">
+        <span className="font-bebas text-2xl sm:text-3xl text-[#E50914] font-bold tracking-wider drop-shadow-[0_0_15px_rgba(229,9,20,0.5)]">
           HIMARGHYA
         </span>
       </div>
 
       <div className="text-center space-y-2 mb-10 max-w-lg">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-sans">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-sans drop-shadow-md">
           Select a role to begin
         </h1>
         <p className="text-xs sm:text-sm text-zinc-400">
@@ -40,16 +40,16 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onSelectProfil
             onClick={() => onSelectProfile(profile)}
             className="group flex flex-col items-center cursor-pointer w-28 sm:w-36 focus:outline-none"
           >
-            {/* Avatar Card */}
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-lg bg-[#15161a] border border-zinc-800 group-hover:border-[#E50914] transition-colors flex flex-col items-center justify-center">
-              <span className="font-mono text-xl sm:text-2xl font-bold text-zinc-300 group-hover:text-white">
+            {/* Glass Avatar Card */}
+            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/10 group-hover:border-[#E50914]/70 group-hover:shadow-[0_0_30px_rgba(229,9,20,0.35),inset_0_1px_1px_rgba(255,255,255,0.2)] shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-all duration-300 flex flex-col items-center justify-center group-hover:-translate-y-1">
+              <span className="font-mono text-xl sm:text-2xl font-bold text-zinc-300 group-hover:text-white group-hover:scale-110 transition-transform drop-shadow">
                 {profile.avatarIcon}
               </span>
             </div>
 
             {/* Profile Label */}
-            <div className="mt-2.5 text-center">
-              <span className="text-xs sm:text-sm text-zinc-300 group-hover:text-white font-semibold block">
+            <div className="mt-3 text-center">
+              <span className="text-xs sm:text-sm text-zinc-300 group-hover:text-white font-semibold block transition-colors">
                 {profile.name}
               </span>
               <span className="text-[10px] text-zinc-500 font-mono block mt-0.5">
@@ -64,7 +64,7 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onSelectProfil
       <div className="mt-10">
         <button
           onClick={() => onSelectProfile(NETFLIX_PROFILES[0])}
-          className="flex items-center gap-2 px-6 py-2.5 bg-[#E50914] hover:bg-[#b81d24] text-white text-xs tracking-wider uppercase font-semibold rounded font-mono transition-colors"
+          className="flex items-center gap-2 px-6 py-2.5 bg-[#E50914] hover:bg-[#b81d24] text-white text-xs tracking-wider uppercase font-semibold rounded-xl font-mono transition-all shadow-[0_0_20px_rgba(229,9,20,0.35)] hover:shadow-[0_0_25px_rgba(229,9,20,0.5)] cursor-pointer"
         >
           <span>Enter Portfolio</span>
           <ArrowRight className="w-4 h-4" />

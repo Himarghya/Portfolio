@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { NETFLIX_PROFILES, NetflixProfile, NetflixItem, TRENDING_PROJECTS } from './constants/netflixData';
 import { PortfolioIntroAnimation } from './components/portfolio/PortfolioIntroAnimation';
+import { GlassBackground } from './components/ui/GlassBackground';
 import { ProfileSelector } from './components/netflix/ProfileSelector';
 import { NetflixNavbar } from './components/netflix/NetflixNavbar';
 import { BillboardHero } from './components/netflix/BillboardHero';
@@ -41,6 +42,9 @@ export const App: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-[#0e0e11] text-zinc-100 selection:bg-[#E50914] selection:text-white font-sans antialiased overflow-x-hidden">
       
+      {/* Ambient Glassmorphism Background Lights */}
+      <GlassBackground />
+
       {/* Portfolio Intro Opening Animation */}
       <AnimatePresence mode="wait">
         {showIntro && (

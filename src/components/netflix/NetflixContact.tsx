@@ -31,7 +31,7 @@ export const NetflixContact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-20 px-4 sm:px-12 bg-[#0e0e11] border-t border-zinc-800 select-none">
+    <section id="contact" className="py-16 sm:py-20 px-4 sm:px-12 border-t border-white/10 select-none">
       <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
         <h3 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight font-sans">
           Contact Me
@@ -41,21 +41,21 @@ export const NetflixContact: React.FC = () => {
         </p>
       </div>
 
-      <div className="max-w-2xl mx-auto rounded-xl bg-[#15161a] border border-zinc-800 p-6 sm:p-8 space-y-6">
+      <div className="max-w-2xl mx-auto rounded-2xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.12)] p-6 sm:p-8 space-y-6">
         
         {/* Contact links */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pb-6 border-b border-zinc-800">
-          <div className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-between">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pb-6 border-b border-white/10">
+          <div className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-[#E50914]" />
+              <Mail className="w-4 h-4 text-[#E50914] drop-shadow-[0_0_8px_rgba(229,9,20,0.5)]" />
               <div className="text-left">
-                <span className="text-[10px] text-zinc-500 font-mono block">EMAIL</span>
+                <span className="text-[10px] text-zinc-400 font-mono block">EMAIL</span>
                 <span className="text-xs font-semibold text-white truncate max-w-[110px] block">himarghyadas</span>
               </div>
             </div>
             <button
               onClick={handleCopyEmail}
-              className="p-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+              className="p-1.5 rounded-lg bg-white/[0.08] hover:bg-white/[0.18] text-zinc-300 hover:text-white border border-white/10 transition-colors cursor-pointer"
               title="Copy Email"
             >
               {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -66,11 +66,11 @@ export const NetflixContact: React.FC = () => {
             href={SHOWRUNNER_DOSSIER.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors flex items-center gap-2.5 text-left group"
+            className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] hover:border-white/25 hover:bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all flex items-center gap-2.5 text-left group"
           >
-            <Github className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+            <Github className="w-4 h-4 text-zinc-300 group-hover:text-white" />
             <div>
-              <span className="text-[10px] text-zinc-500 font-mono block">CODE</span>
+              <span className="text-[10px] text-zinc-400 font-mono block">CODE</span>
               <span className="text-xs font-semibold text-white group-hover:text-[#E50914] transition-colors">GitHub</span>
             </div>
           </a>
@@ -79,11 +79,11 @@ export const NetflixContact: React.FC = () => {
             href={SHOWRUNNER_DOSSIER.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors flex items-center gap-2.5 text-left group"
+            className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] hover:border-white/25 hover:bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all flex items-center gap-2.5 text-left group"
           >
-            <Linkedin className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+            <Linkedin className="w-4 h-4 text-zinc-300 group-hover:text-white" />
             <div>
-              <span className="text-[10px] text-zinc-500 font-mono block">PROFILE</span>
+              <span className="text-[10px] text-zinc-400 font-mono block">PROFILE</span>
               <span className="text-xs font-semibold text-white group-hover:text-[#E50914] transition-colors">LinkedIn</span>
             </div>
           </a>
@@ -92,58 +92,58 @@ export const NetflixContact: React.FC = () => {
         {/* Message Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-left">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="text-xs text-zinc-400 font-mono uppercase">Name</label>
+            <div className="space-y-1.5">
+              <label className="text-xs text-zinc-300 font-mono uppercase">Name</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Your Name"
-                className="w-full px-3.5 py-2.5 rounded bg-zinc-900 border border-zinc-700 text-white text-sm focus:outline-none focus:border-[#E50914] transition-colors placeholder-zinc-600"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 text-white text-sm focus:outline-none focus:border-[#E50914]/70 focus:bg-white/[0.08] transition-all placeholder-zinc-500 shadow-inner"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs text-zinc-400 font-mono uppercase">Email</label>
+            <div className="space-y-1.5">
+              <label className="text-xs text-zinc-300 font-mono uppercase">Email</label>
               <input
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="you@company.com"
-                className="w-full px-3.5 py-2.5 rounded bg-zinc-900 border border-zinc-700 text-white text-sm focus:outline-none focus:border-[#E50914] transition-colors placeholder-zinc-600"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 text-white text-sm focus:outline-none focus:border-[#E50914]/70 focus:bg-white/[0.08] transition-all placeholder-zinc-500 shadow-inner"
               />
             </div>
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs text-zinc-400 font-mono uppercase">Subject</label>
+          <div className="space-y-1.5">
+            <label className="text-xs text-zinc-300 font-mono uppercase">Subject</label>
             <input
               type="text"
               value={formData.subject}
               onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               placeholder="Opportunity / Project inquiry"
-              className="w-full px-3.5 py-2.5 rounded bg-zinc-900 border border-zinc-700 text-white text-sm focus:outline-none focus:border-[#E50914] transition-colors placeholder-zinc-600"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 text-white text-sm focus:outline-none focus:border-[#E50914]/70 focus:bg-white/[0.08] transition-all placeholder-zinc-500 shadow-inner"
             />
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs text-zinc-400 font-mono uppercase">Message</label>
+          <div className="space-y-1.5">
+            <label className="text-xs text-zinc-300 font-mono uppercase">Message</label>
             <textarea
               rows={4}
               required
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               placeholder="Write your message here..."
-              className="w-full px-3.5 py-2.5 rounded bg-zinc-900 border border-zinc-700 text-white text-sm focus:outline-none focus:border-[#E50914] transition-colors placeholder-zinc-600 resize-none"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 text-white text-sm focus:outline-none focus:border-[#E50914]/70 focus:bg-white/[0.08] transition-all placeholder-zinc-500 resize-none shadow-inner"
             />
           </div>
 
           <button
             type="submit"
             disabled={status === 'sending'}
-            className="w-full py-3 rounded bg-[#E50914] hover:bg-[#b81d24] text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3.5 rounded-xl bg-[#E50914] hover:bg-[#b81d24] text-white font-semibold text-sm transition-all shadow-[0_0_20px_rgba(229,9,20,0.35)] hover:shadow-[0_0_25px_rgba(229,9,20,0.5)] flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>{status === 'sending' ? 'Sending...' : 'Send Message'}</span>
             <ArrowRight className="w-4 h-4" />

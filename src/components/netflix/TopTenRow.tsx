@@ -33,7 +33,7 @@ export const TopTenRow: React.FC = () => {
       {/* Left Slider Arrow */}
       <button
         onClick={() => scroll('left')}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-zinc-900/90 hover:bg-zinc-800 text-white flex items-center justify-center opacity-0 group-hover/top10:opacity-100 transition-all rounded-r border-y border-r border-zinc-700"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/40 hover:bg-black/70 backdrop-blur-xl text-white flex items-center justify-center opacity-0 group-hover/top10:opacity-100 transition-all rounded-r-xl border-y border-r border-white/15 shadow-xl cursor-pointer"
         aria-label="Scroll left"
       >
         <ChevronLeft className="w-6 h-6" />
@@ -42,7 +42,7 @@ export const TopTenRow: React.FC = () => {
       {/* Right Slider Arrow */}
       <button
         onClick={() => scroll('right')}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-zinc-900/90 hover:bg-zinc-800 text-white flex items-center justify-center opacity-0 group-hover/top10:opacity-100 transition-all rounded-l border-y border-l border-zinc-700"
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/40 hover:bg-black/70 backdrop-blur-xl text-white flex items-center justify-center opacity-0 group-hover/top10:opacity-100 transition-all rounded-l-xl border-y border-l border-white/15 shadow-xl cursor-pointer"
         aria-label="Scroll right"
       >
         <ChevronRight className="w-6 h-6" />
@@ -51,7 +51,7 @@ export const TopTenRow: React.FC = () => {
       {/* Top 10 Cards Slider */}
       <div
         ref={rowRef}
-        className="flex gap-4 overflow-x-auto no-scrollbar py-2 scroll-smooth pl-2"
+        className="flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-4 scroll-smooth pl-2"
       >
         {TOP_TEN_SKILLS.map((skill) => (
           <div
@@ -59,42 +59,42 @@ export const TopTenRow: React.FC = () => {
             className="flex items-end shrink-0 relative group/card cursor-pointer"
           >
             {/* Giant Outlined Rank Number */}
-            <div className="netflix-top10-rank translate-y-3 sm:translate-y-5 -mr-4 sm:-mr-6 z-0 select-none pointer-events-none">
+            <div className="netflix-top10-rank translate-y-3 sm:translate-y-5 -mr-4 sm:-mr-6 z-0 select-none pointer-events-none opacity-80">
               {skill.rank}
             </div>
 
-            {/* Poster Card */}
-            <div className="w-48 sm:w-56 h-64 sm:h-72 rounded-lg bg-[#15161a] border border-zinc-800 hover:border-zinc-600 transition-colors shadow-lg overflow-hidden flex flex-col justify-between p-4 relative z-10">
+            {/* Glass Poster Card */}
+            <div className="w-48 sm:w-56 h-64 sm:h-72 rounded-2xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/10 hover:border-[#E50914]/60 shadow-[0_12px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.12)] hover:shadow-[0_20px_45px_rgba(229,9,20,0.22),inset_0_1px_1px_rgba(255,255,255,0.2)] overflow-hidden flex flex-col justify-between p-4 sm:p-5 relative z-10 transition-all duration-300 hover:-translate-y-1">
               
               {/* Top Card Badges */}
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono text-[#E50914] font-bold">
+                <span className="text-[10px] font-mono text-[#E50914] font-bold px-2 py-0.5 rounded-full bg-[#E50914]/15 border border-[#E50914]/30 shadow-[0_0_8px_rgba(229,9,20,0.3)]">
                   #{skill.rank}
                 </span>
-                <span className="text-[10px] font-mono text-zinc-400">
+                <span className="text-[10px] font-mono text-zinc-300 px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10">
                   {skill.rating}
                 </span>
               </div>
 
               {/* Main Content */}
               <div className="my-auto space-y-1.5">
-                <h4 className="text-xl sm:text-2xl font-bold font-bebas text-white tracking-wide group-hover/card:text-[#E50914] transition-colors">
+                <h4 className="text-xl sm:text-2xl font-bold font-bebas text-white tracking-wide group-hover/card:text-[#E50914] transition-colors leading-tight">
                   {skill.name}
                 </h4>
-                <div className="text-[10px] font-mono text-zinc-400 uppercase">
+                <div className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
                   {skill.category}
                 </div>
-                <p className="text-xs text-zinc-300 line-clamp-3 leading-relaxed">
+                <p className="text-xs text-zinc-300 line-clamp-3 leading-relaxed font-normal">
                   {skill.desc}
                 </p>
               </div>
 
               {/* Bottom Tags */}
-              <div className="pt-2 border-t border-zinc-800 flex flex-wrap gap-1">
+              <div className="pt-2.5 border-t border-white/10 flex flex-wrap gap-1">
                 {skill.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700/60"
+                    className="text-[9px] font-mono px-1.5 py-0.5 rounded-md bg-white/[0.05] backdrop-blur-md text-zinc-300 border border-white/[0.08]"
                   >
                     {tag}
                   </span>

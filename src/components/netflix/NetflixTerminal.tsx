@@ -110,16 +110,16 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-3xl rounded-xl overflow-hidden bg-[#101010] border border-gray-700 shadow-2xl font-mono select-none">
+      <div className="relative w-full max-w-3xl rounded-2xl overflow-hidden bg-[#101116]/90 backdrop-blur-2xl border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.15)] font-mono select-none">
         
         {/* Terminal Header */}
-        <div className="px-4 py-3 bg-[#181818] border-b border-gray-800 flex items-center justify-between">
+        <div className="px-5 py-3.5 bg-white/[0.04] border-b border-white/10 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-600" />
-            <div className="w-3 h-3 rounded-full bg-yellow-600" />
-            <div className="w-3 h-3 rounded-full bg-green-600" />
-            <span className="ml-2 text-xs text-gray-300 font-bold flex items-center gap-1.5">
-              <TerminalIcon className="w-3.5 h-3.5 text-[#E50914]" />
+            <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-[0_0_6px_rgba(234,179,8,0.6)]" />
+            <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_6px_rgba(34,197,94,0.6)]" />
+            <span className="ml-2 text-xs text-zinc-300 font-bold flex items-center gap-1.5">
+              <TerminalIcon className="w-3.5 h-3.5 text-[#E50914] drop-shadow-[0_0_6px_rgba(229,9,20,0.6)]" />
               <span>portfolio-cli:~ (zsh)</span>
             </span>
           </div>
@@ -127,12 +127,12 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
           <div className="flex items-center gap-3">
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1 px-2.5 py-1 rounded bg-black/40 hover:bg-black/80 border border-gray-700 text-[10px] text-gray-300"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/[0.06] hover:bg-white/[0.15] border border-white/10 text-[10px] text-zinc-300 hover:text-white transition-colors cursor-pointer"
             >
               {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
               <span>{copied ? 'COPIED' : 'COPY'}</span>
             </button>
-            <button onClick={onClose} className="p-1 hover:text-[#E50914] text-gray-400">
+            <button onClick={onClose} className="p-1 hover:text-[#E50914] text-zinc-400 transition-colors cursor-pointer">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -141,15 +141,15 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
         {/* Terminal Content Screen */}
         <div
           onClick={() => inputRef.current?.focus()}
-          className="p-5 text-xs text-gray-300 min-h-[320px] max-h-[440px] overflow-y-auto space-y-3 cursor-text bg-black/90"
+          className="p-5 text-xs text-zinc-300 min-h-[320px] max-h-[440px] overflow-y-auto space-y-3 cursor-text bg-black/50 backdrop-blur-sm"
         >
           {history.map(item => (
             <div key={item.id} className="space-y-1">
-              <div className="flex items-center gap-2 text-gray-400">
-                <span className="text-[#E50914] font-bold">himarghya@portfolio:~$</span>
+              <div className="flex items-center gap-2 text-zinc-400">
+                <span className="text-[#E50914] font-bold drop-shadow-[0_0_6px_rgba(229,9,20,0.4)]">himarghya@portfolio:~$</span>
                 <span className="text-white font-semibold">{item.command}</span>
               </div>
-              <div className="pl-4 text-gray-300">
+              <div className="pl-4 text-zinc-300">
                 {Array.isArray(item.output) ? (
                   item.output.map((line, idx) => <div key={idx}>{line}</div>)
                 ) : (
@@ -161,18 +161,18 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
 
           {/* Prompt Form */}
           <form onSubmit={handleCommand} className="flex items-center gap-2 pt-2">
-            <span className="text-[#E50914] font-bold shrink-0">himarghya@portfolio:~$</span>
+            <span className="text-[#E50914] font-bold shrink-0 drop-shadow-[0_0_6px_rgba(229,9,20,0.4)]">himarghya@portfolio:~$</span>
             <input
               ref={inputRef}
               type="text"
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               placeholder="type help, projects, skills, hire..."
-              className="w-full bg-transparent text-white focus:outline-none placeholder-gray-600 caret-[#E50914]"
+              className="w-full bg-transparent text-white focus:outline-none placeholder-zinc-600 caret-[#E50914]"
               autoComplete="off"
               spellCheck={false}
             />
-            <button type="submit" className="text-gray-500 hover:text-white">
+            <button type="submit" className="text-zinc-500 hover:text-white cursor-pointer">
               <CornerDownLeft className="w-3.5 h-3.5" />
             </button>
           </form>
@@ -180,13 +180,13 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
         </div>
 
         {/* Helper Footer Chips */}
-        <div className="px-4 py-2 bg-[#181818] border-t border-gray-800 flex flex-wrap items-center gap-2 text-[10px]">
-          <span className="text-gray-500">SHORTCUTS:</span>
+        <div className="px-4 py-2.5 bg-white/[0.03] border-t border-white/10 flex flex-wrap items-center gap-2 text-[10px]">
+          <span className="text-zinc-400">SHORTCUTS:</span>
           {['help', 'projects', 'skills', 'hire', 'tudum', 'clear'].map(cmd => (
             <button
               key={cmd}
               onClick={() => { setInputVal(cmd); inputRef.current?.focus(); }}
-              className="px-2 py-0.5 rounded bg-black/50 border border-gray-700 text-gray-400 hover:text-[#E50914] hover:border-[#E50914]/40"
+              className="px-2.5 py-0.5 rounded-lg bg-white/[0.05] border border-white/10 text-zinc-300 hover:text-[#E50914] hover:border-[#E50914]/50 transition-all cursor-pointer"
             >
               ${cmd}
             </button>
