@@ -92,14 +92,39 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
             </button>
           </div>
 
-          {/* Stack Chips */}
-          <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-zinc-400 font-mono">
-            <span className="text-zinc-400 font-medium text-[11px] sm:text-xs">Core Stack:</span>
-            {BILLBOARD_FEATURED.cast.map((tech) => (
-              <span key={tech} className="px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-md bg-white/[0.04] backdrop-blur-md text-zinc-300 border border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] text-[10px] sm:text-xs">
-                {tech}
+          {/* Sleek Core Stack Pill Bar */}
+          <div className="pt-3 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase font-semibold">
+                CORE TECHNICAL ARSENAL
               </span>
-            ))}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              {[
+                { name: 'C++20', color: '#00E5FF' },
+                { name: 'React', color: '#61DAFB' },
+                { name: 'TypeScript', color: '#38BDF8' },
+                { name: 'Python', color: '#FACC15' },
+                { name: 'FastAPI', color: '#10B981' },
+                { name: 'PostgreSQL', color: '#818CF8' },
+                { name: 'PostGIS', color: '#00FF87' },
+                { name: 'Docker', color: '#38BDF8' }
+              ].map((tech) => (
+                <div
+                  key={tech.name}
+                  className="group/pill px-2.5 sm:px-3 py-1 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] backdrop-blur-xl border border-white/10 hover:border-[#E50914]/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_4px_15px_rgba(229,9,20,0.2)] transition-all duration-200 flex items-center gap-1.5 cursor-default hover:-translate-y-0.5"
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full shrink-0 group-hover/pill:scale-125 transition-transform"
+                    style={{ backgroundColor: tech.color, boxShadow: `0 0 6px ${tech.color}88` }}
+                  />
+                  <span className="text-[11px] sm:text-xs font-mono text-zinc-300 group-hover/pill:text-white transition-colors">
+                    {tech.name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
