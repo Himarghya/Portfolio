@@ -66,16 +66,13 @@ export const DragonCursor: React.FC = () => {
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    // Movement & Scroll Tracking
+    // Pure Viewport Cursor & Roaming Tracking (100% Scroll-Independent)
     let mouseX = width / 2;
     let mouseY = height / 2;
     let prevMouseX = mouseX;
     let prevMouseY = mouseY;
     let lastMouseMoveTime = performance.now();
     let hasInteracted = false;
-
-    let lastScrollY = window.scrollY;
-    let scrollVelocity = 0;
 
     const onMouseMove = (e: MouseEvent) => {
       const dx = e.clientX - prevMouseX;
@@ -100,15 +97,8 @@ export const DragonCursor: React.FC = () => {
       }
     };
 
-    const onScroll = () => {
-      const curY = window.scrollY;
-      scrollVelocity = (curY - lastScrollY) * 0.6;
-      lastScrollY = curY;
-    };
-
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
 
     // --- CELESTIAL DRAGON SPINE CONFIGURATION ---
     const NUM_SEGMENTS = 26;
@@ -234,13 +224,11 @@ export const DragonCursor: React.FC = () => {
       lastTime = currentTime;
       time += dt * 2.4;
 
-      scrollVelocity *= 0.90;
-
       ctx.clearRect(0, 0, width, height);
 
       const isIdle = !hasInteracted || (currentTime - lastMouseMoveTime > 1400);
 
-      // Target selection
+      // Target selection (100% independent of scroll)
       let targetX = mouseX;
       let targetY = mouseY;
 
@@ -250,11 +238,6 @@ export const DragonCursor: React.FC = () => {
         }
         targetX = wanderX;
         targetY = wanderY;
-      }
-
-      // Airflow reaction during scrolling
-      if (Math.abs(scrollVelocity) > 2) {
-        targetY -= Math.min(Math.max(scrollVelocity * 0.15, -90), 90);
       }
 
       // Flapping state machine
@@ -619,7 +602,6 @@ export const DragonCursor: React.FC = () => {
       window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
