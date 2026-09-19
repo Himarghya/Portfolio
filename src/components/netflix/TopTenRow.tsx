@@ -52,7 +52,7 @@ export const TopTenRow: React.FC = () => {
       {/* Top 10 Cards Slider */}
       <div
         ref={rowRef}
-        className="flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-4 scroll-smooth pl-2"
+        className="flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth pl-2 items-end"
       >
         {TOP_TEN_SKILLS.map((skill) => (
           <div

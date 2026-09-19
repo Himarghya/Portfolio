@@ -246,7 +246,7 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({
       {/* Scrollable Row */}
       <div
         ref={rowRef}
-        className="flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-4 scroll-smooth"
+        className="flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth"
       >
         {items.map((item) => (
           <ProjectCard
