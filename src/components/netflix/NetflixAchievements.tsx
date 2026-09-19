@@ -27,7 +27,7 @@ const ACHIEVEMENTS_DATA: AchievementItem[] = [
     subtitle: '24-Hour Intensive Product & Engineering Hackathon Sprint',
     issuer: 'THINKBUILDSHIP & Globus Infocom',
     issuerBadge: '24-Hour Hackathon',
-    date: '2025',
+    date: 'Sept. 13, 2025',
     awardRank: '1st Place (Winners 🥇)',
     team: 'Still Standing (Quick Teams)',
     imageUrl: '/certificates/canyouhackit-winners.jpg',
