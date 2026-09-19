@@ -4,6 +4,16 @@ interface Segment {
   x: number;
   y: number;
   angle: number;
+  radius: number;
+}
+
+interface WingRay {
+  baseSegIdx: number;
+  baseOffsetAngle: number;
+  length: number;
+  curveFactor: number;
+  thickness: number;
+  joints: { x: number; y: number }[];
 }
 
 interface Ember {
@@ -37,11 +47,9 @@ export const DragonCursor: React.FC = () => {
     };
     window.addEventListener('resize', onResize);
 
-    // Mouse & Movement Tracking
+    // Mouse & Roaming Flight Tracking
     let mouseX = width / 2;
     let mouseY = height / 2;
-    let targetX = mouseX;
-    let targetY = mouseY;
     let lastMouseMoveTime = Date.now();
     let hasInteracted = false;
 
@@ -64,168 +72,243 @@ export const DragonCursor: React.FC = () => {
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
 
-    // Dragon Architecture (Spine, Segments, Lengths)
-    const SEGMENT_COUNT = 38;
-    const SEGMENT_DIST = 11;
+    // --- DRAGON SPINE INITIALIZATION ---
+    const NUM_SEGMENTS = 44;
+    const SEGMENT_DIST = 11.5;
     const segments: Segment[] = [];
 
-    for (let i = 0; i < SEGMENT_COUNT; i++) {
+    let posX = width / 2;
+    let posY = height / 2;
+    let currentAngle = -Math.PI / 4;
+    let currentSpeed = 5.0;
+
+    for (let i = 0; i < NUM_SEGMENTS; i++) {
+      let r = 16;
+      if (i < 4) r = 10 + i * 2.5; // Head/neck
+      else if (i < 12) r = 18 - (i - 4) * 0.4; // Chest
+      else r = Math.max(15 - (i - 12) * 0.42, 1.8); // Serpentine taper
+
       segments.push({
-        x: mouseX - i * SEGMENT_DIST,
-        y: mouseY,
-        angle: 0,
+        x: posX - i * SEGMENT_DIST,
+        y: posY,
+        angle: currentAngle,
+        radius: r,
       });
     }
 
-    // Whiskers (Left & Right Spring Nodes)
-    const WHISKER_SEGMENTS = 7;
-    const leftWhisker: { x: number; y: number }[] = [];
-    const rightWhisker: { x: number; y: number }[] = [];
-    for (let i = 0; i < WHISKER_SEGMENTS; i++) {
-      leftWhisker.push({ x: mouseX, y: mouseY });
-      rightWhisker.push({ x: mouseX, y: mouseY });
+    // --- FEATHERED RAY WINGS (Lionfish / Celestial Wings) ---
+    // Multiple long quill rays attached to segments 4 through 12 on each side
+    const createWingRays = (side: 1 | -1): WingRay[] => {
+      const rays: WingRay[] = [];
+      const NUM_RAYS = 20;
+
+      for (let i = 0; i < NUM_RAYS; i++) {
+        const progress = i / (NUM_RAYS - 1);
+        const segIdx = Math.floor(4 + progress * 8); // Attached across chest
+        const baseOffset = (Math.PI * 0.35 + progress * Math.PI * 0.55) * side;
+        
+        // Bell-curve length for majestic wing silhouette
+        const lenMultiplier = Math.sin(progress * Math.PI);
+        const rayLen = 50 + lenMultiplier * 130 + (1 - progress) * 30;
+        const curve = (0.4 + progress * 0.45) * side;
+
+        const joints = [
+          { x: posX, y: posY },
+          { x: posX, y: posY },
+          { x: posX, y: posY },
+          { x: posX, y: posY },
+        ];
+
+        rays.push({
+          baseSegIdx: segIdx,
+          baseOffsetAngle: baseOffset,
+          length: rayLen,
+          curveFactor: curve,
+          thickness: Math.max(2.4 - progress * 1.6, 0.8),
+          joints,
+        });
+      }
+      return rays;
+    };
+
+    const leftWingRays = createWingRays(-1);
+    const rightWingRays = createWingRays(1);
+
+    // --- DORSAL & VENTRAL SPINE QUILLS ---
+    interface Quill {
+      segIdx: number;
+      side: 1 | -1;
+      length: number;
+      angleOffset: number;
+    }
+    const spineQuills: Quill[] = [];
+    for (let i = 10; i < NUM_SEGMENTS - 2; i += 2) {
+      const prog = (i - 10) / (NUM_SEGMENTS - 12);
+      const qLen = (1 - prog) * 45 + 12;
+      spineQuills.push({ segIdx: i, side: -1, length: qLen, angleOffset: Math.PI * 0.78 });
+      spineQuills.push({ segIdx: i, side: 1, length: qLen, angleOffset: -Math.PI * 0.78 });
     }
 
-    // Fire Embers Array
+    // Fire Embers
     const embers: Ember[] = [];
-    const EMBER_COLORS = ['#FF2A5F', '#E50914', '#FF6B00', '#FFB800', '#FF0055'];
+    const EMBER_COLORS = ['#E50914', '#FF3B47', '#FF7700', '#FFCC00', '#FFFFFF'];
 
-    const spawnEmber = (x: number, y: number, spread: number, vxOffset = 0, vyOffset = 0) => {
-      if (embers.length > 120) return;
+    const spawnEmber = (x: number, y: number, spread: number, vx: number, vy: number) => {
+      if (embers.length > 90) return;
       embers.push({
         x: x + (Math.random() - 0.5) * spread,
         y: y + (Math.random() - 0.5) * spread,
-        vx: (Math.random() - 0.5) * 1.5 + vxOffset,
-        vy: (Math.random() - 0.5) * 1.5 + vyOffset - 0.5,
-        radius: Math.random() * 2.5 + 0.8,
+        vx: vx + (Math.random() - 0.5) * 1.2,
+        vy: vy + (Math.random() - 0.5) * 1.2,
+        radius: Math.random() * 2.2 + 0.6,
         color: EMBER_COLORS[Math.floor(Math.random() * EMBER_COLORS.length)],
-        alpha: Math.random() * 0.8 + 0.2,
+        alpha: Math.random() * 0.7 + 0.3,
         decay: Math.random() * 0.025 + 0.015,
       });
     };
 
-    // Full-Page Random Roaming System (When Mouse is Still)
-    let wanderX = Math.random() * (width - 240) + 120;
-    let wanderY = Math.random() * (height - 240) + 120;
-    let wanderAngle = Math.random() * Math.PI * 2;
-    let nextWanderChangeTime = Date.now() + 2000;
+    // Autonomous Waypoint & Flight State Machine
+    let wanderX = width * 0.5;
+    let wanderY = height * 0.5;
+    let nextWanderChange = Date.now();
 
     const pickNewWanderTarget = () => {
-      const padding = 100;
-      wanderX = padding + Math.random() * (width - padding * 2);
-      wanderY = padding + Math.random() * (height - padding * 2);
-      nextWanderChangeTime = Date.now() + 2800 + Math.random() * 2500;
+      const margin = 120;
+      wanderX = margin + Math.random() * (width - margin * 2);
+      wanderY = margin + Math.random() * (height - margin * 2);
+      nextWanderChange = Date.now() + 3000 + Math.random() * 4000;
     };
+
+    // Realistic Flapping Event State Machine
+    let flapMode: 'GLIDE' | 'FLAPPING' = 'GLIDE';
+    let flapTimer = 0;
+    let nextFlapBurstTime = Date.now() + 2000;
+    let flapDuration = 0;
+    let wingBeatProgress = 0;
 
     let time = 0;
 
     const render = () => {
-      time += 0.04;
+      time += 0.035;
       ctx.clearRect(0, 0, width, height);
 
-      // Autonomous Full-Page Exploration when user is idle
-      const isIdle = Date.now() - lastMouseMoveTime > 1200 || !hasInteracted;
+      const isIdle = Date.now() - lastMouseMoveTime > 1400 || !hasInteracted;
 
-      let activeTargetX = mouseX;
-      let activeTargetY = mouseY;
+      // 1. DETERMINE FLIGHT TARGET (CURSOR vs WANDER)
+      let targetX = mouseX;
+      let targetY = mouseY;
 
       if (isIdle) {
-        // Check distance to current wander waypoint or timer expiry
-        const dWanderX = wanderX - targetX;
-        const dWanderY = wanderY - targetY;
-        const distToWander = Math.sqrt(dWanderX * dWanderX + dWanderY * dWanderY);
-
-        if (distToWander < 130 || Date.now() > nextWanderChangeTime) {
+        if (Date.now() > nextWanderChange) {
           pickNewWanderTarget();
         }
-
-        // Steer smoothly towards current wander target
-        const desiredAngle = Math.atan2(wanderY - targetY, wanderX - targetX);
-        let diffAngle = desiredAngle - wanderAngle;
-        while (diffAngle < -Math.PI) diffAngle += Math.PI * 2;
-        while (diffAngle > Math.PI) diffAngle -= Math.PI * 2;
-
-        wanderAngle += diffAngle * 0.045; // Smooth realistic flight turn
-
-        // Dynamic soaring speed and wave undulation
-        const cruiseSpeed = 5.2 + Math.sin(time * 2) * 1.5;
-        const flightWave = Math.sin(time * 3) * 0.15;
-
-        // Keep inside screen boundaries with gentle avoidance
-        if (targetX < 80 && Math.cos(wanderAngle) < 0) wanderAngle = Math.PI * 0.1;
-        if (targetX > width - 80 && Math.cos(wanderAngle) > 0) wanderAngle = Math.PI * 0.9;
-        if (targetY < 80 && Math.sin(wanderAngle) < 0) wanderAngle = Math.PI * 0.6;
-        if (targetY > height - 80 && Math.sin(wanderAngle) > 0) wanderAngle = -Math.PI * 0.6;
-
-        activeTargetX = targetX + Math.cos(wanderAngle + flightWave) * (cruiseSpeed * 4.5);
-        activeTargetY = targetY + Math.sin(wanderAngle + flightWave) * (cruiseSpeed * 4.5);
+        targetX = wanderX;
+        targetY = wanderY;
       }
 
-      // Smooth Head Tracking with Inertia
-      const dx = activeTargetX - targetX;
-      const dy = activeTargetY - targetY;
-      const distToTarget = Math.sqrt(dx * dx + dy * dy);
-      const speedFactor = isIdle ? 0.085 : Math.min(Math.max(distToTarget * 0.045, 0.08), 0.22);
-      
-      targetX += dx * speedFactor;
-      targetY += dy * speedFactor;
+      // 2. WING FLAPPING STATE MACHINE (Dynamic Real Flight Events)
+      if (Date.now() > nextFlapBurstTime && flapMode === 'GLIDE') {
+        flapMode = 'FLAPPING';
+        flapTimer = 0;
+        flapDuration = 1.4 + Math.random() * 1.2; // 3 to 4 full wing beats
+      }
 
-      const headSpeed = Math.sqrt(dx * dx + dy * dy);
+      let flapAngleDelta = 0;
+      if (flapMode === 'FLAPPING') {
+        flapTimer += 0.055;
+        // Strong wing stroke down and up
+        wingBeatProgress = Math.sin(flapTimer * 10);
+        flapAngleDelta = wingBeatProgress * 0.75;
+        // Acceleration thrust boost during wing beat downstrokes
+        if (wingBeatProgress > 0.2) {
+          currentSpeed += 0.18;
+        }
 
-      // Head undulation wave (serpentine motion)
-      const waveOffset = Math.sin(time * 3.5) * Math.min(headSpeed * 0.25, 6);
-      const currentHeadX = targetX + Math.cos(segments[0].angle + Math.PI / 2) * waveOffset;
-      const currentHeadY = targetY + Math.sin(segments[0].angle + Math.PI / 2) * waveOffset;
+        if (flapTimer >= flapDuration) {
+          flapMode = 'GLIDE';
+          nextFlapBurstTime = Date.now() + 2500 + Math.random() * 4500;
+        }
+      } else {
+        // Subtle natural soaring breathing oscillation during glide
+        flapAngleDelta = Math.sin(time * 2.2) * 0.12;
+      }
 
-      // Update Head
-      const headAngle = Math.atan2(currentHeadY - segments[0].y, currentHeadX - segments[0].x);
-      segments[0].x = currentHeadX;
-      segments[0].y = currentHeadY;
-      segments[0].angle = headAngle;
+      // Decelerate smoothly towards cruising speed
+      const targetCruisingSpeed = isIdle ? 4.8 : 6.2;
+      currentSpeed += (targetCruisingSpeed - currentSpeed) * 0.04;
+      currentSpeed = Math.min(Math.max(currentSpeed, 3.5), 9.0);
 
-      // Update Spine with Inverse Kinematics & Wave Physics
-      for (let i = 1; i < SEGMENT_COUNT; i++) {
+      // 3. STEERING & INERTIA TOWARDS TARGET
+      const dTargetX = targetX - posX;
+      const dTargetY = targetY - posY;
+      const distToTarget = Math.sqrt(dTargetX * dTargetX + dTargetY * dTargetY);
+
+      if (distToTarget > 25) {
+        const desiredAngle = Math.atan2(dTargetY, dTargetX);
+        let angleDiff = desiredAngle - currentAngle;
+        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+
+        const turnRate = isIdle ? 0.042 : 0.075;
+        currentAngle += angleDiff * turnRate;
+      }
+
+      // Sinuous swimming lateral wave
+      const waveAmplitude = Math.min(currentSpeed * 0.35, 3.5);
+      const waveAngle = Math.sin(time * 4) * (waveAmplitude * 0.05);
+
+      posX += Math.cos(currentAngle + waveAngle) * currentSpeed;
+      posY += Math.sin(currentAngle + waveAngle) * currentSpeed;
+
+      // Soft screen border wrap / bounce
+      if (posX < 60) posX += 2;
+      if (posX > width - 60) posX -= 2;
+      if (posY < 60) posY += 2;
+      if (posY > height - 60) posY -= 2;
+
+      // 4. INVERSE KINEMATICS SPINE PROPAGATION
+      segments[0].x = posX;
+      segments[0].y = posY;
+      segments[0].angle = currentAngle;
+
+      for (let i = 1; i < NUM_SEGMENTS; i++) {
         const prev = segments[i - 1];
         const curr = segments[i];
 
-        const segDx = prev.x - curr.x;
-        const segDy = prev.y - curr.y;
-        let angle = Math.atan2(segDy, segDx);
+        const sDx = prev.x - curr.x;
+        const sDy = prev.y - curr.y;
+        let sAngle = Math.atan2(sDy, sDx);
 
-        // Serpentine Lateral S-Curve
-        const sWave = Math.sin(time * 4 - i * 0.38) * (0.09 + (i / SEGMENT_COUNT) * 0.16);
-        angle += sWave;
+        // Natural serpentine S-curve undulation along spine
+        const sWave = Math.sin(time * 3.8 - i * 0.32) * (0.07 + (i / NUM_SEGMENTS) * 0.14);
+        sAngle += sWave;
 
-        curr.x = prev.x - Math.cos(angle) * SEGMENT_DIST;
-        curr.y = prev.y - Math.sin(angle) * SEGMENT_DIST;
-        curr.angle = angle;
+        curr.x = prev.x - Math.cos(sAngle) * SEGMENT_DIST;
+        curr.y = prev.y - Math.sin(sAngle) * SEGMENT_DIST;
+        curr.angle = sAngle;
       }
 
-      // Spawn fiery breath embers from head occasionally or when moving fast
-      if (headSpeed > 4 || Math.random() < 0.35) {
-        const mouthX = segments[0].x + Math.cos(segments[0].angle) * 16;
-        const mouthY = segments[0].y + Math.sin(segments[0].angle) * 16;
-        spawnEmber(mouthX, mouthY, 6, Math.cos(segments[0].angle) * 1.5, Math.sin(segments[0].angle) * 1.5);
+      // Spawn fiery breath sparks & tail embers
+      if (Math.random() < 0.45 || flapMode === 'FLAPPING') {
+        const mouthX = posX + Math.cos(currentAngle) * 18;
+        const mouthY = posY + Math.sin(currentAngle) * 18;
+        spawnEmber(mouthX, mouthY, 6, Math.cos(currentAngle) * 1.5, Math.sin(currentAngle) * 1.5);
       }
-
-      // Spawn tail spark embers
-      const tail = segments[SEGMENT_COUNT - 1];
-      if (Math.random() < 0.6) {
+      const tail = segments[NUM_SEGMENTS - 1];
+      if (Math.random() < 0.5) {
         spawnEmber(tail.x, tail.y, 8, -Math.cos(tail.angle) * 1.2, -Math.sin(tail.angle) * 1.2);
       }
 
-      // --- 1. RENDER EMBERS / DRAGON AURA ---
+      // --- 5. RENDER EMBERS ---
       for (let i = embers.length - 1; i >= 0; i--) {
         const e = embers[i];
         e.x += e.vx;
         e.y += e.vy;
         e.alpha -= e.decay;
-
         if (e.alpha <= 0) {
           embers.splice(i, 1);
           continue;
         }
-
         ctx.save();
         ctx.globalAlpha = e.alpha;
         ctx.beginPath();
@@ -237,312 +320,223 @@ export const DragonCursor: React.FC = () => {
         ctx.restore();
       }
 
-      // --- 2. RENDER WINGS (Attached around segment 6) ---
-      const wingRoot = segments[6];
-      const wingFlap = Math.sin(time * 6 + headSpeed * 0.05);
-      const wingSpan = 46 + Math.min(headSpeed * 0.6, 25);
+      // --- 6. RENDER FEATHERED RAY WINGS (Lionfish Celestial Wing Quills) ---
+      const updateAndDrawWings = (rays: WingRay[], side: 1 | -1) => {
+        rays.forEach((ray, rIdx) => {
+          const baseSeg = segments[ray.baseSegIdx];
+          if (!baseSeg) return;
 
-      const drawWing = (side: 1 | -1) => {
-        const perpAngle = wingRoot.angle + (Math.PI / 2) * side;
-        const rootX = wingRoot.x + Math.cos(perpAngle) * 5;
-        const rootY = wingRoot.y + Math.sin(perpAngle) * 5;
+          // Compute root position on segment rib
+          const ribAngle = baseSeg.angle + (Math.PI / 2) * side;
+          const rootX = baseSeg.x + Math.cos(ribAngle) * (baseSeg.radius * 0.85);
+          const rootY = baseSeg.y + Math.sin(ribAngle) * (baseSeg.radius * 0.85);
 
-        // Multi-joint wing bones
-        const elbowX = rootX + Math.cos(perpAngle + wingFlap * 0.3 * side) * (wingSpan * 0.55);
-        const elbowY = rootY + Math.sin(perpAngle + wingFlap * 0.3 * side) * (wingSpan * 0.55) - (wingFlap * 16);
+          // Ray base orientation + dynamic wing flap deflection
+          const rayBaseAngle = baseSeg.angle + ray.baseOffsetAngle + flapAngleDelta * side;
 
-        const tipX1 = elbowX + Math.cos(perpAngle - 0.4 * side) * (wingSpan * 0.65);
-        const tipY1 = elbowY + Math.sin(perpAngle - 0.4 * side) * (wingSpan * 0.65) - (wingFlap * 22);
+          // Multi-joint spring simulation for fluid curved quill flex
+          ray.joints[0].x = rootX;
+          ray.joints[0].y = rootY;
 
-        const tipX2 = elbowX + Math.cos(perpAngle) * (wingSpan * 0.5);
-        const tipY2 = elbowY + Math.sin(perpAngle) * (wingSpan * 0.5) - (wingFlap * 18);
+          const segLen = ray.length / 3;
+          for (let j = 1; j < 4; j++) {
+            const jointAngle = rayBaseAngle + ray.curveFactor * (j * 0.3) - (flapAngleDelta * 0.25 * j * side);
+            const targetJX = ray.joints[j - 1].x + Math.cos(jointAngle) * segLen;
+            const targetJY = ray.joints[j - 1].y + Math.sin(jointAngle) * segLen;
 
-        const tipX3 = elbowX + Math.cos(perpAngle + 0.4 * side) * (wingSpan * 0.35);
-        const tipY3 = elbowY + Math.sin(perpAngle + 0.4 * side) * (wingSpan * 0.35) - (wingFlap * 12);
+            ray.joints[j].x += (targetJX - ray.joints[j].x) * 0.35;
+            ray.joints[j].y += (targetJY - ray.joints[j].y) * 0.35;
+          }
 
-        const backAttach = segments[10];
-
-        // Translucent Webbed Dragon Wing Membrane
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(rootX, rootY);
-        ctx.lineTo(elbowX, elbowY);
-        ctx.lineTo(tipX1, tipY1);
-        ctx.quadraticCurveTo(elbowX + 5, elbowY, tipX2, tipY2);
-        ctx.quadraticCurveTo(elbowX, elbowY + 5, tipX3, tipY3);
-        ctx.quadraticCurveTo(elbowX - 5, elbowY + 8, backAttach.x, backAttach.y);
-        ctx.closePath();
-
-        const wingGrad = ctx.createLinearGradient(rootX, rootY, tipX1, tipY1);
-        wingGrad.addColorStop(0, 'rgba(229, 9, 20, 0.45)');
-        wingGrad.addColorStop(0.6, 'rgba(255, 60, 0, 0.35)');
-        wingGrad.addColorStop(1, 'rgba(255, 190, 0, 0.15)');
-        ctx.fillStyle = wingGrad;
-        ctx.fill();
-
-        // Wing Bone Struts (Glowing Outline)
-        ctx.strokeStyle = 'rgba(255, 120, 50, 0.7)';
-        ctx.lineWidth = 1.6;
-        ctx.shadowColor = '#E50914';
-        ctx.shadowBlur = 6;
-        ctx.beginPath();
-        ctx.moveTo(rootX, rootY);
-        ctx.lineTo(elbowX, elbowY);
-        ctx.lineTo(tipX1, tipY1);
-        ctx.moveTo(elbowX, elbowY);
-        ctx.lineTo(tipX2, tipY2);
-        ctx.moveTo(elbowX, elbowY);
-        ctx.lineTo(tipX3, tipY3);
-        ctx.stroke();
-        ctx.restore();
-      };
-
-      drawWing(1);  // Right Wing
-      drawWing(-1); // Left Wing
-
-      // --- 3. RENDER LEGS & CLAWS (Segment 8 and Segment 22) ---
-      const drawLegPair = (segIdx: number, legLen: number) => {
-        const seg = segments[segIdx];
-        const nextSeg = segments[segIdx + 2];
-        if (!seg || !nextSeg) return;
-
-        [-1, 1].forEach((side) => {
-          const sideAngle = seg.angle + (Math.PI / 2) * side;
-          const hipX = seg.x + Math.cos(sideAngle) * 6;
-          const hipY = seg.y + Math.sin(sideAngle) * 6;
-
-          const kneeWave = Math.sin(time * 5 + segIdx) * 0.4;
-          const kneeX = hipX + Math.cos(sideAngle + 0.5 * side + kneeWave) * (legLen * 0.6);
-          const kneeY = hipY + Math.sin(sideAngle + 0.5 * side + kneeWave) * (legLen * 0.6);
-
-          const clawX = kneeX + Math.cos(seg.angle - 0.6 * side) * (legLen * 0.5);
-          const clawY = kneeY + Math.sin(seg.angle - 0.6 * side) * (legLen * 0.5);
-
+          // Draw graceful needle ray with bezier curves
           ctx.save();
-          ctx.strokeStyle = 'rgba(255, 60, 60, 0.7)';
-          ctx.lineWidth = 1.8;
           ctx.beginPath();
-          ctx.moveTo(hipX, hipY);
-          ctx.lineTo(kneeX, kneeY);
-          ctx.lineTo(clawX, clawY);
-          // 3 Talons
-          ctx.lineTo(clawX + Math.cos(seg.angle + 0.4) * 4, clawY + Math.sin(seg.angle + 0.4) * 4);
-          ctx.moveTo(clawX, clawY);
-          ctx.lineTo(clawX + Math.cos(seg.angle) * 5, clawY + Math.sin(seg.angle) * 5);
-          ctx.moveTo(clawX, clawY);
-          ctx.lineTo(clawX + Math.cos(seg.angle - 0.4) * 4, clawY + Math.sin(seg.angle - 0.4) * 4);
+          ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
+          ctx.quadraticCurveTo(
+            ray.joints[1].x,
+            ray.joints[1].y,
+            ray.joints[2].x,
+            ray.joints[2].y
+          );
+          ctx.quadraticCurveTo(
+            ray.joints[2].x,
+            ray.joints[2].y,
+            ray.joints[3].x,
+            ray.joints[3].y
+          );
+
+          // Radiant quill gradient from root to tip
+          const quillGrad = ctx.createLinearGradient(
+            ray.joints[0].x,
+            ray.joints[0].y,
+            ray.joints[3].x,
+            ray.joints[3].y
+          );
+          quillGrad.addColorStop(0, '#E50914');
+          quillGrad.addColorStop(0.3, '#FF3B47');
+          quillGrad.addColorStop(0.7, 'rgba(255, 140, 0, 0.7)');
+          quillGrad.addColorStop(1, 'rgba(255, 240, 200, 0.15)');
+
+          ctx.strokeStyle = quillGrad;
+          ctx.lineWidth = ray.thickness;
+          ctx.shadowColor = '#E50914';
+          ctx.shadowBlur = rIdx % 3 === 0 ? 8 : 3;
           ctx.stroke();
+
+          // Delicate webbed translucent membrane between adjacent rays
+          if (rIdx > 0 && rIdx < rays.length) {
+            const prevRay = rays[rIdx - 1];
+            ctx.beginPath();
+            ctx.moveTo(ray.joints[0].x, ray.joints[0].y);
+            ctx.lineTo(ray.joints[2].x, ray.joints[2].y);
+            ctx.lineTo(prevRay.joints[2].x, prevRay.joints[2].y);
+            ctx.lineTo(prevRay.joints[0].x, prevRay.joints[0].y);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(229, 9, 20, 0.07)';
+            ctx.fill();
+          }
+
           ctx.restore();
         });
       };
 
-      drawLegPair(8, 16);  // Fore Talons
-      drawLegPair(22, 14); // Hind Talons
+      updateAndDrawWings(leftWingRays, -1);
+      updateAndDrawWings(rightWingRays, 1);
 
-      // --- 4. RENDER DRAGON SPINE BODY & SCALES ---
-      for (let i = SEGMENT_COUNT - 1; i >= 0; i--) {
-        const seg = segments[i];
-        const progress = i / SEGMENT_COUNT; // 0 = head, 1 = tail
-        
-        // Dynamic Thickness tapering (head = 10px, chest = 13px, tail = 2px)
-        let radius = 10;
-        if (i < 4) radius = 8 + i * 1.2;
-        else if (i < 12) radius = 12 - (i - 4) * 0.3;
-        else radius = Math.max(10 - (i - 12) * 0.32, 1.8);
+      // --- 7. RENDER DORSAL & VENTRAL SPINE NEEDLE QUILLS ---
+      spineQuills.forEach((q) => {
+        const seg = segments[q.segIdx];
+        if (!seg) return;
 
-        // Radiant Scale Gradient Shading
+        const qAngle = seg.angle + q.angleOffset;
+        const qRootX = seg.x + Math.cos(seg.angle + (Math.PI / 2) * q.side) * (seg.radius * 0.7);
+        const qRootY = seg.y + Math.sin(seg.angle + (Math.PI / 2) * q.side) * (seg.radius * 0.7);
+
+        const tipX = qRootX + Math.cos(qAngle) * q.length;
+        const tipY = qRootY + Math.sin(qAngle) * q.length;
+
         ctx.save();
         ctx.beginPath();
-        ctx.arc(seg.x, seg.y, radius, 0, Math.PI * 2);
-
-        const bodyGrad = ctx.createRadialGradient(
-          seg.x - Math.cos(seg.angle) * (radius * 0.3),
-          seg.y - Math.sin(seg.angle) * (radius * 0.3),
-          radius * 0.2,
-          seg.x,
-          seg.y,
-          radius
+        ctx.moveTo(qRootX, qRootY);
+        ctx.quadraticCurveTo(
+          qRootX + Math.cos(qAngle + 0.3 * q.side) * (q.length * 0.5),
+          qRootY + Math.sin(qAngle + 0.3 * q.side) * (q.length * 0.5),
+          tipX,
+          tipY
         );
 
-        if (i < 3) {
-          bodyGrad.addColorStop(0, '#FFFFFF');
-          bodyGrad.addColorStop(0.3, '#FF3B47');
-          bodyGrad.addColorStop(1, '#990011');
+        ctx.strokeStyle = 'rgba(255, 90, 50, 0.45)';
+        ctx.lineWidth = 1.0;
+        ctx.shadowColor = '#FF3B47';
+        ctx.shadowBlur = 4;
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // --- 8. RENDER ARTICULATED CHEVRON SCALE BODY (Segment Vertebrae) ---
+      for (let i = NUM_SEGMENTS - 1; i >= 0; i--) {
+        const seg = segments[i];
+        const r = seg.radius;
+
+        ctx.save();
+        ctx.translate(seg.x, seg.y);
+        ctx.rotate(seg.angle);
+
+        // Chevron Scale / Vertebra Leaf Shell
+        ctx.beginPath();
+        ctx.moveTo(r * 0.8, 0); // Front apex
+        ctx.quadraticCurveTo(0, -r, -r * 0.9, -r * 1.1); // Left flared wing
+        ctx.quadraticCurveTo(-r * 0.3, 0, -r * 0.9, r * 1.1); // Back notch to right flared wing
+        ctx.quadraticCurveTo(0, r, r * 0.8, 0); // Right side to front
+        ctx.closePath();
+
+        const segGrad = ctx.createRadialGradient(0, 0, r * 0.2, 0, 0, r * 1.2);
+        if (i < 4) {
+          segGrad.addColorStop(0, '#FFFFFF');
+          segGrad.addColorStop(0.4, '#FF2A5F');
+          segGrad.addColorStop(1, '#66000C');
         } else {
-          bodyGrad.addColorStop(0, '#FF4B4B');
-          bodyGrad.addColorStop(0.5, '#E50914');
-          bodyGrad.addColorStop(1, '#4A0008');
+          segGrad.addColorStop(0, '#FF4B4B');
+          segGrad.addColorStop(0.5, '#E50914');
+          segGrad.addColorStop(0.9, '#1a0003');
+          segGrad.addColorStop(1, 'rgba(0,0,0,0.85)');
         }
 
-        ctx.fillStyle = bodyGrad;
+        ctx.fillStyle = segGrad;
         ctx.shadowColor = '#E50914';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.fill();
 
-        // Dorsal Spine Spikes / Flame Crests along the back
-        if (i % 2 === 0 && i < SEGMENT_COUNT - 4) {
-          const spineLen = (1 - progress) * 11 + 3;
-          const spineAngle = seg.angle + Math.PI / 2;
-
-          [-1, 1].forEach((dir) => {
-            const sx = seg.x + Math.cos(spineAngle) * (radius * 0.9 * dir);
-            const sy = seg.y + Math.sin(spineAngle) * (radius * 0.9 * dir);
-            const tipX = sx + Math.cos(seg.angle - Math.PI * 0.8 * dir) * spineLen;
-            const tipY = sy + Math.sin(seg.angle - Math.PI * 0.8 * dir) * spineLen;
-
-            ctx.beginPath();
-            ctx.moveTo(sx, sy);
-            ctx.lineTo(tipX, tipY);
-            ctx.strokeStyle = `rgba(255, ${120 + i * 3}, 0, ${0.8 - progress * 0.4})`;
-            ctx.lineWidth = 1.4;
-            ctx.stroke();
-          });
-        }
+        // Edge highlight stroke
+        ctx.strokeStyle = `rgba(255, 120, 100, ${0.4 + (1 - i / NUM_SEGMENTS) * 0.5})`;
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
 
         ctx.restore();
       }
 
-      // --- 5. RENDER FLAME TAIL TIP ---
-      const tailTip = segments[SEGMENT_COUNT - 1];
-      const tailPrev = segments[SEGMENT_COUNT - 3];
-      const tailAngle = Math.atan2(tailTip.y - tailPrev.y, tailTip.x - tailPrev.x);
-
-      ctx.save();
-      ctx.translate(tailTip.x, tailTip.y);
-      ctx.rotate(tailAngle);
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.quadraticCurveTo(15, -12, 28, 0);
-      ctx.quadraticCurveTo(15, 12, 0, 0);
-      const flameGrad = ctx.createLinearGradient(0, 0, 28, 0);
-      flameGrad.addColorStop(0, '#E50914');
-      flameGrad.addColorStop(0.5, '#FF8800');
-      flameGrad.addColorStop(1, '#FFEE00');
-      ctx.fillStyle = flameGrad;
-      ctx.shadowColor = '#FF8800';
-      ctx.shadowBlur = 12;
-      ctx.fill();
-      ctx.restore();
-
-      // --- 6. RENDER DRAGON HEAD, HORNS, EYES & WHISKERS ---
+      // --- 9. RENDER DRAGON HEAD, CROWN & PIERCING EYE ---
       const head = segments[0];
       ctx.save();
       ctx.translate(head.x, head.y);
       ctx.rotate(head.angle);
 
-      // Head Crown & Snout
+      // Sleek Obsidian Dragon Mask & Swept Crests
       ctx.beginPath();
-      ctx.moveTo(18, 0); // Snout Tip
-      ctx.quadraticCurveTo(14, -8, 2, -10); // Upper Jaw Right
-      ctx.lineTo(-12, -8); // Back Crown Right
-      ctx.quadraticCurveTo(-16, 0, -12, 8); // Crown Back
-      ctx.lineTo(2, 10); // Upper Jaw Left
-      ctx.quadraticCurveTo(14, 8, 18, 0); // Snout Tip
+      ctx.moveTo(22, 0); // Snout Tip
+      ctx.quadraticCurveTo(16, -10, 0, -12); // Upper Jaw
+      ctx.quadraticCurveTo(-14, -18, -26, -22); // Swept Ear Horn Left
+      ctx.quadraticCurveTo(-16, -8, -12, -4);
+      ctx.lineTo(-18, 0); // Crown Center
+      ctx.lineTo(-12, 4);
+      ctx.quadraticCurveTo(-16, 8, -26, 22); // Swept Ear Horn Right
+      ctx.quadraticCurveTo(-14, 18, 0, 12);
+      ctx.quadraticCurveTo(16, 10, 22, 0);
       ctx.closePath();
 
-      const headGrad = ctx.createRadialGradient(4, 0, 2, 0, 0, 18);
+      const headGrad = ctx.createRadialGradient(6, 0, 2, 0, 0, 24);
       headGrad.addColorStop(0, '#FF4B4B');
-      headGrad.addColorStop(0.6, '#E50914');
-      headGrad.addColorStop(1, '#66000C');
+      headGrad.addColorStop(0.4, '#E50914');
+      headGrad.addColorStop(0.85, '#121318');
+      headGrad.addColorStop(1, '#050608');
       ctx.fillStyle = headGrad;
       ctx.shadowColor = '#FF2A5F';
-      ctx.shadowBlur = 14;
+      ctx.shadowBlur = 15;
       ctx.fill();
 
-      // Sharp Majestic Antler Horns
-      const drawHorn = (side: 1 | -1) => {
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(-8, 5 * side);
-        ctx.quadraticCurveTo(-18, 16 * side, -28, 22 * side);
-        ctx.quadraticCurveTo(-22, 12 * side, -10, 2 * side);
-        ctx.closePath();
-        const hornGrad = ctx.createLinearGradient(-8, 0, -28, 20 * side);
-        hornGrad.addColorStop(0, '#FF3B47');
-        hornGrad.addColorStop(0.7, '#FFAA00');
-        hornGrad.addColorStop(1, '#FFFFFF');
-        ctx.fillStyle = hornGrad;
-        ctx.shadowColor = '#FFAA00';
-        ctx.shadowBlur = 10;
-        ctx.fill();
-        ctx.restore();
-      };
-      drawHorn(1);
-      drawHorn(-1);
+      // Sharp Crest Highlights
+      ctx.strokeStyle = 'rgba(255, 160, 120, 0.8)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
 
-      // Piercing Glowing Eyes (Cyan/Golden Blaze)
+      // Piercing Glowing Eye
       [-1, 1].forEach((side) => {
         ctx.save();
         ctx.beginPath();
-        ctx.arc(6, 5 * side, 2.8, 0, Math.PI * 2);
+        ctx.arc(8, 6 * side, 3.2, 0, Math.PI * 2);
         ctx.fillStyle = '#00FFFF';
         ctx.shadowColor = '#00FFFF';
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 14;
         ctx.fill();
 
-        // Eye Slit Pupil
+        // Eye Slit
         ctx.beginPath();
-        ctx.arc(6.5, 5 * side, 1.2, 0, Math.PI * 2);
+        ctx.arc(8.5, 6 * side, 1.4, 0, Math.PI * 2);
         ctx.fillStyle = '#FFFFFF';
         ctx.fill();
         ctx.restore();
       });
 
-      // Snout Nostril Embers
+      // Snout Whisker Sparks
       ctx.beginPath();
-      ctx.arc(14, -2.5, 1, 0, Math.PI * 2);
-      ctx.arc(14, 2.5, 1, 0, Math.PI * 2);
+      ctx.arc(18, -2.5, 1.2, 0, Math.PI * 2);
+      ctx.arc(18, 2.5, 1.2, 0, Math.PI * 2);
       ctx.fillStyle = '#FFDD00';
+      ctx.shadowColor = '#FFDD00';
+      ctx.shadowBlur = 6;
       ctx.fill();
 
       ctx.restore();
-
-      // --- 7. RENDER DYNAMIC WHISKERS (Spring Nodes) ---
-      const whiskerBaseL = {
-        x: head.x + Math.cos(head.angle - 0.3) * 14,
-        y: head.y + Math.sin(head.angle - 0.3) * 14,
-      };
-      const whiskerBaseR = {
-        x: head.x + Math.cos(head.angle + 0.3) * 14,
-        y: head.y + Math.sin(head.angle + 0.3) * 14,
-      };
-
-      const updateAndDrawWhisker = (
-        chain: { x: number; y: number }[],
-        base: { x: number; y: number },
-        side: number
-      ) => {
-        chain[0].x = base.x;
-        chain[0].y = base.y;
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(base.x, base.y);
-
-        for (let j = 1; j < WHISKER_SEGMENTS; j++) {
-          const prev = chain[j - 1];
-          const curr = chain[j];
-
-          const wAngle = head.angle + (Math.PI * 0.7 + Math.sin(time * 4 + j * 0.4) * 0.3) * side;
-          const targetWX = prev.x + Math.cos(wAngle) * 8;
-          const targetWY = prev.y + Math.sin(wAngle) * 8;
-
-          curr.x += (targetWX - curr.x) * 0.25;
-          curr.y += (targetWY - curr.y) * 0.25;
-
-          ctx.lineTo(curr.x, curr.y);
-        }
-
-        ctx.strokeStyle = 'rgba(255, 200, 100, 0.75)';
-        ctx.lineWidth = 1.2;
-        ctx.shadowColor = '#FF8800';
-        ctx.shadowBlur = 6;
-        ctx.stroke();
-        ctx.restore();
-      };
-
-      updateAndDrawWhisker(leftWhisker, whiskerBaseL, -1);
-      updateAndDrawWhisker(rightWhisker, whiskerBaseR, 1);
 
       animId = requestAnimationFrame(render);
     };
