@@ -12,15 +12,7 @@ interface WingRay {
   baseOffsetAngle: number;
   length: number;
   curveFactor: number;
-  thickness: number;
   joints: { x: number; y: number }[];
-}
-
-interface Quill {
-  segIdx: number;
-  side: 1 | -1;
-  length: number;
-  angleOffset: number;
 }
 
 interface Ember {
@@ -31,10 +23,6 @@ interface Ember {
   radius: number;
   alpha: number;
   decay: number;
-}
-
-interface Whisker {
-  joints: { x: number; y: number }[];
 }
 
 export const DragonCursor: React.FC = () => {
@@ -50,48 +38,30 @@ export const DragonCursor: React.FC = () => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    let prevW = width;
-    let prevH = height;
-
     const onResize = () => {
       if (!canvas) return;
-      const newW = window.innerWidth;
-      const newH = window.innerHeight;
-      if (Math.abs(newW - prevW) > 60 || Math.abs(newH - prevH) > 90) {
-        width = canvas.width = newW;
-        height = canvas.height = newH;
-        prevW = newW;
-        prevH = newH;
-      }
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', onResize, { passive: true });
 
-    // Pure Viewport Cursor & Roaming Tracking (100% Scroll-Independent)
+    // Cursor tracking
     let mouseX = width / 2;
     let mouseY = height / 2;
-    let prevMouseX = mouseX;
-    let prevMouseY = mouseY;
     let lastMouseMoveTime = performance.now();
     let hasInteracted = false;
 
     const onMouseMove = (e: MouseEvent) => {
-      const dx = e.clientX - prevMouseX;
-      const dy = e.clientY - prevMouseY;
-      if (dx * dx + dy * dy > 2) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        prevMouseX = mouseX;
-        prevMouseY = mouseY;
-        lastMouseMoveTime = performance.now();
-        hasInteracted = true;
-      }
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      lastMouseMoveTime = performance.now();
+      hasInteracted = true;
     };
 
     const onTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
-        const t = e.touches[0];
-        mouseX = t.clientX;
-        mouseY = t.clientY;
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
         lastMouseMoveTime = performance.now();
         hasInteracted = true;
       }
@@ -100,215 +70,178 @@ export const DragonCursor: React.FC = () => {
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
 
-    // --- CELESTIAL DRAGON SPINE CONFIGURATION ---
+    // --- DRAGON STATE ---
     const NUM_SEGMENTS = 26;
-    const SEGMENT_DIST = 9.0;
+    const SEG_DIST = 9.0;
     const segments: Segment[] = [];
 
     let posX = width / 2;
     let posY = height / 2;
-    let currentAngle = -Math.PI / 4;
-    let currentSpeed = 5.6;
+    let vx = 5.5;
+    let vy = 0;
+    let angle = 0;
 
     for (let i = 0; i < NUM_SEGMENTS; i++) {
       let r = 10;
       if (i < 3) r = 6.5 + i * 1.8;
-      else if (i < 9) r = 11.5 - (i - 3) * 0.4;
+      else if (i < 9) r = 11.5 - (i - 3) * 0.45;
       else r = Math.max(9.0 - (i - 9) * 0.38, 1.4);
 
       segments.push({
-        x: posX - i * SEGMENT_DIST,
+        x: posX - i * SEG_DIST,
         y: posY,
-        angle: currentAngle,
+        angle: 0,
         radius: r,
       });
     }
 
-    // --- FEATHERED RAY WINGS (Lionfish Quills) ---
+    // --- LIONFISH FEATHERED WING RAYS ---
+    const NUM_RAYS = 10;
     const createWingRays = (side: 1 | -1): WingRay[] => {
       const rays: WingRay[] = [];
-      const NUM_RAYS = 10;
-
       for (let i = 0; i < NUM_RAYS; i++) {
-        const progress = i / (NUM_RAYS - 1);
-        const segIdx = Math.floor(3 + progress * 4);
-        const baseOffset = (Math.PI * 0.35 + progress * Math.PI * 0.55) * side;
-
-        const lenMultiplier = Math.sin(progress * Math.PI);
-        const rayLen = 28 + lenMultiplier * 70 + (1 - progress) * 14;
-        const curve = (0.35 + progress * 0.4) * side;
-
-        const joints = [
-          { x: posX, y: posY },
-          { x: posX, y: posY },
-          { x: posX, y: posY },
-          { x: posX, y: posY },
-        ];
+        const prog = i / (NUM_RAYS - 1);
+        const segIdx = Math.floor(3 + prog * 4);
+        const baseOffset = (Math.PI * 0.35 + prog * Math.PI * 0.55) * side;
+        const lenMultiplier = Math.sin(prog * Math.PI);
+        const rayLen = 28 + lenMultiplier * 72 + (1 - prog) * 14;
+        const curve = (0.35 + prog * 0.4) * side;
 
         rays.push({
           baseSegIdx: segIdx,
           baseOffsetAngle: baseOffset,
           length: rayLen,
           curveFactor: curve,
-          thickness: Math.max(1.5 - progress * 0.8, 0.7),
-          joints,
+          joints: [
+            { x: posX, y: posY },
+            { x: posX, y: posY },
+            { x: posX, y: posY },
+            { x: posX, y: posY },
+          ],
         });
       }
       return rays;
     };
 
-    const leftWingRays = createWingRays(-1);
-    const rightWingRays = createWingRays(1);
-
-    // --- DORSAL & VENTRAL SPINE QUILLS ---
-    const spineQuills: Quill[] = [];
-    for (let i = 6; i < NUM_SEGMENTS - 2; i += 2) {
-      const prog = (i - 6) / (NUM_SEGMENTS - 8);
-      const qLen = (1 - prog) * 22 + 5;
-      spineQuills.push({ segIdx: i, side: -1, length: qLen, angleOffset: Math.PI * 0.78 });
-      spineQuills.push({ segIdx: i, side: 1, length: qLen, angleOffset: -Math.PI * 0.78 });
-    }
+    const leftRays = createWingRays(-1);
+    const rightRays = createWingRays(1);
 
     // --- SNOUT WHISKERS ---
     const NUM_WHISKER_JOINTS = 6;
-    const createWhisker = (): Whisker => {
-      const joints: { x: number; y: number }[] = [];
-      for (let i = 0; i < NUM_WHISKER_JOINTS; i++) {
-        joints.push({ x: posX, y: posY });
-      }
-      return { joints };
+    const createWhisker = () => {
+      return Array.from({ length: NUM_WHISKER_JOINTS }, () => ({ x: posX, y: posY }));
     };
     const leftWhisker = createWhisker();
     const rightWhisker = createWhisker();
 
-    // Embers
+    // --- EMBERS ---
     const embers: Ember[] = [];
-    const spawnEmber = (x: number, y: number, vx: number, vy: number) => {
-      if (embers.length > 20) return;
-      embers.push({
-        x,
-        y,
-        vx: vx + (Math.random() - 0.5) * 0.7,
-        vy: vy + (Math.random() - 0.5) * 0.7,
-        radius: Math.random() * 1.3 + 0.5,
-        alpha: Math.random() * 0.45 + 0.3,
-        decay: Math.random() * 0.03 + 0.02,
-      });
-    };
 
-    // Smooth Screen Patrol / Roaming Waypoints
-    let wanderX = width * 0.3;
-    let wanderY = height * 0.3;
-    let nextWanderTime = performance.now();
-
-    const pickNewWanderTarget = () => {
-      const padX = width * 0.12;
-      const padY = height * 0.12;
-      wanderX = padX + Math.random() * (width - padX * 2);
-      wanderY = padY + Math.random() * (height - padY * 2);
-      nextWanderTime = performance.now() + 2500 + Math.random() * 2000;
-    };
-
-    // Flapping State Machine
-    let flapMode: 'GLIDE' | 'FLAPPING' = 'GLIDE';
-    let flapTimer = 0;
-    let nextFlapBurstTime = performance.now() + 1800;
-    let flapDuration = 0;
-    let wingBeatProgress = 0;
-
+    // --- UNSTOPPABLE BEACON FLIGHT ENGINE ---
+    let orbitAngle = 0;
     let time = 0;
     let lastTime = performance.now();
+
+    // Flapping flight state
+    let flapTimer = 0;
+    let flapMode: 'GLIDE' | 'FLAP' = 'GLIDE';
+    let nextFlapTime = performance.now() + 2000;
+    let flapDuration = 1.0;
 
     const render = (currentTime: number) => {
       const dt = Math.min((currentTime - lastTime) / 1000, 0.05);
       lastTime = currentTime;
-      time += dt * 2.4;
+      time += dt * 2.5;
 
       ctx.clearRect(0, 0, width, height);
 
-      const isIdle = !hasInteracted || (currentTime - lastMouseMoveTime > 1400);
+      // 1. DYNAMIC ORBIT BEACON (Ensures target is ALWAYS moving in a smooth continuous circle)
+      const isIdle = !hasInteracted || (currentTime - lastMouseMoveTime > 1600);
+      
+      orbitAngle += dt * (isIdle ? 1.2 : 2.0);
 
-      // Target selection (100% independent of scroll)
-      let targetX = mouseX;
-      let targetY = mouseY;
+      let beaconX: number;
+      let beaconY: number;
 
-      if (isIdle) {
-        if (currentTime > nextWanderTime) {
-          pickNewWanderTarget();
-        }
-        targetX = wanderX;
-        targetY = wanderY;
+      if (!isIdle) {
+        // Smooth 75px orbit around the cursor
+        const orbitRadius = 75;
+        beaconX = mouseX + Math.cos(orbitAngle) * orbitRadius;
+        beaconY = mouseY + Math.sin(orbitAngle) * orbitRadius;
+      } else {
+        // Majestic sweeping Lissajous infinity curves across the full screen
+        const centerX = width * 0.5;
+        const centerY = height * 0.5;
+        const spanX = width * 0.38;
+        const spanY = height * 0.32;
+        beaconX = centerX + Math.sin(time * 0.7) * spanX;
+        beaconY = centerY + Math.sin(time * 1.4) * spanY;
       }
 
-      // Flapping state machine
-      if (currentTime > nextFlapBurstTime && flapMode === 'GLIDE') {
-        flapMode = 'FLAPPING';
+      // 2. STEERING & CONTINUOUS FORWARD PROPULSION
+      const dx = beaconX - posX;
+      const dy = beaconY - posY;
+      const distToBeacon = Math.hypot(dx, dy);
+
+      // Flapping state transitions
+      if (currentTime > nextFlapTime && flapMode === 'GLIDE') {
+        flapMode = 'FLAP';
         flapTimer = 0;
-        flapDuration = 1.1 + Math.random() * 0.8;
+        flapDuration = 1.0 + Math.random() * 0.8;
       }
 
-      let flapAngleDelta = 0;
-      if (flapMode === 'FLAPPING') {
-        flapTimer += dt * 3.4;
-        wingBeatProgress = Math.sin(flapTimer * 9.0);
-        flapAngleDelta = wingBeatProgress * 0.65;
-
-        if (wingBeatProgress > 0.15) {
-          currentSpeed += 0.14;
-        }
-
+      let flapWave = 0;
+      if (flapMode === 'FLAP') {
+        flapTimer += dt * 3.5;
+        flapWave = Math.sin(flapTimer * 8.5) * 0.65;
         if (flapTimer >= flapDuration) {
           flapMode = 'GLIDE';
-          nextFlapBurstTime = currentTime + 2400 + Math.random() * 3200;
+          nextFlapTime = currentTime + 2200 + Math.random() * 3000;
         }
       } else {
-        flapAngleDelta = Math.sin(time * 2.4) * 0.12;
+        flapWave = Math.sin(time * 2.2) * 0.12;
       }
 
-      // Distance calculation to target
-      const dTargetX = targetX - posX;
-      const dTargetY = targetY - posY;
-      const distToTarget = Math.sqrt(dTargetX * dTargetX + dTargetY * dTargetY);
+      // Cruising speed (ALWAYS positive, never 0)
+      const targetSpeed = Math.min(13.5, 5.5 + distToBeacon * 0.025);
+      const desiredVx = (dx / (distToBeacon || 1)) * targetSpeed;
+      const desiredVy = (dy / (distToBeacon || 1)) * targetSpeed;
 
-      // Dynamic Speed & Responsiveness
-      const baseSpeed = isIdle ? 4.8 : 5.8;
-      const targetSpeed = Math.min(14.0, baseSpeed + distToTarget * 0.024);
-      currentSpeed += (targetSpeed - currentSpeed) * 0.1;
-      currentSpeed = Math.max(4.2, Math.min(15.0, currentSpeed));
+      // Reynolds steering force (smooth acceleration curve)
+      const steerFactor = isIdle ? 0.055 : 0.095;
+      vx += (desiredVx - vx) * steerFactor;
+      vy += (desiredVy - vy) * steerFactor;
 
-      // Aerodynamic steering (glides straight past close targets instead of flipping 180° back and forth)
-      if (distToTarget > 24) {
-        const desiredAngle = Math.atan2(dTargetY, dTargetX);
-        let angleDiff = desiredAngle - currentAngle;
-        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+      // Maintain guaranteed cruising momentum (never halts or drops below 4.5px/frame)
+      const currentSpeed = Math.max(4.5, Math.hypot(vx, vy));
+      const normVx = vx / (Math.hypot(vx, vy) || 1);
+      const normVy = vy / (Math.hypot(vx, vy) || 1);
+      vx = normVx * currentSpeed;
+      vy = normVy * currentSpeed;
 
-        const turnRate = isIdle ? 0.065 : Math.min(0.16, 0.085 + distToTarget * 0.0003);
-        currentAngle += angleDiff * turnRate;
-      }
+      angle = Math.atan2(vy, vx);
 
-      // Soft edge avoidance
-      const edgePadding = 50;
-      if (posX < edgePadding) currentAngle += 0.05;
-      if (posX > width - edgePadding) currentAngle -= 0.05;
-      if (posY < edgePadding) currentAngle += 0.05;
-      if (posY > height - edgePadding) currentAngle -= 0.05;
+      // Gentle screen edge bounce
+      const pad = 40;
+      if (posX < pad) vx += 0.4;
+      if (posX > width - pad) vx -= 0.4;
+      if (posY < pad) vy += 0.4;
+      if (posY > height - pad) vy -= 0.4;
 
-      // Natural sinuous swimming undulating wave
-      const waveAmplitude = Math.min(currentSpeed * 0.3, 2.6);
-      const waveAngle = Math.sin(time * 4.0) * (waveAmplitude * 0.04);
+      // Sinuous swimming wave
+      const swimWave = Math.sin(time * 4.2) * 0.08;
+      const swimAngle = angle + swimWave;
 
-      // Continuous flight update (always moving forward, never stopping)
-      posX += Math.cos(currentAngle + waveAngle) * currentSpeed;
-      posY += Math.sin(currentAngle + waveAngle) * currentSpeed;
+      posX += Math.cos(swimAngle) * currentSpeed;
+      posY += Math.sin(swimAngle) * currentSpeed;
 
-      posX = Math.max(25, Math.min(width - 25, posX));
-      posY = Math.max(25, Math.min(height - 25, posY));
+      posX = Math.max(20, Math.min(width - 20, posX));
+      posY = Math.max(20, Math.min(height - 20, posY));
 
-      // --- SPINE PROPAGATION (Inverse Kinematics) ---
+      // 3. INVERSE KINEMATICS SPINE
       segments[0].x = posX;
       segments[0].y = posY;
-      segments[0].angle = currentAngle;
+      segments[0].angle = angle;
 
       for (let i = 1; i < NUM_SEGMENTS; i++) {
         const prev = segments[i - 1];
@@ -318,21 +251,29 @@ export const DragonCursor: React.FC = () => {
         const sDy = prev.y - curr.y;
         let sAngle = Math.atan2(sDy, sDx);
 
-        const sWave = Math.sin(time * 3.8 - i * 0.34) * (0.06 + (i / NUM_SEGMENTS) * 0.12);
-        sAngle += sWave;
+        const spineSine = Math.sin(time * 3.8 - i * 0.32) * (0.05 + (i / NUM_SEGMENTS) * 0.1);
+        sAngle += spineSine;
 
-        curr.x = prev.x - Math.cos(sAngle) * SEGMENT_DIST;
-        curr.y = prev.y - Math.sin(sAngle) * SEGMENT_DIST;
+        curr.x = prev.x - Math.cos(sAngle) * SEG_DIST;
+        curr.y = prev.y - Math.sin(sAngle) * SEG_DIST;
         curr.angle = sAngle;
       }
 
-      // Spawn tail embers
+      // Embers
       const tail = segments[NUM_SEGMENTS - 1];
-      if (Math.random() < 0.3) {
-        spawnEmber(tail.x, tail.y, -Math.cos(tail.angle) * 0.8, -Math.sin(tail.angle) * 0.8);
+      if (Math.random() < 0.35 && embers.length < 24) {
+        embers.push({
+          x: tail.x,
+          y: tail.y,
+          vx: -Math.cos(tail.angle) * 0.8 + (Math.random() - 0.5) * 0.6,
+          vy: -Math.sin(tail.angle) * 0.8 + (Math.random() - 0.5) * 0.6,
+          radius: Math.random() * 1.3 + 0.6,
+          alpha: 0.75,
+          decay: Math.random() * 0.03 + 0.02,
+        });
       }
 
-      // --- 1. BATCHED STARDUST EMBERS ---
+      // Draw embers
       for (let i = embers.length - 1; i >= 0; i--) {
         const e = embers[i];
         e.x += e.vx;
@@ -350,8 +291,8 @@ export const DragonCursor: React.FC = () => {
       }
       ctx.globalAlpha = 1;
 
-      // --- 2. BATCHED FEATHERED RAY WINGS (Lionfish Quills) ---
-      const updateAndDrawWings = (rays: WingRay[], side: 1 | -1) => {
+      // 4. DRAW LIONFISH WINGS
+      const drawWings = (rays: WingRay[], side: 1 | -1) => {
         rays.forEach((ray) => {
           const baseSeg = segments[ray.baseSegIdx];
           if (!baseSeg) return;
@@ -360,14 +301,14 @@ export const DragonCursor: React.FC = () => {
           const rootX = baseSeg.x + Math.cos(ribAngle) * (baseSeg.radius * 0.85);
           const rootY = baseSeg.y + Math.sin(ribAngle) * (baseSeg.radius * 0.85);
 
-          const rayBaseAngle = baseSeg.angle + ray.baseOffsetAngle + flapAngleDelta * side;
+          const rayBaseAngle = baseSeg.angle + ray.baseOffsetAngle + flapWave * side;
 
           ray.joints[0].x = rootX;
           ray.joints[0].y = rootY;
 
           const segLen = ray.length / 3;
           for (let j = 1; j < 4; j++) {
-            const jointAngle = rayBaseAngle + ray.curveFactor * (j * 0.3) - (flapAngleDelta * 0.22 * j * side);
+            const jointAngle = rayBaseAngle + ray.curveFactor * (j * 0.3) - (flapWave * 0.2 * j * side);
             const targetJX = ray.joints[j - 1].x + Math.cos(jointAngle) * segLen;
             const targetJY = ray.joints[j - 1].y + Math.sin(jointAngle) * segLen;
 
@@ -376,7 +317,7 @@ export const DragonCursor: React.FC = () => {
           }
         });
 
-        // Batched translucent membranes
+        // Translucent membranes
         ctx.beginPath();
         for (let rIdx = 1; rIdx < rays.length; rIdx++) {
           const curr = rays[rIdx];
@@ -389,7 +330,7 @@ export const DragonCursor: React.FC = () => {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
         ctx.fill();
 
-        // Batched Quill Strokes
+        // White quill strokes
         ctx.beginPath();
         ctx.strokeStyle = '#FFFFFF';
         ctx.lineWidth = 1.0;
@@ -402,8 +343,9 @@ export const DragonCursor: React.FC = () => {
         });
         ctx.stroke();
 
+        // Silver quill strokes
         ctx.beginPath();
-        ctx.strokeStyle = 'rgba(212, 212, 216, 0.8)';
+        ctx.strokeStyle = 'rgba(212, 212, 216, 0.85)';
         ctx.lineWidth = 0.8;
         rays.forEach((ray, rIdx) => {
           if (rIdx % 2 !== 0) {
@@ -415,35 +357,10 @@ export const DragonCursor: React.FC = () => {
         ctx.stroke();
       };
 
-      updateAndDrawWings(leftWingRays, -1);
-      updateAndDrawWings(rightWingRays, 1);
+      drawWings(leftRays, -1);
+      drawWings(rightRays, 1);
 
-      // --- 3. BATCHED SPINE NEEDLE QUILLS ---
-      ctx.beginPath();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.42)';
-      ctx.lineWidth = 0.8;
-      spineQuills.forEach((q) => {
-        const seg = segments[q.segIdx];
-        if (!seg) return;
-
-        const qAngle = seg.angle + q.angleOffset;
-        const qRootX = seg.x + Math.cos(seg.angle + (Math.PI / 2) * q.side) * (seg.radius * 0.7);
-        const qRootY = seg.y + Math.sin(seg.angle + (Math.PI / 2) * q.side) * (seg.radius * 0.7);
-
-        const tipX = qRootX + Math.cos(qAngle) * q.length;
-        const tipY = qRootY + Math.sin(qAngle) * q.length;
-
-        ctx.moveTo(qRootX, qRootY);
-        ctx.quadraticCurveTo(
-          qRootX + Math.cos(qAngle + 0.3 * q.side) * (q.length * 0.5),
-          qRootY + Math.sin(qAngle + 0.3 * q.side) * (q.length * 0.5),
-          tipX,
-          tipY
-        );
-      });
-      ctx.stroke();
-
-      // --- 4. BATCHED CHEVRON SCALES & VERTEBRAE ---
+      // 5. DRAW VERTEBRAE & SCALES
       ctx.beginPath();
       for (let i = NUM_SEGMENTS - 1; i >= 0; i--) {
         const seg = segments[i];
@@ -472,10 +389,10 @@ export const DragonCursor: React.FC = () => {
       ctx.fillStyle = '#18181B';
       ctx.fill();
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-      ctx.lineWidth = 0.8;
+      ctx.lineWidth = 0.85;
       ctx.stroke();
 
-      // --- 5. CRESCENT SPLIT TAIL FIN ---
+      // 6. DRAW CRESCENT SPLIT TAIL FIN
       const tailSeg = segments[NUM_SEGMENTS - 1];
       const tailCos = Math.cos(tailSeg.angle);
       const tailSin = Math.sin(tailSeg.angle);
@@ -505,10 +422,10 @@ export const DragonCursor: React.FC = () => {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
       ctx.fill();
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-      ctx.lineWidth = 0.8;
+      ctx.lineWidth = 0.85;
       ctx.stroke();
 
-      // --- 6. DRAGON HEAD, HORNS & MASK ---
+      // 7. DRAGON HEAD, HORNS & EYES
       const head = segments[0];
       ctx.save();
       ctx.translate(head.x, head.y);
@@ -532,7 +449,7 @@ export const DragonCursor: React.FC = () => {
       ctx.lineWidth = 1.0;
       ctx.stroke();
 
-      // Horn ridges
+      // Silver Horn ridges
       ctx.beginPath();
       ctx.moveTo(-2, -4);
       ctx.lineTo(-9, -14);
@@ -557,8 +474,8 @@ export const DragonCursor: React.FC = () => {
 
       ctx.restore();
 
-      // --- 7. FLOWING SINUOUS WHISKERS ---
-      const updateAndDrawWhisker = (whisker: Whisker, side: 1 | -1) => {
+      // 8. FLOWING SINUOUS WHISKERS
+      const drawWhisker = (joints: { x: number; y: number }[], side: 1 | -1) => {
         const headCos = Math.cos(head.angle);
         const headSin = Math.sin(head.angle);
         const perpX = -headSin;
@@ -567,21 +484,21 @@ export const DragonCursor: React.FC = () => {
         const snoutRootX = head.x + headCos * 11 + perpX * (side * 2.2);
         const snoutRootY = head.y + headSin * 11 + perpY * (side * 2.2);
 
-        whisker.joints[0].x = snoutRootX;
-        whisker.joints[0].y = snoutRootY;
+        joints[0].x = snoutRootX;
+        joints[0].y = snoutRootY;
 
         ctx.beginPath();
         ctx.moveTo(snoutRootX, snoutRootY);
 
         for (let j = 1; j < NUM_WHISKER_JOINTS; j++) {
           const wAngle = head.angle + Math.PI + Math.sin(time * 3.5 - j * 0.6) * 0.45 + (side * 0.28);
-          const targetX = whisker.joints[j - 1].x + Math.cos(wAngle) * 6.0;
-          const targetY = whisker.joints[j - 1].y + Math.sin(wAngle) * 6.0;
+          const targetX = joints[j - 1].x + Math.cos(wAngle) * 6.0;
+          const targetY = joints[j - 1].y + Math.sin(wAngle) * 6.0;
 
-          whisker.joints[j].x += (targetX - whisker.joints[j].x) * 0.42;
-          whisker.joints[j].y += (targetY - whisker.joints[j].y) * 0.42;
+          joints[j].x += (targetX - joints[j].x) * 0.42;
+          joints[j].y += (targetY - joints[j].y) * 0.42;
 
-          ctx.lineTo(whisker.joints[j].x, whisker.joints[j].y);
+          ctx.lineTo(joints[j].x, joints[j].y);
         }
 
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
@@ -589,8 +506,8 @@ export const DragonCursor: React.FC = () => {
         ctx.stroke();
       };
 
-      updateAndDrawWhisker(leftWhisker, -1);
-      updateAndDrawWhisker(rightWhisker, 1);
+      drawWhisker(leftWhisker, -1);
+      drawWhisker(rightWhisker, 1);
 
       animId = requestAnimationFrame(render);
     };
