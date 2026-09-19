@@ -75,25 +75,25 @@ export const PortfolioIntroAnimation: React.FC<PortfolioIntroAnimationProps> = (
     };
   }, []);
 
-  // Telemetry status text cycle
+  // Telemetry status text cycle (extended for elegant pacing)
   useEffect(() => {
-    const s1 = setTimeout(() => setStatusIndex(1), 800);
-    const s2 = setTimeout(() => setStatusIndex(2), 1600);
+    const s1 = setTimeout(() => setStatusIndex(1), 1300);
+    const s2 = setTimeout(() => setStatusIndex(2), 2600);
     return () => {
       clearTimeout(s1);
       clearTimeout(s2);
     };
   }, []);
 
-  // Smooth choreographed exit timing
+  // Smooth choreographed exit timing (held longer for cinematic impact)
   useEffect(() => {
     const tExit = setTimeout(() => {
       setPhase('exit');
-    }, 2200);
+    }, 3800);
 
     const tComplete = setTimeout(() => {
       onComplete();
-    }, 2650);
+    }, 4350);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
@@ -229,7 +229,7 @@ export const PortfolioIntroAnimation: React.FC<PortfolioIntroAnimationProps> = (
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 2.1, ease: [0.25, 1, 0.5, 1] }}
+              transition={{ duration: 3.5, ease: [0.25, 1, 0.5, 1] }}
               style={{ originX: 0 }}
               className="h-full bg-gradient-to-r from-red-600 via-[#E50914] to-red-400 rounded-full shadow-[0_0_10px_#E50914] will-change-transform"
             />
