@@ -40,9 +40,11 @@ export const ProfileSelector: React.FC<ProfileSelectorProps> = ({ onSelectProfil
             onClick={() => onSelectProfile(profile)}
             className="group flex flex-col items-center cursor-pointer w-28 sm:w-36 focus:outline-none"
           >
-            {/* Glass Avatar Card */}
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/10 group-hover:border-[#E50914]/70 group-hover:shadow-[0_0_30px_rgba(229,9,20,0.35),inset_0_1px_1px_rgba(255,255,255,0.2)] shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] transition-all duration-300 flex flex-col items-center justify-center group-hover:-translate-y-1">
-              <span className="font-mono text-xl sm:text-2xl font-bold text-zinc-300 group-hover:text-white group-hover:scale-110 transition-transform drop-shadow">
+            {/* Glass Avatar Card with Vibrant Profile Gradient */}
+            <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-gradient-to-br ${profile.avatarGradient} border border-white/20 group-hover:border-white group-hover:shadow-[0_0_35px_rgba(229,9,20,0.5),inset_0_1px_1px_rgba(255,255,255,0.4)] shadow-[0_12px_32px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-300 flex flex-col items-center justify-center group-hover:-translate-y-1 relative overflow-hidden`}>
+              <div className="absolute inset-0 bg-black/15" />
+              <User className="w-8 h-8 sm:w-10 sm:h-10 text-white group-hover:scale-110 transition-transform relative z-10 drop-shadow-md" />
+              <span className="text-[10px] font-mono font-bold tracking-widest text-white/90 mt-1 uppercase relative z-10">
                 {profile.avatarIcon}
               </span>
             </div>

@@ -3,6 +3,7 @@ export interface NetflixProfile {
   name: string;
   role: string;
   avatarBg: string;
+  avatarGradient: string;
   avatarIcon: string;
   greeting: string;
 }
@@ -41,36 +42,40 @@ export interface NetflixItem {
 
 export const NETFLIX_PROFILES: NetflixProfile[] = [
   {
-    id: 'recruiter',
-    name: 'Recruiter',
-    role: 'Hiring & Technical Recruitment',
-    avatarBg: 'bg-zinc-800',
-    avatarIcon: 'HR',
-    greeting: 'Welcome. Take a look at the projects, source code links, and technical background.'
+    id: 'developer',
+    name: 'Developer',
+    role: 'Full Stack & Systems Engineer',
+    avatarBg: 'bg-emerald-600',
+    avatarGradient: 'from-emerald-500 to-teal-700',
+    avatarIcon: 'DEV',
+    greeting: 'Reviewing systems architecture, C++ memory models, and frontend design.'
   },
   {
     id: 'tech_lead',
     name: 'Engineering Lead',
-    role: 'Architecture & System Design',
-    avatarBg: 'bg-zinc-800',
-    avatarIcon: 'ENG',
-    greeting: 'Reviewing systems code, database queries, and frontend architecture.'
+    role: 'Architecture & Scalability',
+    avatarBg: 'bg-blue-600',
+    avatarGradient: 'from-blue-600 to-indigo-800',
+    avatarIcon: 'LEAD',
+    greeting: 'Analyzing real-time performance, GIS pipelines, and low-latency throughput.'
   },
   {
-    id: 'developer',
-    name: 'Developer',
-    role: 'Peer Software Engineer',
-    avatarBg: 'bg-zinc-800',
-    avatarIcon: 'DEV',
-    greeting: 'Checking out project implementations, libraries used, and performance details.'
+    id: 'recruiter',
+    name: 'Recruiter',
+    role: 'Hiring & Technical Talent',
+    avatarBg: 'bg-rose-600',
+    avatarGradient: 'from-rose-500 to-red-700',
+    avatarIcon: 'TALENT',
+    greeting: 'Welcome. Take a look at key achievements, live projects, and technical skills.'
   },
   {
     id: 'guest',
     name: 'Visitor',
     role: 'General Exploration',
-    avatarBg: 'bg-zinc-800',
-    avatarIcon: 'VIS',
-    greeting: 'Explore the portfolio projects and technical write-ups.'
+    avatarBg: 'bg-purple-600',
+    avatarGradient: 'from-purple-600 to-fuchsia-700',
+    avatarIcon: 'VISITOR',
+    greeting: 'Explore the interactive portfolio, 3D orbits, and code repositories.'
   }
 ];
 
