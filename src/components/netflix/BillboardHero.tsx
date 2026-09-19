@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BILLBOARD_FEATURED, NetflixItem } from '../../constants/netflixData';
-import { Play, Info, CheckCircle2, ArrowRight, Zap, Shield, Cpu } from 'lucide-react';
+import { Play, Info, CheckCircle2, ArrowRight, Zap, Shield, Cpu, Radio } from 'lucide-react';
 import { HeroQuantumCore } from '../3d/HeroQuantumCore';
 
 interface BillboardHeroProps {
@@ -128,15 +128,15 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
           </div>
         </motion.div>
 
-        {/* Right Column: Holographic 3D Geospatial System Console */}
+        {/* Right Column: Interactive 3D Quantum Core Console */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="lg:col-span-5 relative"
+          className="lg:col-span-5 relative w-full"
         >
-          {/* Ambient Glowing Background Aura */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#E50914]/20 via-red-600/10 to-transparent rounded-3xl filter blur-3xl pointer-events-none -z-10" />
+          {/* Subtle Ambient Glow Under Glass */}
+          <div className="absolute -inset-2 bg-gradient-to-r from-red-600/20 via-purple-600/10 to-emerald-500/20 rounded-3xl blur-2xl opacity-60 pointer-events-none" />
 
           {/* Frosted Cyber Glass Console Card */}
           <div className="rounded-3xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/12 shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] overflow-hidden flex flex-col justify-between p-4 sm:p-5">
@@ -162,30 +162,58 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
               <HeroQuantumCore />
             </div>
 
-            {/* Console Bottom Stats Tray */}
-            <div className="pt-3 border-t border-white/10 grid grid-cols-3 gap-2">
-              <div className="p-2 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] text-center">
-                <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase">
-                  <Zap className="w-2.5 h-2.5 text-[#E50914]" />
-                  <span>PostGIS</span>
+            {/* Console Bottom Stats & Telemetry Matrix */}
+            <div className="pt-3 border-t border-white/10 space-y-2.5">
+              {/* 4 Metric Cards Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-red-500/40 text-center transition-all duration-200 group/stat">
+                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
+                    <Zap className="w-2.5 h-2.5 text-[#E50914] group-hover/stat:scale-110 transition-transform" />
+                    <span>PostGIS</span>
+                  </div>
+                  <div className="text-[11px] font-bold text-white mt-1 font-mono">&lt; 50ms</div>
+                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Spatial Index</div>
                 </div>
-                <div className="text-[11px] font-bold text-white mt-0.5 font-mono">&lt; 50ms</div>
+
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-blue-500/40 text-center transition-all duration-200 group/stat">
+                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
+                    <Shield className="w-2.5 h-2.5 text-blue-400 group-hover/stat:scale-110 transition-transform" />
+                    <span>Polaris</span>
+                  </div>
+                  <div className="text-[11px] font-bold text-white mt-1 font-mono">Offline PWA</div>
+                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Edge Caching</div>
+                </div>
+
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-emerald-500/40 text-center transition-all duration-200 group/stat">
+                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
+                    <Radio className="w-2.5 h-2.5 text-emerald-400 group-hover/stat:scale-110 transition-transform" />
+                    <span>VarshaNet</span>
+                  </div>
+                  <div className="text-[11px] font-bold text-white mt-1 font-mono">99.4% Acc</div>
+                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Radar AI</div>
+                </div>
+
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-purple-500/40 text-center transition-all duration-200 group/stat">
+                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
+                    <Cpu className="w-2.5 h-2.5 text-purple-400 group-hover/stat:scale-110 transition-transform" />
+                    <span>C++ Queue</span>
+                  </div>
+                  <div className="text-[11px] font-bold text-white mt-1 font-mono">10k+ ops/s</div>
+                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Lock-Free</div>
+                </div>
               </div>
 
-              <div className="p-2 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] text-center">
-                <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase">
-                  <Shield className="w-2.5 h-2.5 text-blue-400" />
-                  <span>Polaris</span>
+              {/* Micro Status Bar */}
+              <div className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/[0.06] flex items-center justify-between text-[9px] font-mono text-zinc-400">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)] animate-pulse" />
+                  <span>CORE: <strong className="text-zinc-200">ACTIVE</strong></span>
                 </div>
-                <div className="text-[11px] font-bold text-white mt-0.5 font-mono">Offline PWA</div>
-              </div>
-
-              <div className="p-2 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] text-center">
-                <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase">
-                  <Cpu className="w-2.5 h-2.5 text-[#E50914]" />
-                  <span>Queue</span>
+                <div className="flex items-center gap-3">
+                  <span>RENDER: <strong className="text-zinc-200">60 FPS</strong></span>
+                  <span className="text-zinc-600">|</span>
+                  <span>SYNC: <strong className="text-emerald-400">VERIFIED</strong></span>
                 </div>
-                <div className="text-[11px] font-bold text-white mt-0.5 font-mono">10k+ ops/s</div>
               </div>
             </div>
 
