@@ -104,26 +104,68 @@ export const DragonCursor: React.FC = () => {
       });
     };
 
+    // Full-Page Random Roaming System (When Mouse is Still)
+    let wanderX = Math.random() * (width - 240) + 120;
+    let wanderY = Math.random() * (height - 240) + 120;
+    let wanderAngle = Math.random() * Math.PI * 2;
+    let nextWanderChangeTime = Date.now() + 2000;
+
+    const pickNewWanderTarget = () => {
+      const padding = 100;
+      wanderX = padding + Math.random() * (width - padding * 2);
+      wanderY = padding + Math.random() * (height - padding * 2);
+      nextWanderChangeTime = Date.now() + 2800 + Math.random() * 2500;
+    };
+
     let time = 0;
 
     const render = () => {
       time += 0.04;
       ctx.clearRect(0, 0, width, height);
 
-      // Autonomous Orbit / Hover when user is idle
-      const isIdle = Date.now() - lastMouseMoveTime > 2500 || !hasInteracted;
+      // Autonomous Full-Page Exploration when user is idle
+      const isIdle = Date.now() - lastMouseMoveTime > 1200 || !hasInteracted;
+
+      let activeTargetX = mouseX;
+      let activeTargetY = mouseY;
+
       if (isIdle) {
-        const orbitRadius = 140;
-        const orbitSpeed = time * 1.2;
-        mouseX = width / 2 + Math.cos(orbitSpeed) * orbitRadius + Math.sin(orbitSpeed * 2) * 50;
-        mouseY = height / 2 + Math.sin(orbitSpeed * 1.4) * (orbitRadius * 0.7) + Math.cos(orbitSpeed * 0.8) * 40;
+        // Check distance to current wander waypoint or timer expiry
+        const dWanderX = wanderX - targetX;
+        const dWanderY = wanderY - targetY;
+        const distToWander = Math.sqrt(dWanderX * dWanderX + dWanderY * dWanderY);
+
+        if (distToWander < 130 || Date.now() > nextWanderChangeTime) {
+          pickNewWanderTarget();
+        }
+
+        // Steer smoothly towards current wander target
+        const desiredAngle = Math.atan2(wanderY - targetY, wanderX - targetX);
+        let diffAngle = desiredAngle - wanderAngle;
+        while (diffAngle < -Math.PI) diffAngle += Math.PI * 2;
+        while (diffAngle > Math.PI) diffAngle -= Math.PI * 2;
+
+        wanderAngle += diffAngle * 0.045; // Smooth realistic flight turn
+
+        // Dynamic soaring speed and wave undulation
+        const cruiseSpeed = 5.2 + Math.sin(time * 2) * 1.5;
+        const flightWave = Math.sin(time * 3) * 0.15;
+
+        // Keep inside screen boundaries with gentle avoidance
+        if (targetX < 80 && Math.cos(wanderAngle) < 0) wanderAngle = Math.PI * 0.1;
+        if (targetX > width - 80 && Math.cos(wanderAngle) > 0) wanderAngle = Math.PI * 0.9;
+        if (targetY < 80 && Math.sin(wanderAngle) < 0) wanderAngle = Math.PI * 0.6;
+        if (targetY > height - 80 && Math.sin(wanderAngle) > 0) wanderAngle = -Math.PI * 0.6;
+
+        activeTargetX = targetX + Math.cos(wanderAngle + flightWave) * (cruiseSpeed * 4.5);
+        activeTargetY = targetY + Math.sin(wanderAngle + flightWave) * (cruiseSpeed * 4.5);
       }
 
       // Smooth Head Tracking with Inertia
-      const dx = mouseX - targetX;
-      const dy = mouseY - targetY;
-      const distToMouse = Math.sqrt(dx * dx + dy * dy);
-      const speedFactor = Math.min(Math.max(distToMouse * 0.045, 0.08), 0.22);
+      const dx = activeTargetX - targetX;
+      const dy = activeTargetY - targetY;
+      const distToTarget = Math.sqrt(dx * dx + dy * dy);
+      const speedFactor = isIdle ? 0.085 : Math.min(Math.max(distToTarget * 0.045, 0.08), 0.22);
       
       targetX += dx * speedFactor;
       targetY += dy * speedFactor;
