@@ -177,7 +177,7 @@ export const HeroQuantumCore: React.FC = () => {
   return (
     <div
       onPointerMove={handlePointerMove}
-      className="relative w-full h-[450px] lg:h-[580px] flex items-center justify-center select-none"
+      className="relative w-full h-[300px] sm:h-[420px] lg:h-[520px] flex items-center justify-center select-none"
     >
       <Canvas
         camera={{ position: [0, 0, 5.2], fov: 45 }}

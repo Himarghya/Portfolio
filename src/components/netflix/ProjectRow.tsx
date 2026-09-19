@@ -50,7 +50,7 @@ const ProjectCard: React.FC<{
 
   return (
     <div
-      className="w-80 sm:w-96 lg:w-[420px] shrink-0 group relative cursor-pointer"
+      className="w-[82vw] max-w-[330px] sm:w-96 lg:w-[420px] shrink-0 group relative cursor-pointer"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -224,19 +224,19 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({
         </div>
       </div>
 
-      {/* Left Slider Arrow */}
+      {/* Left Slider Arrow (Desktop Only) */}
       <button
         onClick={() => scroll('left')}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/40 hover:bg-black/70 backdrop-blur-xl text-white flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all rounded-r-xl border-y border-r border-white/15 shadow-xl cursor-pointer"
+        className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/40 hover:bg-black/70 backdrop-blur-xl text-white items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all rounded-r-xl border-y border-r border-white/15 shadow-xl cursor-pointer"
         aria-label="Scroll left"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      {/* Right Slider Arrow */}
+      {/* Right Slider Arrow (Desktop Only) */}
       <button
         onClick={() => scroll('right')}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/40 hover:bg-black/70 backdrop-blur-xl text-white flex items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all rounded-l-xl border-y border-l border-white/15 shadow-xl cursor-pointer"
+        className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-30 h-3/5 w-10 sm:w-12 bg-black/40 hover:bg-black/70 backdrop-blur-xl text-white items-center justify-center opacity-0 group-hover/row:opacity-100 transition-all rounded-l-xl border-y border-l border-white/15 shadow-xl cursor-pointer"
         aria-label="Scroll right"
       >
         <ChevronRight className="w-6 h-6" />
