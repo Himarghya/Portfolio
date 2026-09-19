@@ -54,10 +54,23 @@ export const NetflixTerminal: React.FC<NetflixTerminalProps> = ({ isOpen, onClos
           '  whoami       - Display showrunner / developer profile',
           '  projects     - List all streaming releases & live projects',
           '  skills       - View top 10 stack rankings',
+          '  certs        - View accredited certifications & achievements',
           '  contact      - Direct email and transmission endpoints',
           '  hire         - Instructions to hire Himarghya Das',
           '  tudum        - Play sound effect indicator',
           '  clear        - Flush terminal screen'
+        ];
+        break;
+
+      case 'certs':
+      case 'certificates':
+      case 'achievements':
+      case 'awards':
+        response = [
+          '🏆 ACCREDITATIONS & ACHIEVEMENTS:',
+          '  • [3rd Place] RoboRush 3.0 (2025) — ERS, IIITDM Jabalpur (Team Super Strikers)',
+          '  • [Verified 62-Hour Fullstack] The Complete Full-Stack Web Development Bootcamp (Udemy / Dr. Angela Yu)',
+          '    Credential ID: UC-629e3310-b94c-4f76-a91e-1b90d378d496'
         ];
         break;
 

@@ -35,6 +35,7 @@ export const NetflixNavbar: React.FC<NetflixNavbarProps> = ({
     { name: 'Projects', href: '#projects' },
     { name: 'Stack', href: '#skills' },
     { name: 'Timeline', href: '#timeline' },
+    { name: 'Certificates', href: '#certificates' },
     { name: 'About', href: '#about' },
     { name: 'Contact', href: '#contact' }
   ];

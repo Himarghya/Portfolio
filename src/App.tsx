@@ -11,6 +11,7 @@ import { BillboardHero } from './components/netflix/BillboardHero';
 import { ProjectRow } from './components/netflix/ProjectRow';
 import { TopTenRow } from './components/netflix/TopTenRow';
 import { SeasonsEpisodeTimeline } from './components/netflix/SeasonsEpisodeTimeline';
+import { NetflixCertificates } from './components/netflix/NetflixCertificates';
 import { NetflixAbout } from './components/netflix/NetflixAbout';
 import { NetflixContact } from './components/netflix/NetflixContact';
 import { NetflixFooter } from './components/netflix/NetflixFooter';
@@ -98,6 +99,9 @@ export const App: React.FC = () => {
 
               {/* Row 3: Career Journey */}
               <SeasonsEpisodeTimeline />
+
+              {/* Row 4: Certificates & Achievements */}
+              <NetflixCertificates />
 
               {/* About Section */}
               <NetflixAbout />
