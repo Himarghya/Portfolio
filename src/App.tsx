@@ -4,6 +4,7 @@ import { NETFLIX_PROFILES, NetflixProfile, NetflixItem, TRENDING_PROJECTS } from
 import { PortfolioIntroAnimation } from './components/portfolio/PortfolioIntroAnimation';
 import { GlassBackground } from './components/ui/GlassBackground';
 import { DragonCursor } from './components/ui/DragonCursor';
+import { SmoothScrollManager } from './components/ui/SmoothScrollManager';
 import { ProfileSelector } from './components/netflix/ProfileSelector';
 import { NetflixNavbar } from './components/netflix/NetflixNavbar';
 import { BillboardHero } from './components/netflix/BillboardHero';
@@ -122,6 +123,9 @@ export const App: React.FC = () => {
             isOpen={terminalOpen}
             onClose={() => setTerminalOpen(false)}
           />
+
+          {/* Smooth Momentum Scroll & Floating Navigator */}
+          <SmoothScrollManager />
         </div>
       )}
 

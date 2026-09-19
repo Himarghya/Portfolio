@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { TOP_TEN_SKILLS } from '../../constants/netflixData';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const TopTenRow: React.FC = () => {
   const rowRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const startX = useRef(0);
+  const scrollLeftPos = useRef(0);
 
   const scroll = (direction: 'left' | 'right') => {
     if (rowRef.current) {
@@ -14,6 +17,29 @@ export const TopTenRow: React.FC = () => {
         behavior: 'smooth'
       });
     }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!rowRef.current) return;
+    setIsDragging(true);
+    startX.current = e.pageX - rowRef.current.offsetLeft;
+    scrollLeftPos.current = rowRef.current.scrollLeft;
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !rowRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - rowRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.5;
+    rowRef.current.scrollLeft = scrollLeftPos.current - walk;
   };
 
   return (
@@ -52,7 +78,13 @@ export const TopTenRow: React.FC = () => {
       {/* Top 10 Cards Slider */}
       <div
         ref={rowRef}
-        className="flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth pl-4 pr-12 items-end"
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className={`flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth pl-4 pr-12 items-end cursor-grab ${
+          isDragging ? 'cursor-grabbing select-none' : ''
+        }`}
       >
         {TOP_TEN_SKILLS.map((skill) => (
           <div

@@ -196,6 +196,9 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({
   onOpenDetailModal
 }) => {
   const rowRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const startX = useRef(0);
+  const scrollLeftPos = useRef(0);
 
   const scroll = (direction: 'left' | 'right') => {
     if (rowRef.current) {
@@ -206,6 +209,29 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({
         behavior: 'smooth'
       });
     }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!rowRef.current) return;
+    setIsDragging(true);
+    startX.current = e.pageX - rowRef.current.offsetLeft;
+    scrollLeftPos.current = rowRef.current.scrollLeft;
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !rowRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - rowRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.5;
+    rowRef.current.scrollLeft = scrollLeftPos.current - walk;
   };
 
   return (
@@ -246,7 +272,13 @@ export const ProjectRow: React.FC<ProjectRowProps> = ({
       {/* Scrollable Row */}
       <div
         ref={rowRef}
-        className="flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth"
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className={`flex gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden overscroll-x-contain no-scrollbar py-6 scroll-smooth cursor-grab ${
+          isDragging ? 'cursor-grabbing select-none' : ''
+        }`}
       >
         {items.map((item) => (
           <ProjectCard
