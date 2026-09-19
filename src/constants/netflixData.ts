@@ -26,6 +26,8 @@ export interface NetflixItem {
   type3D?: 'weather-globe' | 'ocean-sphere' | 'medical-hud' | 'card-deck';
   liveUrl?: string;
   githubUrl?: string;
+  videoUrl?: string;
+  posterImage?: string;
   keyHighlights: string[];
   metrics?: { label: string; value: string }[];
   episodes?: {
@@ -120,6 +122,7 @@ export const TRENDING_PROJECTS: NetflixItem[] = [
     tags: ['Radar Sweeps', 'PostGIS Indexing', 'FastAPI'],
     backdropColor: 'bg-zinc-900',
     badge: 'CORE PROJECT',
+    videoUrl: '/videos/varshanet.mp4',
     githubUrl: 'https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic',
     liveUrl: 'https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic',
     keyHighlights: [
@@ -187,6 +190,7 @@ export const TRENDING_PROJECTS: NetflixItem[] = [
     tags: ['Offline PWA', 'Satellite Sync', 'Terrain Routing'],
     backdropColor: 'bg-zinc-900',
     badge: 'EXPEDITION SYSTEM',
+    videoUrl: '/videos/polaris.mp4',
     githubUrl: 'https://github.com/Himarghya/SIH26062',
     liveUrl: 'https://github.com/Himarghya/SIH26062',
     keyHighlights: [
@@ -205,11 +209,40 @@ export const TRENDING_PROJECTS: NetflixItem[] = [
     ]
   },
   {
+    id: 'campusos',
+    title: 'CampusOS',
+    subtitle: 'Smart Campus Operating System & Portal',
+    category: 'Full Stack Enterprise',
+    matchPercentage: 96,
+    ageRating: 'MONOREPO',
+    durationOrYear: '2025',
+    quality: 'FULL STACK',
+    synopsis: 'A comprehensive campus management operating system integrating course scheduling, academic attendance, resource reservations, and real-time announcements.',
+    detailedOverview: 'Monorepo architecture uniting a React TypeScript frontend with an Express/PostgreSQL backend service. Provides role-based portals for students, faculty, and administrators.',
+    cast: ['React', 'Node.js', 'Express', 'TypeScript', 'PostgreSQL', 'Tailwind'],
+    genres: ['Campus ERP', 'Role-Based Access', 'Monorepo Systems'],
+    tags: ['RBAC', 'Monorepo', 'PostgreSQL'],
+    backdropColor: 'bg-zinc-900',
+    badge: 'ENTERPRISE SYSTEM',
+    githubUrl: 'https://github.com/Himarghya/CampusOS',
+    liveUrl: 'https://github.com/Himarghya/CampusOS',
+    keyHighlights: [
+      'Unified student and faculty portal with granular JWT role permissions',
+      'Full-stack TypeScript monorepo with automated deployment scripts',
+      'Automated attendance tracking and resource scheduling algorithms'
+    ],
+    metrics: [
+      { label: 'Architecture', value: 'Monorepo' },
+      { label: 'Database', value: 'PostgreSQL' },
+      { label: 'Auth', value: 'JWT RBAC' }
+    ]
+  },
+  {
     id: 'ocean-telemetry',
     title: 'Hydrographic Ocean Telemetry',
     subtitle: 'Marine Sensor & Bathymetric Simulation',
     category: 'Marine Telemetry',
-    matchPercentage: 96,
+    matchPercentage: 95,
     ageRating: 'TELEMETRY',
     durationOrYear: '2025',
     quality: 'PYTHON / 3D',
