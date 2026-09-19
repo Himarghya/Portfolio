@@ -103,50 +103,67 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
           </div>
         </motion.div>
 
-        {/* Right Column: Interactive 3D Quantum Core & Telemetry HUD */}
+        {/* Right Column: Holographic 3D Geospatial System Console */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
+          initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="lg:col-span-5 relative flex items-center justify-center min-h-[360px] sm:min-h-[440px] lg:min-h-[500px]"
+          className="lg:col-span-5 relative"
         >
           {/* Ambient Glowing Background Aura */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#E50914]/25 via-red-600/10 to-transparent rounded-full filter blur-3xl pointer-events-none -z-10" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#E50914]/20 via-red-600/10 to-transparent rounded-3xl filter blur-3xl pointer-events-none -z-10" />
 
-          {/* 3D Core Canvas */}
-          <div className="w-full h-full relative flex items-center justify-center">
-            <HeroQuantumCore />
+          {/* Frosted Cyber Glass Console Card */}
+          <div className="rounded-3xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/12 shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] overflow-hidden flex flex-col justify-between p-4 sm:p-5">
+            
+            {/* Console Top Header */}
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span className="text-[11px] font-mono text-zinc-300 font-bold uppercase tracking-wider">
+                  SYS.TELEMETRY // LIVE
+                </span>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full bg-white/[0.06] backdrop-blur-md text-[#E50914] font-mono text-[10px] font-bold border border-red-500/20 shadow-[0_0_8px_rgba(229,9,20,0.25)]">
+                3D ORBIT ENGINE
+              </span>
+            </div>
 
-            {/* Floating Holographic Telemetry Pill 1 (Top Left) */}
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-4 left-0 sm:left-2 z-10 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/65 backdrop-blur-xl border border-white/15 shadow-[0_8px_25px_rgba(0,0,0,0.6)] text-[10px] sm:text-[11px] font-mono text-zinc-200 pointer-events-none"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <Zap className="w-3.5 h-3.5 text-[#E50914]" />
-              <span>PostGIS • &lt;50ms</span>
-            </motion.div>
+            {/* 3D Core Canvas */}
+            <div className="relative w-full my-1">
+              <HeroQuantumCore />
+            </div>
 
-            {/* Floating Holographic Telemetry Pill 2 (Bottom Left) */}
-            <motion.div
-              animate={{ y: [0, 7, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-              className="absolute bottom-4 left-0 sm:left-2 z-10 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/65 backdrop-blur-xl border border-white/15 shadow-[0_8px_25px_rgba(0,0,0,0.6)] text-[10px] sm:text-[11px] font-mono text-zinc-200 pointer-events-none"
-            >
-              <Shield className="w-3.5 h-3.5 text-blue-400" />
-              <span>Polaris Offline PWA</span>
-            </motion.div>
+            {/* Console Bottom Stats Tray */}
+            <div className="pt-3 border-t border-white/10 grid grid-cols-3 gap-2">
+              <div className="p-2 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] text-center">
+                <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase">
+                  <Zap className="w-2.5 h-2.5 text-[#E50914]" />
+                  <span>PostGIS</span>
+                </div>
+                <div className="text-[11px] font-bold text-white mt-0.5 font-mono">&lt; 50ms</div>
+              </div>
 
-            {/* Floating Holographic Telemetry Pill 3 (Right) */}
-            <motion.div
-              animate={{ y: [0, -7, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute top-1/2 -translate-y-1/2 right-0 sm:right-2 z-10 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/65 backdrop-blur-xl border border-white/15 shadow-[0_8px_25px_rgba(0,0,0,0.6)] text-[10px] sm:text-[11px] font-mono text-zinc-200 pointer-events-none"
-            >
-              <Cpu className="w-3.5 h-3.5 text-[#E50914]" />
-              <span>10k+ ops/sec Queue</span>
-            </motion.div>
+              <div className="p-2 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] text-center">
+                <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase">
+                  <Shield className="w-2.5 h-2.5 text-blue-400" />
+                  <span>Polaris</span>
+                </div>
+                <div className="text-[11px] font-bold text-white mt-0.5 font-mono">Offline PWA</div>
+              </div>
+
+              <div className="p-2 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/[0.08] text-center">
+                <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase">
+                  <Cpu className="w-2.5 h-2.5 text-[#E50914]" />
+                  <span>Queue</span>
+                </div>
+                <div className="text-[11px] font-bold text-white mt-0.5 font-mono">10k+ ops/s</div>
+              </div>
+            </div>
+
           </div>
         </motion.div>
 
