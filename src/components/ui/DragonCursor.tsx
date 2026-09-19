@@ -149,9 +149,9 @@ export const DragonCursor: React.FC = () => {
       spineQuills.push({ segIdx: i, side: 1, length: qLen, angleOffset: -Math.PI * 0.78 });
     }
 
-    // Fire Embers
+    // Soft Silver & White Stardust Embers
     const embers: Ember[] = [];
-    const EMBER_COLORS = ['#E50914', '#FF3B47', '#FF7700', '#FFCC00', '#FFFFFF'];
+    const EMBER_COLORS = ['#FFFFFF', '#F4F4F5', '#E4E4E7', '#D4D4D8', '#A1A1AA'];
 
     const spawnEmber = (x: number, y: number, spread: number, vx: number, vy: number) => {
       if (embers.length > 90) return;
@@ -160,7 +160,7 @@ export const DragonCursor: React.FC = () => {
         y: y + (Math.random() - 0.5) * spread,
         vx: vx + (Math.random() - 0.5) * 1.2,
         vy: vy + (Math.random() - 0.5) * 1.2,
-        radius: Math.random() * 2.2 + 0.6,
+        radius: Math.random() * 2.0 + 0.6,
         color: EMBER_COLORS[Math.floor(Math.random() * EMBER_COLORS.length)],
         alpha: Math.random() * 0.7 + 0.3,
         decay: Math.random() * 0.025 + 0.015,
@@ -288,7 +288,7 @@ export const DragonCursor: React.FC = () => {
         curr.angle = sAngle;
       }
 
-      // Spawn fiery breath sparks & tail embers
+      // Spawn breath sparks & tail embers
       if (Math.random() < 0.45 || flapMode === 'FLAPPING') {
         const mouthX = posX + Math.cos(currentAngle) * 18;
         const mouthY = posY + Math.sin(currentAngle) * 18;
@@ -314,13 +314,13 @@ export const DragonCursor: React.FC = () => {
         ctx.beginPath();
         ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
         ctx.fillStyle = e.color;
-        ctx.shadowColor = e.color;
-        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#FFFFFF';
+        ctx.shadowBlur = 6;
         ctx.fill();
         ctx.restore();
       }
 
-      // --- 6. RENDER FEATHERED RAY WINGS (Lionfish Celestial Wing Quills) ---
+      // --- 6. RENDER FEATHERED RAY WINGS (Lionfish Celestial Wing Quills in Silver/White) ---
       const updateAndDrawWings = (rays: WingRay[], side: 1 | -1) => {
         rays.forEach((ray, rIdx) => {
           const baseSeg = segments[ray.baseSegIdx];
@@ -365,25 +365,25 @@ export const DragonCursor: React.FC = () => {
             ray.joints[3].y
           );
 
-          // Radiant quill gradient from root to tip
+          // Monochromatic Grayscale Quill Gradient: Deep Charcoal -> Smoke Grey -> Luminous White Needle
           const quillGrad = ctx.createLinearGradient(
             ray.joints[0].x,
             ray.joints[0].y,
             ray.joints[3].x,
             ray.joints[3].y
           );
-          quillGrad.addColorStop(0, '#E50914');
-          quillGrad.addColorStop(0.3, '#FF3B47');
-          quillGrad.addColorStop(0.7, 'rgba(255, 140, 0, 0.7)');
-          quillGrad.addColorStop(1, 'rgba(255, 240, 200, 0.15)');
+          quillGrad.addColorStop(0, '#27272A');
+          quillGrad.addColorStop(0.3, '#71717A');
+          quillGrad.addColorStop(0.7, '#D4D4D8');
+          quillGrad.addColorStop(1, '#FFFFFF');
 
           ctx.strokeStyle = quillGrad;
           ctx.lineWidth = ray.thickness;
-          ctx.shadowColor = '#E50914';
-          ctx.shadowBlur = rIdx % 3 === 0 ? 8 : 3;
+          ctx.shadowColor = '#FFFFFF';
+          ctx.shadowBlur = rIdx % 3 === 0 ? 6 : 2;
           ctx.stroke();
 
-          // Delicate webbed translucent membrane between adjacent rays
+          // Delicate misty translucent white membrane between adjacent rays
           if (rIdx > 0 && rIdx < rays.length) {
             const prevRay = rays[rIdx - 1];
             ctx.beginPath();
@@ -392,7 +392,7 @@ export const DragonCursor: React.FC = () => {
             ctx.lineTo(prevRay.joints[2].x, prevRay.joints[2].y);
             ctx.lineTo(prevRay.joints[0].x, prevRay.joints[0].y);
             ctx.closePath();
-            ctx.fillStyle = 'rgba(229, 9, 20, 0.07)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
             ctx.fill();
           }
 
@@ -403,7 +403,7 @@ export const DragonCursor: React.FC = () => {
       updateAndDrawWings(leftWingRays, -1);
       updateAndDrawWings(rightWingRays, 1);
 
-      // --- 7. RENDER DORSAL & VENTRAL SPINE NEEDLE QUILLS ---
+      // --- 7. RENDER DORSAL & VENTRAL SPINE NEEDLE QUILLS (Silver/White) ---
       spineQuills.forEach((q) => {
         const seg = segments[q.segIdx];
         if (!seg) return;
@@ -425,15 +425,15 @@ export const DragonCursor: React.FC = () => {
           tipY
         );
 
-        ctx.strokeStyle = 'rgba(255, 90, 50, 0.45)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
         ctx.lineWidth = 1.0;
-        ctx.shadowColor = '#FF3B47';
-        ctx.shadowBlur = 4;
+        ctx.shadowColor = '#FFFFFF';
+        ctx.shadowBlur = 3;
         ctx.stroke();
         ctx.restore();
       });
 
-      // --- 8. RENDER ARTICULATED CHEVRON SCALE BODY (Segment Vertebrae) ---
+      // --- 8. RENDER ARTICULATED CHEVRON SCALE BODY (Gray/White Translucent Shells) ---
       for (let i = NUM_SEGMENTS - 1; i >= 0; i--) {
         const seg = segments[i];
         const r = seg.radius;
@@ -450,38 +450,39 @@ export const DragonCursor: React.FC = () => {
         ctx.quadraticCurveTo(0, r, r * 0.8, 0); // Right side to front
         ctx.closePath();
 
-        const segGrad = ctx.createRadialGradient(0, 0, r * 0.2, 0, 0, r * 1.2);
+        const segGrad = ctx.createRadialGradient(0, 0, r * 0.15, 0, 0, r * 1.2);
         if (i < 4) {
           segGrad.addColorStop(0, '#FFFFFF');
-          segGrad.addColorStop(0.4, '#FF2A5F');
-          segGrad.addColorStop(1, '#66000C');
+          segGrad.addColorStop(0.4, '#D4D4D8');
+          segGrad.addColorStop(0.85, '#27272A');
+          segGrad.addColorStop(1, '#09090B');
         } else {
-          segGrad.addColorStop(0, '#FF4B4B');
-          segGrad.addColorStop(0.5, '#E50914');
-          segGrad.addColorStop(0.9, '#1a0003');
-          segGrad.addColorStop(1, 'rgba(0,0,0,0.85)');
+          segGrad.addColorStop(0, '#E4E4E7');
+          segGrad.addColorStop(0.35, '#71717A');
+          segGrad.addColorStop(0.75, '#27272A');
+          segGrad.addColorStop(1, 'rgba(9, 9, 11, 0.9)');
         }
 
         ctx.fillStyle = segGrad;
-        ctx.shadowColor = '#E50914';
-        ctx.shadowBlur = 6;
+        ctx.shadowColor = 'rgba(255, 255, 255, 0.4)';
+        ctx.shadowBlur = 5;
         ctx.fill();
 
-        // Edge highlight stroke
-        ctx.strokeStyle = `rgba(255, 120, 100, ${0.4 + (1 - i / NUM_SEGMENTS) * 0.5})`;
+        // Crisp White Edge Highlight Stroke
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.35 + (1 - i / NUM_SEGMENTS) * 0.55})`;
         ctx.lineWidth = 0.9;
         ctx.stroke();
 
         ctx.restore();
       }
 
-      // --- 9. RENDER DRAGON HEAD, CROWN & PIERCING EYE ---
+      // --- 9. RENDER DRAGON HEAD, CROWN & PIERCING EYE (Ink Charcoal & Luminous White) ---
       const head = segments[0];
       ctx.save();
       ctx.translate(head.x, head.y);
       ctx.rotate(head.angle);
 
-      // Sleek Obsidian Dragon Mask & Swept Crests
+      // Sleek Obsidian/Charcoal Dragon Mask & Swept Crests
       ctx.beginPath();
       ctx.moveTo(22, 0); // Snout Tip
       ctx.quadraticCurveTo(16, -10, 0, -12); // Upper Jaw
@@ -495,44 +496,44 @@ export const DragonCursor: React.FC = () => {
       ctx.closePath();
 
       const headGrad = ctx.createRadialGradient(6, 0, 2, 0, 0, 24);
-      headGrad.addColorStop(0, '#FF4B4B');
-      headGrad.addColorStop(0.4, '#E50914');
-      headGrad.addColorStop(0.85, '#121318');
-      headGrad.addColorStop(1, '#050608');
+      headGrad.addColorStop(0, '#FFFFFF');
+      headGrad.addColorStop(0.3, '#E4E4E7');
+      headGrad.addColorStop(0.7, '#27272A');
+      headGrad.addColorStop(1, '#09090B');
       ctx.fillStyle = headGrad;
-      ctx.shadowColor = '#FF2A5F';
-      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#FFFFFF';
+      ctx.shadowBlur = 10;
       ctx.fill();
 
-      // Sharp Crest Highlights
-      ctx.strokeStyle = 'rgba(255, 160, 120, 0.8)';
+      // Sharp White Crest Highlights
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
       ctx.lineWidth = 1.2;
       ctx.stroke();
 
-      // Piercing Glowing Eye
+      // Piercing Glowing White Eye with Dark Slit Pupil
       [-1, 1].forEach((side) => {
         ctx.save();
         ctx.beginPath();
         ctx.arc(8, 6 * side, 3.2, 0, Math.PI * 2);
-        ctx.fillStyle = '#00FFFF';
-        ctx.shadowColor = '#00FFFF';
-        ctx.shadowBlur = 14;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = '#FFFFFF';
+        ctx.shadowBlur = 12;
         ctx.fill();
 
-        // Eye Slit
+        // Eye Slit Pupil
         ctx.beginPath();
-        ctx.arc(8.5, 6 * side, 1.4, 0, Math.PI * 2);
-        ctx.fillStyle = '#FFFFFF';
+        ctx.arc(8.5, 6 * side, 1.3, 0, Math.PI * 2);
+        ctx.fillStyle = '#09090B';
         ctx.fill();
         ctx.restore();
       });
 
-      // Snout Whisker Sparks
+      // Snout Whisker White Sparks
       ctx.beginPath();
       ctx.arc(18, -2.5, 1.2, 0, Math.PI * 2);
       ctx.arc(18, 2.5, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = '#FFDD00';
-      ctx.shadowColor = '#FFDD00';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = '#FFFFFF';
       ctx.shadowBlur = 6;
       ctx.fill();
 
