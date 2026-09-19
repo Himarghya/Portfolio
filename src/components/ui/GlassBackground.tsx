@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface Particle {
@@ -13,13 +13,12 @@ interface Particle {
 
 export const GlassBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
-  const [isHovered, setIsHovered] = useState(false);
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -32,10 +31,10 @@ export const GlassBackground: React.FC = () => {
       height = canvas.height = window.innerHeight;
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    // Initialize interactive particles
-    const particleCount = Math.min(Math.floor((width * height) / 18000), 70);
+    // Initialize interactive particles (optimized count)
+    const particleCount = Math.min(Math.floor((width * height) / 28000), 45);
     const particles: Particle[] = [];
     const colors = ['#E50914', '#FF3B47', '#A855F7', '#6366F1', '#00E5FF'];
 
@@ -43,11 +42,11 @@ export const GlassBackground: React.FC = () => {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        radius: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        radius: Math.random() * 1.8 + 0.8,
         color: colors[Math.floor(Math.random() * colors.length)],
-        baseAlpha: Math.random() * 0.4 + 0.2
+        baseAlpha: Math.random() * 0.35 + 0.15
       });
     }
 
@@ -57,14 +56,20 @@ export const GlassBackground: React.FC = () => {
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      setMousePos({ x: e.clientX, y: e.clientY });
-      setIsHovered(true);
+
+      // Update cursor spotlight directly on the DOM transform without React state re-renders
+      if (spotlightRef.current) {
+        spotlightRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+        spotlightRef.current.style.opacity = '1';
+      }
     };
 
     const onMouseLeave = () => {
       mouseX = -1000;
       mouseY = -1000;
-      setIsHovered(false);
+      if (spotlightRef.current) {
+        spotlightRef.current.style.opacity = '0.3';
+      }
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -73,7 +78,7 @@ export const GlassBackground: React.FC = () => {
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Render & connect particles
+      // Render & connect particles (Zero-shadowBlur high-speed pass)
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
@@ -90,19 +95,19 @@ export const GlassBackground: React.FC = () => {
         const dyMouse = mouseY - p.y;
         const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-        if (distMouse < 200) {
+        if (distMouse < 180) {
           // Draw connection beam to cursor
-          const alpha = (1 - distMouse / 200) * 0.6;
+          const alpha = (1 - distMouse / 180) * 0.45;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(mouseX, mouseY);
           ctx.strokeStyle = `rgba(229, 9, 20, ${alpha})`;
-          ctx.lineWidth = (1 - distMouse / 200) * 1.5;
+          ctx.lineWidth = 0.9;
           ctx.stroke();
 
-          // Gentle magnetic push away
-          p.x -= (dxMouse / distMouse) * 0.8;
-          p.y -= (dyMouse / distMouse) * 0.8;
+          // Gentle magnetic drift
+          p.x -= (dxMouse / distMouse) * 0.5;
+          p.y -= (dyMouse / distMouse) * 0.5;
         }
 
         // Draw inter-particle constellation lines
@@ -112,33 +117,30 @@ export const GlassBackground: React.FC = () => {
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 130) {
+          if (dist < 110) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            const lineAlpha = (1 - dist / 130) * 0.22;
+            const lineAlpha = (1 - dist / 110) * 0.15;
             ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha})`;
-            ctx.lineWidth = 0.6;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
 
-        // Draw particle node
+        // Draw particle node with crisp alpha (Zero shadowBlur overhead)
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * (distMouse < 180 ? 1.6 : 1), 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.radius * (distMouse < 160 ? 1.4 : 1), 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = distMouse < 180 ? 10 : 4;
-        ctx.globalAlpha = distMouse < 180 ? 0.9 : p.baseAlpha;
+        ctx.globalAlpha = distMouse < 160 ? 0.85 : p.baseAlpha;
         ctx.fill();
-        ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
       }
 
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -162,14 +164,14 @@ export const GlassBackground: React.FC = () => {
         }}
       />
 
-      {/* Interactive Cursor Spotlight Glow */}
+      {/* Interactive Cursor Spotlight Glow (DOM Ref transform for zero React re-render overhead) */}
       <div
-        className={`absolute w-[560px] h-[560px] rounded-full bg-gradient-to-r from-[#E50914]/22 via-[#8B5CF6]/15 to-transparent blur-[130px] transition-opacity duration-500 ease-out -translate-x-1/2 -translate-y-1/2 pointer-events-none ${
-          isHovered ? 'opacity-100' : 'opacity-40'
-        }`}
+        ref={spotlightRef}
+        className="absolute w-[520px] h-[520px] rounded-full bg-gradient-to-r from-[#E50914]/18 via-[#8B5CF6]/12 to-transparent blur-[120px] opacity-40 pointer-events-none will-change-transform"
         style={{
-          left: `${mousePos.x}px`,
-          top: `${mousePos.y}px`,
+          left: 0,
+          top: 0,
+          transform: 'translate3d(-1000px, -1000px, 0)'
         }}
       />
 
@@ -177,29 +179,20 @@ export const GlassBackground: React.FC = () => {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{
+          transform: 'translate3d(0,0,0)',
+          willChange: 'transform',
+          contain: 'strict'
+        }}
       />
 
-      {/* Cyber Scanning Laser Line Accent */}
+      {/* Primary Crimson Ambient Light Orb */}
       <motion.div
         animate={{
-          y: ['-10%', '110%'],
-          opacity: [0, 0.5, 0.7, 0.5, 0]
-        }}
-        transition={{
-          duration: 14,
-          repeat: Infinity,
-          ease: 'linear'
-        }}
-        className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#E50914]/45 to-transparent shadow-[0_0_15px_rgba(229,9,20,0.6)]"
-      />
-
-      {/* Primary Crimson Ambient Light Orb (Top-Right Hero Glow) */}
-      <motion.div
-        animate={{
-          x: [0, 25, -20, 0],
-          y: [0, -30, 20, 0],
-          scale: [1, 1.1, 0.95, 1],
-          opacity: [0.35, 0.5, 0.35]
+          x: [0, 20, -15, 0],
+          y: [0, -20, 15, 0],
+          scale: [1, 1.08, 0.96, 1],
+          opacity: [0.3, 0.45, 0.3]
         }}
         transition={{
           duration: 18,
@@ -207,16 +200,16 @@ export const GlassBackground: React.FC = () => {
           ease: 'easeInOut'
         }}
         style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute -top-[12%] right-[5%] w-[650px] h-[650px] rounded-full bg-gradient-to-br from-[#E50914]/45 via-red-600/25 to-transparent blur-[120px] will-change-transform"
+        className="absolute -top-[10%] right-[5%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#E50914]/40 via-red-600/20 to-transparent blur-[110px] will-change-transform"
       />
 
-      {/* Deep Violet Accent Light Orb (Center-Left) */}
+      {/* Deep Violet Accent Light Orb */}
       <motion.div
         animate={{
-          x: [0, -30, 20, 0],
-          y: [0, 40, -20, 0],
-          scale: [0.94, 1.12, 1, 0.94],
-          opacity: [0.22, 0.35, 0.22]
+          x: [0, -25, 15, 0],
+          y: [0, 30, -15, 0],
+          scale: [0.95, 1.1, 1, 0.95],
+          opacity: [0.2, 0.32, 0.2]
         }}
         transition={{
           duration: 22,
@@ -224,24 +217,7 @@ export const GlassBackground: React.FC = () => {
           ease: 'easeInOut'
         }}
         style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute top-[32%] -left-[10%] w-[680px] h-[680px] rounded-full bg-gradient-to-tr from-[#4f46e5]/30 via-[#7c3aed]/20 to-transparent blur-[125px] will-change-transform"
-      />
-
-      {/* Ruby Ambient Orb (Bottom-Right) */}
-      <motion.div
-        animate={{
-          x: [0, 25, -20, 0],
-          y: [0, -25, 30, 0],
-          scale: [1, 0.94, 1.08, 1],
-          opacity: [0.25, 0.38, 0.25]
-        }}
-        transition={{
-          duration: 19,
-          repeat: Infinity,
-          ease: 'easeInOut'
-        }}
-        style={{ transform: 'translate3d(0,0,0)' }}
-        className="absolute bottom-[8%] right-[10%] w-[580px] h-[580px] rounded-full bg-gradient-to-tl from-[#E50914]/35 via-red-950/25 to-transparent blur-[115px] will-change-transform"
+        className="absolute top-[35%] -left-[8%] w-[620px] h-[620px] rounded-full bg-gradient-to-tr from-[#4f46e5]/25 via-[#7c3aed]/18 to-transparent blur-[115px] will-change-transform"
       />
 
       {/* Radial Depth Vignette */}

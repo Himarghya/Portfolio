@@ -4,10 +4,10 @@ import { Float, Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface CoreSceneProps {
-  mouse: { x: number; y: number };
+  mouseRef: React.MutableRefObject<{ x: number; y: number }>;
 }
 
-const HolographicGlobe: React.FC<CoreSceneProps> = ({ mouse }) => {
+const HolographicGlobe: React.FC<CoreSceneProps> = ({ mouseRef }) => {
   const groupRef = useRef<THREE.Group>(null);
   const coreRef = useRef<THREE.Mesh>(null);
   const wireGridRef = useRef<THREE.Mesh>(null);
@@ -62,8 +62,9 @@ const HolographicGlobe: React.FC<CoreSceneProps> = ({ mouse }) => {
 
   useFrame((state, delta) => {
     const time = state.clock.elapsedTime;
+    const mouse = mouseRef.current;
 
-    // Smooth continuous auto-rotation
+    // Smooth continuous auto-rotation with direct ref tracking
     if (groupRef.current) {
       const targetX = mouse.y * 0.35;
       const targetY = mouse.x * 0.45;
@@ -78,124 +79,102 @@ const HolographicGlobe: React.FC<CoreSceneProps> = ({ mouse }) => {
     }
     if (ring2Ref.current) {
       ring2Ref.current.rotation.y -= delta * 0.45;
-      ring2Ref.current.rotation.z = Math.cos(time * 0.3) * 0.5;
+      ring2Ref.current.rotation.z = Math.cos(time * 0.3) * 0.3;
     }
     if (ring3Ref.current) {
-      ring3Ref.current.rotation.z += delta * 0.5;
-      ring3Ref.current.rotation.x = Math.PI / 3 + Math.sin(time * 0.25) * 0.2;
+      ring3Ref.current.rotation.z += delta * 0.25;
+      ring3Ref.current.rotation.x = Math.sin(time * 0.5) * 0.5;
     }
 
-    // Subtle Core Pulse
+    // Breathing inner core pulse
     if (coreRef.current) {
-      const scale = 1 + Math.sin(time * 2) * 0.02;
+      const scale = 1 + Math.sin(time * 2.2) * 0.035;
       coreRef.current.scale.set(scale, scale, scale);
     }
 
+    // Subtle counter-rotation on wire grid
     if (wireGridRef.current) {
       wireGridRef.current.rotation.y -= delta * 0.08;
+      wireGridRef.current.rotation.x = Math.sin(time * 0.2) * 0.15;
     }
   });
 
   return (
     <group ref={groupRef}>
-      {/* Deep Obsidian Metallic Core with Specular Reflections */}
+      {/* Deep Obsidian Core Sphere */}
       <mesh ref={coreRef}>
-        <sphereGeometry args={[1.25, 64, 64]} />
+        <sphereGeometry args={[1.22, 48, 48]} />
         <meshPhysicalMaterial
-          color="#0d0e12"
-          emissive="#1a0406"
-          emissiveIntensity={0.6}
+          color="#090a0f"
           roughness={0.12}
-          metalness={0.88}
-          clearcoat={1}
+          metalness={0.92}
+          clearcoat={1.0}
           clearcoatRoughness={0.1}
-          reflectivity={0.9}
+          reflectivity={0.95}
         />
       </mesh>
 
-      {/* Holographic Geospatial Wireframe Sphere */}
+      {/* Outer Wireframe Latitude / Longitude Shield */}
       <mesh ref={wireGridRef}>
-        <sphereGeometry args={[1.28, 28, 28]} />
+        <sphereGeometry args={[1.30, 24, 24]} />
         <meshBasicMaterial
           color="#E50914"
           wireframe
           transparent
-          opacity={0.22}
+          opacity={0.14}
         />
       </mesh>
 
-      {/* Primary Equator Gyro Ring (Crimson Luminous) */}
-      <mesh ref={ring1Ref}>
-        <torusGeometry args={[1.72, 0.018, 16, 100]} />
+      {/* Orbiting Equatorial Gyro Ring Alpha */}
+      <mesh ref={ring1Ref} rotation={[Math.PI / 3, 0, 0]}>
+        <torusGeometry args={[1.56, 0.012, 16, 100]} />
         <meshStandardMaterial
           color="#E50914"
           emissive="#E50914"
-          emissiveIntensity={1.2}
+          emissiveIntensity={0.8}
           roughness={0.2}
-          metalness={0.9}
+          metalness={0.8}
         />
       </mesh>
 
-      {/* Secondary Meridian Gyro Ring (Titanium Silver) */}
-      <mesh ref={ring2Ref} rotation={[Math.PI / 2.5, 0, 0]}>
-        <torusGeometry args={[1.92, 0.014, 16, 100]} />
+      {/* Orbiting Polar Gyro Ring Beta */}
+      <mesh ref={ring2Ref} rotation={[-Math.PI / 4, Math.PI / 4, 0]}>
+        <torusGeometry args={[1.72, 0.010, 16, 100]} />
         <meshStandardMaterial
-          color="#E2E8F0"
-          emissive="#64748B"
+          color="#FF3B47"
+          emissive="#FF3B47"
+          emissiveIntensity={0.6}
+          roughness={0.2}
+          metalness={0.8}
+        />
+      </mesh>
+
+      {/* Wide Planetary Outer Horizon Ring */}
+      <mesh ref={ring3Ref} rotation={[Math.PI / 6, -Math.PI / 3, 0]}>
+        <torusGeometry args={[1.92, 0.008, 16, 100]} />
+        <meshStandardMaterial
+          color="#A855F7"
+          emissive="#A855F7"
           emissiveIntensity={0.4}
-          roughness={0.15}
-          metalness={0.95}
-        />
-      </mesh>
-
-      {/* Tertiary Inclined Orbit Ring (Deep Ruby) */}
-      <mesh ref={ring3Ref} rotation={[Math.PI / 4, Math.PI / 4, 0]}>
-        <torusGeometry args={[2.15, 0.012, 16, 100]} />
-        <meshStandardMaterial
-          color="#991B1B"
-          emissive="#E50914"
-          emissiveIntensity={0.7}
           roughness={0.3}
-          metalness={0.9}
+          metalness={0.7}
         />
       </mesh>
 
-      {/* Orbiting Satellite Data Beacons (Small, Elegant Diamonds) */}
-      <Float speed={2.5} rotationIntensity={1} floatIntensity={0.8}>
-        <mesh position={[1.45, 0.6, 0.8]}>
-          <octahedronGeometry args={[0.08]} />
-          <meshStandardMaterial color="#FFFFFF" emissive="#FFFFFF" emissiveIntensity={2.5} />
-        </mesh>
-      </Float>
-
-      <Float speed={3} rotationIntensity={1.2} floatIntensity={1}>
-        <mesh position={[-1.35, -0.7, 0.7]}>
-          <octahedronGeometry args={[0.07]} />
-          <meshStandardMaterial color="#E50914" emissive="#FF4D58" emissiveIntensity={3} />
-        </mesh>
-      </Float>
-
-      <Float speed={2} rotationIntensity={0.8} floatIntensity={0.7}>
-        <mesh position={[0.4, -1.4, -0.6]}>
-          <octahedronGeometry args={[0.06]} />
-          <meshStandardMaterial color="#38BDF8" emissive="#38BDF8" emissiveIntensity={3} />
-        </mesh>
-      </Float>
-
-      {/* Geospatial Surface Telemetry Node Points */}
-      <Points positions={nodePositions} colors={nodeColors} stride={3}>
+      {/* Live Geospatial Surface Pulse Nodes */}
+      <Points positions={nodePositions} colors={nodeColors}>
         <PointMaterial
           vertexColors
-          transparent
           size={0.038}
           sizeAttenuation={true}
           depthWrite={false}
-          opacity={0.85}
+          transparent
+          opacity={0.95}
         />
       </Points>
 
-      {/* Ambient Outer Cyber Dust */}
-      <Points positions={dustPositions} stride={3}>
+      {/* Floating Ambient Cosmic Particulates */}
+      <Points positions={dustPositions}>
         <PointMaterial
           transparent
           color="#FF4D58"
@@ -210,13 +189,12 @@ const HolographicGlobe: React.FC<CoreSceneProps> = ({ mouse }) => {
 };
 
 export const HeroQuantumCore: React.FC = () => {
-  const [mouse, setMouse] = React.useState({ x: 0, y: 0 });
+  const mouseRef = useRef({ x: 0, y: 0 });
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-    setMouse({ x, y });
+    mouseRef.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouseRef.current.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
   };
 
   return (
@@ -226,7 +204,7 @@ export const HeroQuantumCore: React.FC = () => {
     >
       <Canvas
         camera={{ position: [0, 0, 4.8], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         className="w-full h-full"
       >
         <ambientLight intensity={0.5} />
@@ -234,8 +212,9 @@ export const HeroQuantumCore: React.FC = () => {
         <pointLight position={[-6, -4, 4]} intensity={2.8} color="#E50914" />
         <pointLight position={[0, -5, -4]} intensity={1.5} color="#991B1B" />
         <directionalLight position={[0, 6, 2]} intensity={1.2} color="#FFFFFF" />
-        <HolographicGlobe mouse={mouse} />
+        <HolographicGlobe mouseRef={mouseRef} />
       </Canvas>
     </div>
   );
 };
+export default HeroQuantumCore;
