@@ -1,21 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
 export const SmoothScrollManager: React.FC = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
+  const circleRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    let ticking = false;
 
-      setScrollProgress(progress);
-      setIsVisible(scrollTop > 200);
-      setIsNearBottom(progress > 85);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+          // Update SVG progress ring directly without triggering React re-renders
+          if (circleRef.current) {
+            circleRef.current.style.strokeDashoffset = `${125.66 - (125.66 * progress) / 100}`;
+          }
+
+          const visible = scrollTop > 200;
+          const nearBottom = progress > 85;
+
+          setIsVisible((prev) => (prev !== visible ? visible : prev));
+          setIsNearBottom((prev) => (prev !== nearBottom ? nearBottom : prev));
+
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -86,23 +102,26 @@ export const SmoothScrollManager: React.FC = () => {
                 strokeWidth="2.5"
               />
               <circle
+                ref={circleRef}
                 cx="24"
                 cy="24"
                 r="20"
-                className="stroke-[#E50914] fill-none transition-all duration-150"
+                className="stroke-[#E50914] fill-none transition-all duration-75"
                 strokeWidth="2.5"
                 strokeDasharray={125.66}
-                strokeDashoffset={125.66 - (125.66 * scrollProgress) / 100}
+                strokeDashoffset={125.66}
                 strokeLinecap="round"
               />
             </svg>
 
             {/* Directional Navigation Icon */}
-            {isNearBottom ? (
-              <ChevronUp className="w-5 h-5 text-white group-hover:text-[#E50914] group-hover:-translate-y-0.5 transition-all" />
-            ) : (
-              <ChevronDown className="w-5 h-5 text-white group-hover:text-[#E50914] group-hover:translate-y-0.5 transition-all" />
-            )}
+            <div className="relative z-10 text-white transition-transform duration-300 group-hover:scale-110">
+              {isNearBottom ? (
+                <ChevronUp className="w-5 h-5 text-white group-hover:text-[#E50914] transition-colors" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-white group-hover:text-[#E50914] transition-colors" />
+              )}
+            </div>
           </button>
         </motion.div>
       )}
