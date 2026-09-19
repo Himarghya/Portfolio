@@ -295,23 +295,34 @@ export const DragonCursor: React.FC = () => {
         flapAngleDelta = Math.sin(time * 2.4) * 0.13;
       }
 
-      // Cruising speed
-      const targetCruisingSpeed = isMouseMoving ? 6.2 : 5.0;
-      currentSpeed += (targetCruisingSpeed - currentSpeed) * 0.05;
-      currentSpeed = Math.min(Math.max(currentSpeed, 4.2), 8.0);
+      // Dynamic Pursuit Acceleration & Cruising Speed
+      let targetCruisingSpeed = 5.2;
+      let turnRate = 0.06;
 
-      // Steering
       const toTargetX = targetX - posX;
       const toTargetY = targetY - posY;
       const distToTarget = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
 
-      if (distToTarget > 20) {
+      if (isMouseMoving) {
+        // Surge speed dynamically when cursor is far away
+        targetCruisingSpeed = Math.min(18.0, 5.8 + distToTarget * 0.042);
+        // Snappy responsive turn rate
+        turnRate = Math.min(0.22, 0.09 + distToTarget * 0.0006);
+      } else {
+        targetCruisingSpeed = 5.0;
+        turnRate = 0.055;
+      }
+
+      currentSpeed += (targetCruisingSpeed - currentSpeed) * 0.12;
+      currentSpeed = Math.min(Math.max(currentSpeed, 4.2), 20.0);
+
+      // Steering
+      if (distToTarget > 15) {
         const desiredAngle = Math.atan2(toTargetY, toTargetX);
         let angleDiff = desiredAngle - currentAngle;
         while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
         while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
 
-        const turnRate = isMouseMoving ? 0.085 : 0.052;
         currentAngle += angleDiff * turnRate;
       }
 
