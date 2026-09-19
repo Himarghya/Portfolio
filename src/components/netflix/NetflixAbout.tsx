@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SHOWRUNNER_DOSSIER } from '../../constants/netflixData';
-import { Check, Copy, ArrowUpRight, Terminal, Globe, Code2 } from 'lucide-react';
+import { Check, Copy, ArrowUpRight, Terminal, Globe, Code2, MapPin, Sparkles, Shield, Award } from 'lucide-react';
 
 export const NetflixAbout: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -19,17 +19,17 @@ export const NetflixAbout: React.FC = () => {
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-semibold tracking-widest text-[#E50914] uppercase font-mono drop-shadow-[0_0_8px_rgba(229,9,20,0.4)]">
-              ABOUT ME
+              ABOUT THE DEVELOPER
             </span>
           </div>
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <h3 className="text-3xl sm:text-4xl font-extrabold font-bebas text-white tracking-wide uppercase leading-none">
-                Engineering Background • Himarghya Das
+                Showrunner Profile • Himarghya Das
               </h3>
               <p className="text-xs sm:text-sm text-zinc-400 font-mono mt-1">
-                Full Stack Developer &amp; Systems Engineer based in India.
+                Full Stack Developer &amp; Backend Systems Engineer based in India.
               </p>
             </div>
 
@@ -42,28 +42,43 @@ export const NetflixAbout: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* Left Column: Creator Identity Card */}
+          {/* Left Column: Creator Portrait & Dossier Card */}
           <div className="lg:col-span-5">
-            <div className="rounded-2xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.12)] p-6 sm:p-7 space-y-6">
+            <div className="rounded-2xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.12)] p-6 sm:p-7 space-y-6">
               
-              {/* Profile Header */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-5">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E50914]/80 to-red-900/60 border border-white/20 flex items-center justify-center text-lg font-bold font-mono text-white shadow-[0_0_20px_rgba(229,9,20,0.4)]">
-                    HD
+              {/* Photo & Identity Hero Frame */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 pb-5 border-b border-white/10">
+                <div className="relative group/photo shrink-0">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-white/20 shadow-[0_0_25px_rgba(229,9,20,0.35)] relative bg-black/60">
+                    <img
+                      src="/profile/himarghya-portrait.jpg"
+                      alt="Himarghya Das"
+                      className="w-full h-full object-cover object-center group-hover/photo:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40" />
                   </div>
-                  <div>
-                    <h4 className="text-lg font-bold text-white tracking-wide">{SHOWRUNNER_DOSSIER.name}</h4>
-                    <span className="text-xs text-[#E50914] font-mono drop-shadow-[0_0_6px_rgba(229,9,20,0.4)]">{SHOWRUNNER_DOSSIER.roleTitle}</span>
-                  </div>
+                  {/* Status Indicator Pip */}
+                  <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-[#12131a]" />
+                  </span>
                 </div>
 
-                <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-white/[0.06] backdrop-blur-md text-zinc-300 border border-white/10">
-                  2026
-                </span>
+                <div className="text-center sm:text-left space-y-1">
+                  <div className="flex items-center justify-center sm:justify-start gap-2">
+                    <h4 className="text-xl font-bold text-white tracking-wide">{SHOWRUNNER_DOSSIER.name}</h4>
+                  </div>
+                  <span className="text-xs text-[#E50914] font-mono font-semibold block drop-shadow-[0_0_6px_rgba(229,9,20,0.4)]">
+                    {SHOWRUNNER_DOSSIER.roleTitle}
+                  </span>
+                  <span className="text-[11px] text-zinc-400 flex items-center justify-center sm:justify-start gap-1 font-mono pt-0.5">
+                    <MapPin className="w-3 h-3 text-zinc-400" />
+                    {SHOWRUNNER_DOSSIER.location}
+                  </span>
+                </div>
               </div>
 
-              {/* Bio snippet */}
+              {/* Bio Snippet */}
               <div className="p-4 rounded-xl bg-white/[0.03] backdrop-blur-md border border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
                   {SHOWRUNNER_DOSSIER.bio}
@@ -85,7 +100,7 @@ export const NetflixAbout: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Engineering Focus */}
+          {/* Right Column: Engineering Focus & Pillars */}
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-3">
               <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#E50914] uppercase tracking-widest font-semibold drop-shadow-[0_0_8px_rgba(229,9,20,0.4)]">
@@ -108,7 +123,7 @@ export const NetflixAbout: React.FC = () => {
                   <Code2 className="w-4 h-4" />
                 </div>
                 <h5 className="font-semibold text-sm text-white">Frontend</h5>
-                <p className="text-xs text-zinc-400 leading-relaxed">React 18, TypeScript, Tailwind CSS, and map/chart visualization.</p>
+                <p className="text-xs text-zinc-400 leading-relaxed">React 18, TypeScript, Tailwind CSS, and interactive data visualization.</p>
               </div>
 
               <div className="p-4 sm:p-5 rounded-xl bg-gradient-to-b from-white/[0.07] to-white/[0.02] backdrop-blur-xl border border-white/10 hover:border-white/25 shadow-[0_8px_25px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-300 space-y-2 hover:-translate-y-0.5">

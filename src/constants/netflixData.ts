@@ -341,6 +341,7 @@ export const SHOWRUNNER_DOSSIER = {
   roleTitle: 'Software Engineer & Full Stack Developer',
   location: 'India • Open to Remote & Relocation',
   status: 'Available for Software Engineering Roles',
+  avatarUrl: '/profile/himarghya-portrait.jpg',
   bio: 'I build software systems across the stack. My work spans backend microservices in Python and C++, database query optimization in PostgreSQL/PostGIS, and modern web applications in React and TypeScript.',
   email: 'himarghyadas@gmail.com',
   github: 'https://github.com/Himarghya',
