@@ -1,17 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SHOWRUNNER_DOSSIER } from '../../constants/netflixData';
-import { Mail, Github, Linkedin, Copy, Check, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { saveStorage, loadStorage, clearStorage } from '../../utils/sessionManager';
+import { Mail, Github, Linkedin, Copy, Check, ArrowRight, AlertCircle, Sparkles, Wifi, WifiOff, RotateCcw } from 'lucide-react';
+
+const DRAFT_STORAGE_KEY = 'portfolio_contact_session_draft';
 
 export const NetflixContact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
+  // Restore session data from LocalStorage/SessionStorage/Cookie upon mount or reload
+  const [formData, setFormData] = useState(() =>
+    loadStorage(DRAFT_STORAGE_KEY, {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    })
+  );
+
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle');
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [hasDraft, setHasDraft] = useState(false);
+
+  // Monitor network connectivity & auto-persist draft across session & cookies
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Auto-save form inputs to session and cookie on every keystroke
+  useEffect(() => {
+    const isNotEmpty = Boolean(formData.name.trim() || formData.email.trim() || formData.subject.trim() || formData.message.trim());
+    setHasDraft(isNotEmpty);
+
+    if (isNotEmpty) {
+      saveStorage(DRAFT_STORAGE_KEY, formData);
+    }
+  }, [formData]);
+
+  const handleClearDraft = () => {
+    clearStorage(DRAFT_STORAGE_KEY);
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    });
+    setErrors({});
+    setHasDraft(false);
+  };
 
   const validateForm = () => {
     const newErrors: { name?: string; email?: string; message?: string } = {};
@@ -37,6 +82,10 @@ export const NetflixContact: React.FC = () => {
     setStatus('sending');
     setTimeout(() => {
       setStatus('done');
+      // Clear draft upon successful submission
+      clearStorage(DRAFT_STORAGE_KEY);
+      setHasDraft(false);
+
       const mailtoUrl = `mailto:${SHOWRUNNER_DOSSIER.email}?subject=${encodeURIComponent(formData.subject || 'Portfolio Inquiry / Opportunity')}&body=${encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`)}`;
       window.location.href = mailtoUrl;
     }, 400);
@@ -105,6 +154,40 @@ export const NetflixContact: React.FC = () => {
               <span className="text-xs font-semibold text-white group-hover:text-[#E50914] transition-colors">LinkedIn</span>
             </div>
           </a>
+        </div>
+
+        {/* Real-time Session & Offline Persistence Status Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-xs">
+          <div className="flex items-center gap-2">
+            {!isOnline ? (
+              <span className="flex items-center gap-1.5 text-amber-400 font-medium font-mono text-[11px]">
+                <WifiOff className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                Offline Mode • Session data saved locally
+              </span>
+            ) : hasDraft ? (
+              <span className="flex items-center gap-1.5 text-emerald-400 font-medium font-mono text-[11px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                Session draft auto-saved
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 text-zinc-400 font-mono text-[11px]">
+                <Wifi className="w-3.5 h-3.5 text-zinc-500" />
+                Live draft protection active
+              </span>
+            )}
+          </div>
+
+          {hasDraft && (
+            <button
+              type="button"
+              onClick={handleClearDraft}
+              className="flex items-center gap-1 text-[11px] text-zinc-400 hover:text-red-400 transition-colors cursor-pointer font-mono"
+              title="Discard saved draft"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Clear Draft</span>
+            </button>
+          )}
         </div>
 
         {/* Message Form with Custom Cyber Validation */}

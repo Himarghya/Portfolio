@@ -19,19 +19,36 @@ import { NetflixFooter } from './components/netflix/NetflixFooter';
 import { NetflixDetailModal } from './components/netflix/NetflixDetailModal';
 import { NetflixTerminal } from './components/netflix/NetflixTerminal';
 
+import { saveStorage, loadStorage } from './utils/sessionManager';
+
 export const App: React.FC = () => {
-  const [showIntro, setShowIntro] = useState(true);
-  const [selectedProfile, setSelectedProfile] = useState<NetflixProfile | null>(NETFLIX_PROFILES[0]);
+  const [showIntro, setShowIntro] = useState(() => {
+    // Only play intro once per browser session
+    return !loadStorage<boolean>('portfolio_intro_played', false);
+  });
+
+  const [selectedProfile, setSelectedProfile] = useState<NetflixProfile | null>(() => {
+    const savedProfileId = loadStorage<string>('portfolio_selected_profile_id', NETFLIX_PROFILES[0].id);
+    return NETFLIX_PROFILES.find(p => p.id === savedProfileId) || NETFLIX_PROFILES[0];
+  });
+
   const [activeModalItem, setActiveModalItem] = useState<NetflixItem | null>(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSelectProfile = (profile: NetflixProfile) => {
     setSelectedProfile(profile);
+    saveStorage('portfolio_selected_profile_id', profile.id);
   };
 
   const handleSwitchProfile = () => {
     setSelectedProfile(null);
+    saveStorage('portfolio_selected_profile_id', null);
+  };
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    saveStorage('portfolio_intro_played', true);
   };
 
   // Filter items if searching
@@ -55,7 +72,7 @@ export const App: React.FC = () => {
       {/* Portfolio Intro Opening Animation */}
       <AnimatePresence mode="wait">
         {showIntro && (
-          <PortfolioIntroAnimation onComplete={() => setShowIntro(false)} />
+          <PortfolioIntroAnimation onComplete={handleIntroComplete} />
         )}
       </AnimatePresence>
 
