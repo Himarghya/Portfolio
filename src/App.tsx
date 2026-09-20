@@ -22,10 +22,7 @@ import { NetflixTerminal } from './components/netflix/NetflixTerminal';
 import { saveStorage, loadStorage } from './utils/sessionManager';
 
 export const App: React.FC = () => {
-  const [showIntro, setShowIntro] = useState(() => {
-    // Only play intro once per browser session
-    return !loadStorage<boolean>('portfolio_intro_played', false);
-  });
+  const [showIntro, setShowIntro] = useState(true);
 
   const [selectedProfile, setSelectedProfile] = useState<NetflixProfile | null>(() => {
     const savedProfileId = loadStorage<string>('portfolio_selected_profile_id', NETFLIX_PROFILES[0].id);
@@ -48,7 +45,6 @@ export const App: React.FC = () => {
 
   const handleIntroComplete = () => {
     setShowIntro(false);
-    saveStorage('portfolio_intro_played', true);
   };
 
   // Filter items if searching
