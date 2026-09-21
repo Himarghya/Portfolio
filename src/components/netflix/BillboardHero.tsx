@@ -165,89 +165,64 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
               <HeroQuantumCore activeHighlight={activeHighlight} />
             </div>
 
-            {/* Console Bottom Stats & Telemetry Matrix */}
-            <div className="pt-3 border-t border-white/10 space-y-2.5">
-              {/* 4 Metric Cards Grid */}
+            {/* Console Bottom Project Badges */}
+            <div className="pt-3 border-t border-white/10">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <div
-                  onMouseEnter={() => setActiveHighlight('postgis')}
+                <a
+                  href="#projects"
+                  onMouseEnter={() => setActiveHighlight('varshanet')}
                   onMouseLeave={() => setActiveHighlight(null)}
-                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
-                    activeHighlight === 'postgis'
-                      ? 'border-[#E50914] bg-red-950/30 shadow-[0_0_15px_rgba(229,9,20,0.3)]'
-                      : 'border-white/[0.08] hover:border-red-500/40 hover:bg-white/[0.08]'
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
+                    activeHighlight === 'varshanet'
+                      ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+                      : 'border-white/[0.08] hover:border-emerald-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
-                    <Zap className="w-2.5 h-2.5 text-[#E50914] group-hover/stat:scale-110 transition-transform" />
-                    <span>PostGIS</span>
-                  </div>
-                  <div className="text-[11px] font-bold text-white mt-1 font-mono">&lt; 50ms</div>
-                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Spatial Index</div>
-                </div>
+                  <Radio className="w-3.5 h-3.5 text-emerald-400 group-hover/stat:scale-110 transition-transform shrink-0" />
+                  <span className="text-xs font-bold text-white font-mono">VarshaNet</span>
+                </a>
 
-                <div
+                <a
+                  href="#projects"
                   onMouseEnter={() => setActiveHighlight('polaris')}
                   onMouseLeave={() => setActiveHighlight(null)}
-                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
                     activeHighlight === 'polaris'
                       ? 'border-blue-400 bg-blue-950/30 shadow-[0_0_15px_rgba(56,189,248,0.3)]'
                       : 'border-white/[0.08] hover:border-blue-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
-                    <Shield className="w-2.5 h-2.5 text-blue-400 group-hover/stat:scale-110 transition-transform" />
-                    <span>Polaris</span>
-                  </div>
-                  <div className="text-[11px] font-bold text-white mt-1 font-mono">Offline PWA</div>
-                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Edge Caching</div>
-                </div>
+                  <Shield className="w-3.5 h-3.5 text-blue-400 group-hover/stat:scale-110 transition-transform shrink-0" />
+                  <span className="text-xs font-bold text-white font-mono">Polaris</span>
+                </a>
 
-                <div
-                  onMouseEnter={() => setActiveHighlight('varshanet')}
+                <a
+                  href="#projects"
+                  onMouseEnter={() => setActiveHighlight('pulsemesh')}
                   onMouseLeave={() => setActiveHighlight(null)}
-                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
-                    activeHighlight === 'varshanet'
-                      ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
-                      : 'border-white/[0.08] hover:border-emerald-500/40 hover:bg-white/[0.08]'
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
-                    <Radio className="w-2.5 h-2.5 text-emerald-400 group-hover/stat:scale-110 transition-transform" />
-                    <span>VarshaNet</span>
-                  </div>
-                  <div className="text-[11px] font-bold text-white mt-1 font-mono">99.4% Acc</div>
-                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Radar AI</div>
-                </div>
-
-                <div
-                  onMouseEnter={() => setActiveHighlight('cpp')}
-                  onMouseLeave={() => setActiveHighlight(null)}
-                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
-                    activeHighlight === 'cpp'
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
+                    activeHighlight === 'pulsemesh'
                       ? 'border-purple-400 bg-purple-950/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
                       : 'border-white/[0.08] hover:border-purple-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
-                    <Cpu className="w-2.5 h-2.5 text-purple-400 group-hover/stat:scale-110 transition-transform" />
-                    <span>C++ Queue</span>
-                  </div>
-                  <div className="text-[11px] font-bold text-white mt-1 font-mono">10k+ ops/s</div>
-                  <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Lock-Free</div>
-                </div>
-              </div>
+                  <Zap className="w-3.5 h-3.5 text-purple-400 group-hover/stat:scale-110 transition-transform shrink-0" />
+                  <span className="text-xs font-bold text-white font-mono">PulseMesh</span>
+                </a>
 
-              {/* Micro Status Bar */}
-              <div className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/[0.06] flex items-center justify-between text-[9px] font-mono text-zinc-400">
-                <div className="flex items-center gap-2">
-                  <span>CORE: <strong className="text-zinc-200">ACTIVE</strong></span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span>RENDER: <strong className="text-zinc-200">60 FPS</strong></span>
-                  <span className="text-zinc-600">|</span>
-                  <span>SYNC: <strong className="text-emerald-400">VERIFIED</strong></span>
-                </div>
+                <a
+                  href="#projects"
+                  onMouseEnter={() => setActiveHighlight('campusos')}
+                  onMouseLeave={() => setActiveHighlight(null)}
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
+                    activeHighlight === 'campusos'
+                      ? 'border-[#E50914] bg-red-950/30 shadow-[0_0_15px_rgba(229,9,20,0.3)]'
+                      : 'border-white/[0.08] hover:border-red-500/40 hover:bg-white/[0.08]'
+                  }`}
+                >
+                  <Cpu className="w-3.5 h-3.5 text-[#E50914] group-hover/stat:scale-110 transition-transform shrink-0" />
+                  <span className="text-xs font-bold text-white font-mono">CampusOS</span>
+                </a>
               </div>
             </div>
 
