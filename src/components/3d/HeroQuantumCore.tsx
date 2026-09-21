@@ -3,11 +3,137 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
+// 🐦 Stylized 3D Perched Bird
+const PerchedBird: React.FC<{
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  mouseRef: React.MutableRefObject<{ x: number; y: number }>;
+}> = ({ position = [0.48, 0.18, 0.28], rotation = [0, -Math.PI / 4, 0], mouseRef }) => {
+  const birdRef = useRef<THREE.Group>(null);
+  const headRef = useRef<THREE.Group>(null);
+  const tailRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    const mouse = mouseRef.current;
+
+    // Gentle breathing / body movement
+    if (birdRef.current) {
+      birdRef.current.position.y = position[1] + Math.sin(time * 3.0) * 0.006;
+    }
+
+    // Curious head tilts & nodding towards cursor
+    if (headRef.current) {
+      const targetLookX = mouse.y * 0.25 + Math.sin(time * 1.5) * 0.08;
+      const targetLookY = mouse.x * 0.35 + Math.cos(time * 0.9) * 0.12;
+      headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, targetLookX, 0.08);
+      headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, targetLookY, 0.08);
+    }
+
+    // Occasional perky tail flick
+    if (tailRef.current) {
+      tailRef.current.rotation.x = 0.35 + Math.sin(time * 4.5) * 0.08 + (Math.sin(time * 12) > 0.9 ? 0.15 : 0);
+    }
+  });
+
+  return (
+    <group ref={birdRef} position={position} rotation={rotation} scale={0.65}>
+      {/* 🐦 Bird Body (Plump Egg Shape) */}
+      <mesh position={[0, 0, 0]} rotation={[-0.2, 0, 0]}>
+        <sphereGeometry args={[0.13, 24, 24]} />
+        <meshStandardMaterial
+          color="#38bdf8"
+          roughness={0.4}
+          metalness={0.1}
+        />
+      </mesh>
+
+      {/* 🐦 White / Cream Breast Accent */}
+      <mesh position={[0, -0.02, 0.08]} rotation={[-0.2, 0, 0]} scale={[0.85, 0.9, 0.6]}>
+        <sphereGeometry args={[0.11, 20, 20]} />
+        <meshStandardMaterial
+          color="#f8fafc"
+          roughness={0.5}
+        />
+      </mesh>
+
+      {/* 🐦 Wings (Folded on Side) */}
+      <mesh position={[0.11, 0.02, -0.02]} rotation={[0.2, 0.1, -0.15]} scale={[0.3, 0.8, 1.3]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshStandardMaterial color="#0284c7" roughness={0.35} />
+      </mesh>
+      <mesh position={[-0.11, 0.02, -0.02]} rotation={[0.2, -0.1, 0.15]} scale={[0.3, 0.8, 1.3]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshStandardMaterial color="#0284c7" roughness={0.35} />
+      </mesh>
+
+      {/* 🐦 Perky Tail Feathers */}
+      <mesh ref={tailRef} position={[0, 0.02, -0.15]} rotation={[0.35, 0, 0]} scale={[0.7, 0.2, 1.6]}>
+        <coneGeometry args={[0.07, 0.22, 12]} />
+        <meshStandardMaterial color="#0369a1" roughness={0.4} />
+      </mesh>
+
+      {/* 🐦 Head Group (With Eyes & Beak) */}
+      <group ref={headRef} position={[0, 0.12, 0.07]}>
+        {/* Head Sphere */}
+        <mesh>
+          <sphereGeometry args={[0.09, 24, 24]} />
+          <meshStandardMaterial color="#38bdf8" roughness={0.4} />
+        </mesh>
+
+        {/* Crown Accent */}
+        <mesh position={[0, 0.06, -0.02]} scale={[0.6, 0.5, 0.8]}>
+          <sphereGeometry args={[0.06, 16, 16]} />
+          <meshStandardMaterial color="#0284c7" roughness={0.4} />
+        </mesh>
+
+        {/* Left Eye */}
+        <mesh position={[0.065, 0.02, 0.04]}>
+          <sphereGeometry args={[0.016, 12, 12]} />
+          <meshStandardMaterial color="#09090b" roughness={0.1} />
+        </mesh>
+        {/* Left Eye Glint */}
+        <mesh position={[0.072, 0.025, 0.05]}>
+          <sphereGeometry args={[0.005, 8, 8]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+
+        {/* Right Eye */}
+        <mesh position={[-0.065, 0.02, 0.04]}>
+          <sphereGeometry args={[0.016, 12, 12]} />
+          <meshStandardMaterial color="#09090b" roughness={0.1} />
+        </mesh>
+        {/* Right Eye Glint */}
+        <mesh position={[-0.072, 0.025, 0.05]}>
+          <sphereGeometry args={[0.005, 8, 8]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+
+        {/* Golden Orange Beak */}
+        <mesh position={[0, 0, 0.11]} rotation={[Math.PI / 2, 0, 0]}>
+          <coneGeometry args={[0.028, 0.08, 12]} />
+          <meshStandardMaterial color="#f59e0b" roughness={0.3} metalness={0.2} />
+        </mesh>
+      </group>
+
+      {/* 🐦 Little Perched Claws (Grasping Pot Rim) */}
+      <mesh position={[0.04, -0.11, 0.04]} rotation={[0, 0, 0]}>
+        <cylinderGeometry args={[0.01, 0.01, 0.05, 8]} />
+        <meshStandardMaterial color="#d97706" />
+      </mesh>
+      <mesh position={[-0.04, -0.11, 0.04]} rotation={[0, 0, 0]}>
+        <cylinderGeometry args={[0.01, 0.01, 0.05, 8]} />
+        <meshStandardMaterial color="#d97706" />
+      </mesh>
+    </group>
+  );
+};
+
 // 🌿 3D Stylized Hanging Potted Plant
 const HangingPlantMesh: React.FC<{
   mouseRef: React.MutableRefObject<{ x: number; y: number }>;
   activeHighlight: string | null;
-}> = ({ mouseRef, activeHighlight }) => {
+}> = ({ mouseRef }) => {
   const potGroup = useRef<THREE.Group>(null);
   const foliageGroup = useRef<THREE.Group>(null);
 
@@ -33,7 +159,7 @@ const HangingPlantMesh: React.FC<{
     const strandCount = 10;
     for (let s = 0; s < strandCount; s++) {
       const strandAngle = (s / strandCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
-      const strandLength = 4 + Math.floor(Math.random() * 5); // 4 to 8 leaves per vine
+      const strandLength = 4 + Math.floor(Math.random() * 5);
       const rimRadius = 0.58;
 
       let curX = Math.cos(strandAngle) * rimRadius;
@@ -165,6 +291,13 @@ const HangingPlantMesh: React.FC<{
         <meshStandardMaterial color="#27272a" roughness={0.9} />
       </mesh>
 
+      {/* 🐦 Cute 3D Perched Bird Sitting on Pot Rim */}
+      <PerchedBird
+        position={[0.48, 0.19, 0.26]}
+        rotation={[0, -Math.PI / 4, 0]}
+        mouseRef={mouseRef}
+      />
+
       {/* 🌿 Dense Foliage Group */}
       <group ref={foliageGroup}>
         {/* Top Upright Succulent Leaves */}
@@ -230,14 +363,14 @@ export const HeroQuantumCore: React.FC<{ activeHighlight?: string | null }> = ({
         className="w-full h-full"
       >
         {/* Harmonized Studio Lighting matching Dark Obsidian Backdrop */}
-        <ambientLight intensity={0.7} />
+        <ambientLight intensity={0.75} />
         <directionalLight position={[4, 6, 4]} intensity={1.8} color="#FFFFFF" />
-        <pointLight position={[-4, 3, 3]} intensity={1.2} color="#00E5FF" />
+        <pointLight position={[-4, 3, 3]} intensity={1.2} color="#38BDF8" />
         <pointLight position={[4, -2, 2]} intensity={1.0} color="#E50914" />
         <pointLight position={[0, -4, -2]} intensity={0.8} color="#A855F7" />
 
         <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.3}>
-          {/* 🌿 3D Hanging Plant */}
+          {/* 🌿 3D Hanging Plant with Perched Bird */}
           <HangingPlantMesh mouseRef={mouseRef} activeHighlight={activeHighlight} />
         </Float>
       </Canvas>
