@@ -158,9 +158,6 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   SYS.TELEMETRY • LIVE STREAM
                 </span>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full bg-white/[0.06] backdrop-blur-md text-[#E50914] font-mono text-[10px] font-bold border border-red-500/20 shadow-[0_0_8px_rgba(229,9,20,0.25)]">
-                3D ORBIT ENGINE
-              </span>
             </div>
 
             {/* 3D Core Canvas */}
