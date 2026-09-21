@@ -10,6 +10,8 @@ interface BillboardHeroProps {
 }
 
 export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal }) => {
+  const [activeHighlight, setActiveHighlight] = React.useState<string | null>(null);
+
   return (
     <section id="home" className="relative w-full min-h-[85vh] flex items-center justify-start select-none pt-28 sm:pt-36 pb-16 sm:pb-24 border-b border-white/10">
       {/* Content Container */}
@@ -171,14 +173,22 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
 
             {/* 3D Core Canvas */}
             <div className="relative w-full my-1">
-              <HeroQuantumCore />
+              <HeroQuantumCore activeHighlight={activeHighlight} />
             </div>
 
             {/* Console Bottom Stats & Telemetry Matrix */}
             <div className="pt-3 border-t border-white/10 space-y-2.5">
               {/* 4 Metric Cards Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-red-500/40 text-center transition-all duration-200 group/stat">
+                <div
+                  onMouseEnter={() => setActiveHighlight('postgis')}
+                  onMouseLeave={() => setActiveHighlight(null)}
+                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
+                    activeHighlight === 'postgis'
+                      ? 'border-[#E50914] bg-red-950/30 shadow-[0_0_15px_rgba(229,9,20,0.3)]'
+                      : 'border-white/[0.08] hover:border-red-500/40 hover:bg-white/[0.08]'
+                  }`}
+                >
                   <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
                     <Zap className="w-2.5 h-2.5 text-[#E50914] group-hover/stat:scale-110 transition-transform" />
                     <span>PostGIS</span>
@@ -187,7 +197,15 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Spatial Index</div>
                 </div>
 
-                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-blue-500/40 text-center transition-all duration-200 group/stat">
+                <div
+                  onMouseEnter={() => setActiveHighlight('polaris')}
+                  onMouseLeave={() => setActiveHighlight(null)}
+                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
+                    activeHighlight === 'polaris'
+                      ? 'border-blue-400 bg-blue-950/30 shadow-[0_0_15px_rgba(56,189,248,0.3)]'
+                      : 'border-white/[0.08] hover:border-blue-500/40 hover:bg-white/[0.08]'
+                  }`}
+                >
                   <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
                     <Shield className="w-2.5 h-2.5 text-blue-400 group-hover/stat:scale-110 transition-transform" />
                     <span>Polaris</span>
@@ -196,7 +214,15 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Edge Caching</div>
                 </div>
 
-                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-emerald-500/40 text-center transition-all duration-200 group/stat">
+                <div
+                  onMouseEnter={() => setActiveHighlight('varshanet')}
+                  onMouseLeave={() => setActiveHighlight(null)}
+                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
+                    activeHighlight === 'varshanet'
+                      ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+                      : 'border-white/[0.08] hover:border-emerald-500/40 hover:bg-white/[0.08]'
+                  }`}
+                >
                   <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
                     <Radio className="w-2.5 h-2.5 text-emerald-400 group-hover/stat:scale-110 transition-transform" />
                     <span>VarshaNet</span>
@@ -205,7 +231,15 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   <div className="text-[8px] font-mono text-zinc-500 mt-0.5">Radar AI</div>
                 </div>
 
-                <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-md border border-white/[0.08] hover:border-purple-500/40 text-center transition-all duration-200 group/stat">
+                <div
+                  onMouseEnter={() => setActiveHighlight('cpp')}
+                  onMouseLeave={() => setActiveHighlight(null)}
+                  className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
+                    activeHighlight === 'cpp'
+                      ? 'border-purple-400 bg-purple-950/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
+                      : 'border-white/[0.08] hover:border-purple-500/40 hover:bg-white/[0.08]'
+                  }`}
+                >
                   <div className="flex items-center justify-center gap-1 text-[9px] font-mono text-zinc-400 uppercase tracking-wider">
                     <Cpu className="w-2.5 h-2.5 text-purple-400 group-hover/stat:scale-110 transition-transform" />
                     <span>C++ Queue</span>
