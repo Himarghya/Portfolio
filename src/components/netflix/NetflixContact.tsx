@@ -156,39 +156,35 @@ export const NetflixContact: React.FC = () => {
           </a>
         </div>
 
-        {/* Real-time Session & Offline Persistence Status Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-xs">
-          <div className="flex items-center gap-2">
-            {!isOnline ? (
-              <span className="flex items-center gap-1.5 text-amber-400 font-medium font-mono text-[11px]">
-                <WifiOff className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-                Offline Mode • Session data saved locally
-              </span>
-            ) : hasDraft ? (
-              <span className="flex items-center gap-1.5 text-emerald-400 font-medium font-mono text-[11px]">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                Session draft auto-saved
-              </span>
-            ) : (
-              <span className="flex items-center gap-1.5 text-zinc-400 font-mono text-[11px]">
-                <Wifi className="w-3.5 h-3.5 text-zinc-500" />
-                Live draft protection active
-              </span>
+        {/* Real-time Session & Offline Persistence Status Bar (only shown if draft exists or offline) */}
+        {(!isOnline || hasDraft) && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-xs">
+            <div className="flex items-center gap-2">
+              {!isOnline ? (
+                <span className="flex items-center gap-1.5 text-amber-400 font-medium font-mono text-[11px]">
+                  <WifiOff className="w-3.5 h-3.5 text-amber-400" />
+                  Offline Mode • Session data saved locally
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 text-emerald-400 font-medium font-mono text-[11px]">
+                  Session draft saved
+                </span>
+              )}
+            </div>
+
+            {hasDraft && (
+              <button
+                type="button"
+                onClick={handleClearDraft}
+                className="flex items-center gap-1 text-[11px] text-zinc-400 hover:text-red-400 transition-colors cursor-pointer font-mono"
+                title="Discard saved draft"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Clear Draft</span>
+              </button>
             )}
           </div>
-
-          {hasDraft && (
-            <button
-              type="button"
-              onClick={handleClearDraft}
-              className="flex items-center gap-1 text-[11px] text-zinc-400 hover:text-red-400 transition-colors cursor-pointer font-mono"
-              title="Discard saved draft"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span>Clear Draft</span>
-            </button>
-          )}
-        </div>
+        )}
 
         {/* Message Form with Custom Cyber Validation */}
         <form onSubmit={handleSubmit} noValidate className="space-y-4 text-left">
