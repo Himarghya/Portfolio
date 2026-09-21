@@ -3,7 +3,6 @@ import { AnimatePresence } from 'framer-motion';
 import { NETFLIX_PROFILES, NetflixProfile, NetflixItem, TRENDING_PROJECTS } from './constants/netflixData';
 import { PortfolioIntroAnimation } from './components/portfolio/PortfolioIntroAnimation';
 import { GlassBackground } from './components/ui/GlassBackground';
-import { ButterfliesCursor } from './components/ui/ButterfliesCursor';
 import { SmoothScrollManager } from './components/ui/SmoothScrollManager';
 import { ProfileSelector } from './components/netflix/ProfileSelector';
 import { NetflixNavbar } from './components/netflix/NetflixNavbar';
@@ -61,9 +60,6 @@ export const App: React.FC = () => {
       
       {/* Ambient Glassmorphism Background Lights */}
       <GlassBackground />
-
-      {/* Animated Celestial Twin Butterflies Cursor Companion */}
-      <ButterfliesCursor />
 
       {/* Portfolio Intro Opening Animation */}
       <AnimatePresence mode="wait">

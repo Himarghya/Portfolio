@@ -3,111 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-interface PlantSceneProps {
-  mouseRef: React.MutableRefObject<{ x: number; y: number }>;
-  activeHighlight: string | null;
-}
-
-// 🦋 3D Animated Orbiting Butterfly
-const OrbitingButterfly: React.FC<{
-  orbitRadius?: number;
-  speed?: number;
-  color?: string;
-  glowColor?: string;
-  initialOffset?: number;
-  heightOffset?: number;
-}> = ({
-  orbitRadius = 2.0,
-  speed = 1.2,
-  color = '#38BDF8',
-  glowColor = '#00E5FF',
-  initialOffset = 0,
-  heightOffset = 0,
-}) => {
-  const butterflyGroup = useRef<THREE.Group>(null);
-  const leftWing = useRef<THREE.Mesh>(null);
-  const rightWing = useRef<THREE.Mesh>(null);
-
-  // Butterfly wing geometry & shape
-  const wingShape = useMemo(() => {
-    const shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.bezierCurveTo(0.1, 0.2, 0.35, 0.4, 0.45, 0.25);
-    shape.bezierCurveTo(0.5, 0.1, 0.35, -0.15, 0.2, -0.25);
-    shape.bezierCurveTo(0.1, -0.3, 0.05, -0.15, 0, 0);
-    return shape;
-  }, []);
-
-  useFrame((state) => {
-    const time = state.clock.elapsedTime * speed + initialOffset;
-
-    // Orbit path around plant
-    if (butterflyGroup.current) {
-      const x = Math.cos(time) * orbitRadius;
-      const z = Math.sin(time) * orbitRadius;
-      const y = Math.sin(time * 2.5) * 0.45 + heightOffset;
-
-      butterflyGroup.current.position.set(x, y, z);
-
-      // Look in direction of motion (tangent vector)
-      const tangentX = -Math.sin(time);
-      const tangentZ = Math.cos(time);
-      const angle = Math.atan2(tangentX, tangentZ);
-      butterflyGroup.current.rotation.y = angle;
-      butterflyGroup.current.rotation.z = Math.sin(time * 3) * 0.15; // banking tilt
-    }
-
-    // High-speed wing flap oscillation
-    const flap = Math.sin(state.clock.elapsedTime * 18) * 0.85;
-    if (leftWing.current) leftWing.current.rotation.y = flap;
-    if (rightWing.current) rightWing.current.rotation.y = -flap;
-  });
-
-  return (
-    <group ref={butterflyGroup} scale={0.75}>
-      {/* Slender Butterfly Body */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.02, 0.015, 0.3, 8]} />
-        <meshStandardMaterial color="#18181b" roughness={0.3} metalness={0.8} />
-      </mesh>
-
-      {/* Left Wing */}
-      <mesh ref={leftWing} position={[0.01, 0, 0]} rotation={[0, 0, Math.PI / 6]}>
-        <shapeGeometry args={[wingShape]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={glowColor}
-          emissiveIntensity={0.8}
-          side={THREE.DoubleSide}
-          transparent
-          opacity={0.92}
-          roughness={0.2}
-          metalness={0.3}
-        />
-      </mesh>
-
-      {/* Right Wing */}
-      <mesh ref={rightWing} position={[-0.01, 0, 0]} rotation={[0, 0, -Math.PI / 6]} scale={[-1, 1, 1]}>
-        <shapeGeometry args={[wingShape]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={glowColor}
-          emissiveIntensity={0.8}
-          side={THREE.DoubleSide}
-          transparent
-          opacity={0.92}
-          roughness={0.2}
-          metalness={0.3}
-        />
-      </mesh>
-
-      {/* Soft Luminous Flight Glow */}
-      <pointLight color={glowColor} intensity={0.8} distance={1.2} />
-    </group>
-  );
-};
-
-// 🌿 3D Stylized Hanging Potted Plant (Matching User Image)
+// 🌿 3D Stylized Hanging Potted Plant
 const HangingPlantMesh: React.FC<{
   mouseRef: React.MutableRefObject<{ x: number; y: number }>;
   activeHighlight: string | null;
@@ -180,7 +76,7 @@ const HangingPlantMesh: React.FC<{
     return new THREE.ExtrudeGeometry(shape, extrudeSettings);
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const time = state.clock.elapsedTime;
     const mouse = mouseRef.current;
 
@@ -343,26 +239,6 @@ export const HeroQuantumCore: React.FC<{ activeHighlight?: string | null }> = ({
         <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.3}>
           {/* 🌿 3D Hanging Plant */}
           <HangingPlantMesh mouseRef={mouseRef} activeHighlight={activeHighlight} />
-
-          {/* 🦋 Celestial Orbiting Butterfly 1 (Cyan/Sky) */}
-          <OrbitingButterfly
-            orbitRadius={1.75}
-            speed={1.1}
-            color="#38BDF8"
-            glowColor="#00E5FF"
-            initialOffset={0}
-            heightOffset={-0.1}
-          />
-
-          {/* 🦋 Celestial Orbiting Butterfly 2 (Crimson/Emerald Glow) */}
-          <OrbitingButterfly
-            orbitRadius={1.95}
-            speed={0.85}
-            color="#E50914"
-            glowColor="#FF3B47"
-            initialOffset={Math.PI}
-            heightOffset={0.25}
-          />
         </Float>
       </Canvas>
     </div>
