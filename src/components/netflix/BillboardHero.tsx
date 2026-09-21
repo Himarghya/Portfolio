@@ -151,15 +151,6 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
           {/* Frosted Cyber Glass Console Card */}
           <div className="rounded-3xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/12 shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] overflow-hidden flex flex-col justify-between p-4 sm:p-5">
             
-            {/* Console Top Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-mono text-zinc-300 font-bold uppercase tracking-wider">
-                  SYS.TELEMETRY • LIVE STREAM
-                </span>
-              </div>
-            </div>
-
             {/* 3D Core Canvas */}
             <div className="relative w-full my-1">
               <HeroQuantumCore activeHighlight={activeHighlight} />
