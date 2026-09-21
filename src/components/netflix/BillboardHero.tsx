@@ -127,12 +127,8 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
               ].map((tech) => (
                 <div
                   key={tech.name}
-                  className="group/pill px-2.5 sm:px-3 py-1 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] backdrop-blur-xl border border-white/10 hover:border-[#E50914]/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_4px_15px_rgba(229,9,20,0.2)] transition-all duration-200 flex items-center gap-1.5 cursor-default hover:-translate-y-0.5"
+                  className="group/pill px-2.5 sm:px-3 py-1 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] backdrop-blur-xl border border-white/10 hover:border-[#E50914]/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_4px_15px_rgba(229,9,20,0.2)] transition-all duration-200 flex items-center cursor-default hover:-translate-y-0.5"
                 >
-                  <span
-                    className="w-1.5 h-1.5 rounded-full shrink-0 group-hover/pill:scale-125 transition-transform"
-                    style={{ backgroundColor: tech.color, boxShadow: `0 0 6px ${tech.color}88` }}
-                  />
                   <span className="text-[11px] sm:text-xs font-mono text-zinc-300 group-hover/pill:text-white transition-colors">
                     {tech.name}
                   </span>
@@ -158,10 +154,6 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
             {/* Console Top Header */}
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
                 <span className="text-[11px] font-mono text-zinc-300 font-bold uppercase tracking-wider">
                   SYS.TELEMETRY • LIVE STREAM
                 </span>
@@ -219,7 +211,7 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   onMouseLeave={() => setActiveHighlight(null)}
                   className={`p-2 sm:p-2.5 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer ${
                     activeHighlight === 'varshanet'
-                      ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+                      ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
                       : 'border-white/[0.08] hover:border-emerald-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
@@ -252,7 +244,6 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
               {/* Micro Status Bar */}
               <div className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/[0.06] flex items-center justify-between text-[9px] font-mono text-zinc-400">
                 <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)] animate-pulse" />
                   <span>CORE: <strong className="text-zinc-200">ACTIVE</strong></span>
                 </div>
                 <div className="flex items-center gap-3">

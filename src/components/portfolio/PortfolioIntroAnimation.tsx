@@ -237,8 +237,7 @@ export const PortfolioIntroAnimation: React.FC<PortfolioIntroAnimationProps> = (
 
           {/* Status Telemetry */}
           <div className="flex items-center justify-center text-[10px] sm:text-xs font-mono text-zinc-400 h-5">
-            <span className="flex items-center gap-1.5 text-zinc-300 transition-opacity duration-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E50914] animate-ping" />
+            <span className="flex items-center text-zinc-300 transition-opacity duration-300">
               {statusMessages[statusIndex]}
             </span>
           </div>

@@ -50,8 +50,7 @@ export const TopTenRow: React.FC = () => {
           <h3 className="text-xl sm:text-2xl font-bold text-white tracking-wide">
             Top Technologies &amp; Systems
           </h3>
-          <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[11px] font-mono text-zinc-400 tracking-wider">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#E50914] shadow-[0_0_6px_rgba(229,9,20,0.8)]" />
+          <span className="hidden md:inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[11px] font-mono text-zinc-400 tracking-wider">
             CORE TECHNICAL STACK
           </span>
         </div>

@@ -33,8 +33,7 @@ export const NetflixAbout: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 text-xs text-zinc-200 font-mono self-start md:self-auto shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+            <div className="flex items-center px-3.5 py-1.5 rounded-full bg-white/[0.05] backdrop-blur-xl border border-white/10 text-xs text-zinc-200 font-mono self-start md:self-auto shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
               <span>Available for Full-time Roles</span>
             </div>
           </div>
@@ -74,7 +73,7 @@ export const NetflixAbout: React.FC = () => {
               </div>
 
               {/* Bio Snippet */}
-              <div className="p-4 rounded-xl bg-white/[0.03] backdrop-blur-md border border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+              <div className="p-4 rounded-xl bg-white/[0.03] backdrop-blur-md border border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,20,0.06)]">
                 <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
                   {SHOWRUNNER_DOSSIER.bio}
                 </p>
@@ -98,8 +97,7 @@ export const NetflixAbout: React.FC = () => {
           {/* Right Column: Engineering Focus & Pillars */}
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-3">
-              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#E50914] uppercase tracking-widest font-semibold drop-shadow-[0_0_8px_rgba(229,9,20,0.4)]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E50914]" />
+              <span className="inline-flex items-center text-xs font-mono text-[#E50914] uppercase tracking-widest font-semibold drop-shadow-[0_0_8px_rgba(229,9,20,0.4)]">
                 WHAT I WORK ON
               </span>
               <h4 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-sans">
