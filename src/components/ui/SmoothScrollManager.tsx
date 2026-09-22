@@ -2,6 +2,17 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
+const SECTION_IDS = [
+  'home',
+  'projects',
+  'skills',
+  'timeline',
+  'achievements',
+  'certificates',
+  'about',
+  'contact'
+];
+
 export const SmoothScrollManager: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
@@ -22,8 +33,8 @@ export const SmoothScrollManager: React.FC = () => {
             circleRef.current.style.strokeDashoffset = `${125.66 - (125.66 * progress) / 100}`;
           }
 
-          const visible = scrollTop > 200;
-          const nearBottom = progress > 85;
+          const visible = scrollTop > 150;
+          const nearBottom = progress > 88;
 
           setIsVisible((prev) => (prev !== visible ? visible : prev));
           setIsNearBottom((prev) => (prev !== nearBottom ? nearBottom : prev));
@@ -53,7 +64,7 @@ export const SmoothScrollManager: React.FC = () => {
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
           window.scrollTo({
-            top: offsetPosition,
+            top: Math.max(0, offsetPosition),
             behavior: 'smooth'
           });
         }
@@ -68,11 +79,41 @@ export const SmoothScrollManager: React.FC = () => {
     };
   }, []);
 
-  const scrollToToggle = () => {
-    if (isNearBottom) {
+  // Intelligent Step-Down to Next Section (e.g. from Projects -> Stack -> Timeline -> ...)
+  const handleNextSectionClick = () => {
+    const currentScrollY = window.scrollY;
+    const headerOffset = 75;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (currentScrollY / docHeight) * 100 : 0;
+
+    // If near the bottom, scroll back to top
+    if (progress > 88) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Collect all valid sections and their absolute scroll positions
+    const sections = SECTION_IDS.map((id) => {
+      const element = document.getElementById(id);
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      const top = rect.top + window.pageYOffset - headerOffset;
+      return { id, top, element };
+    })
+      .filter((s): s is { id: string; top: number; element: HTMLElement } => s !== null)
+      .sort((a, b) => a.top - b.top);
+
+    // Find the next section that lies below current scroll position (with 25px threshold)
+    const nextSection = sections.find((s) => s.top > currentScrollY + 25);
+
+    if (nextSection) {
+      window.scrollTo({
+        top: Math.max(0, nextSection.top),
+        behavior: 'smooth'
+      });
     } else {
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+      // If at last section, scroll back to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -87,10 +128,10 @@ export const SmoothScrollManager: React.FC = () => {
           className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 select-none"
         >
           <button
-            onClick={scrollToToggle}
+            onClick={handleNextSectionClick}
             className="group relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#101116]/90 hover:bg-[#16171f] backdrop-blur-2xl border border-white/15 hover:border-[#E50914]/70 shadow-[0_8px_25px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.15)] hover:shadow-[0_0_20px_rgba(229,9,20,0.4)] transition-all duration-300 cursor-pointer active:scale-95"
-            title={isNearBottom ? 'Scroll to Top' : 'Scroll to Bottom'}
-            aria-label="Toggle smooth scroll position"
+            title={isNearBottom ? 'Back to Top' : 'Next Section'}
+            aria-label="Navigate to next section or top"
           >
             {/* SVG Circular Scroll Progress Ring */}
             <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 48 48">
