@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BILLBOARD_FEATURED, NetflixItem } from '../../constants/netflixData';
-import { Play, Info, CheckCircle2, ArrowRight, Zap, Shield, Cpu, Radio } from 'lucide-react';
+import { Play, Info, ArrowRight } from 'lucide-react';
 import { HeroQuantumCore } from '../3d/HeroQuantumCore';
 
 interface BillboardHeroProps {
@@ -163,13 +163,12 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   href="#projects"
                   onMouseEnter={() => setActiveHighlight('varshanet')}
                   onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
                     activeHighlight === 'varshanet'
                       ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
                       : 'border-white/[0.08] hover:border-emerald-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
-                  <Radio className="w-3.5 h-3.5 text-emerald-400 group-hover/stat:scale-110 transition-transform shrink-0" />
                   <span className="text-xs font-bold text-white font-mono">VarshaNet</span>
                 </a>
 
@@ -177,13 +176,12 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   href="#projects"
                   onMouseEnter={() => setActiveHighlight('polaris')}
                   onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
                     activeHighlight === 'polaris'
                       ? 'border-blue-400 bg-blue-950/30 shadow-[0_0_15px_rgba(56,189,248,0.3)]'
                       : 'border-white/[0.08] hover:border-blue-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
-                  <Shield className="w-3.5 h-3.5 text-blue-400 group-hover/stat:scale-110 transition-transform shrink-0" />
                   <span className="text-xs font-bold text-white font-mono">Polaris</span>
                 </a>
 
@@ -191,13 +189,12 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   href="#projects"
                   onMouseEnter={() => setActiveHighlight('pulsemesh')}
                   onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
                     activeHighlight === 'pulsemesh'
                       ? 'border-purple-400 bg-purple-950/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
                       : 'border-white/[0.08] hover:border-purple-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
-                  <Zap className="w-3.5 h-3.5 text-purple-400 group-hover/stat:scale-110 transition-transform shrink-0" />
                   <span className="text-xs font-bold text-white font-mono">PulseMesh</span>
                 </a>
 
@@ -205,13 +202,12 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
                   href="#projects"
                   onMouseEnter={() => setActiveHighlight('campusos')}
                   onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
                     activeHighlight === 'campusos'
                       ? 'border-[#E50914] bg-red-950/30 shadow-[0_0_15px_rgba(229,9,20,0.3)]'
                       : 'border-white/[0.08] hover:border-red-500/40 hover:bg-white/[0.08]'
                   }`}
                 >
-                  <Cpu className="w-3.5 h-3.5 text-[#E50914] group-hover/stat:scale-110 transition-transform shrink-0" />
                   <span className="text-xs font-bold text-white font-mono">CampusOS</span>
                 </a>
               </div>
