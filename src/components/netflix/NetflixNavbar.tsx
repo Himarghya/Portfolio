@@ -226,16 +226,10 @@ export const NetflixNavbar: React.FC<NetflixNavbarProps> = ({
         {/* Interactive CLI Console Button */}
         <button
           onClick={onOpenTerminal}
-          className="group relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] hover:from-[#E50914]/20 hover:to-[#E50914]/[0.05] text-xs font-mono text-zinc-300 hover:text-white transition-all duration-300 border border-white/10 hover:border-[#E50914]/60 shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_0_20px_rgba(229,9,20,0.35)] cursor-pointer"
+          className="group relative flex items-center justify-center px-3 py-1.5 rounded-xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] hover:from-[#E50914]/20 hover:to-[#E50914]/[0.05] text-xs font-mono text-zinc-300 hover:text-white transition-all duration-300 border border-white/10 hover:border-[#E50914]/60 shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_0_20px_rgba(229,9,20,0.35)] cursor-pointer"
           title="Launch Interactive Terminal (CLI)"
         >
-          <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-[#E50914]/25 to-red-950/40 border border-[#E50914]/40 flex items-center justify-center text-[#E50914] group-hover:text-red-300 group-hover:border-[#E50914]/80 shadow-[0_0_8px_rgba(229,9,20,0.3)] transition-all">
-            <Terminal className="w-3 h-3" />
-          </div>
           <span className="font-semibold text-xs tracking-wider">CLI</span>
-          <span className="hidden sm:inline-block text-[9px] font-mono px-1.5 py-0.5 rounded-md bg-white/[0.06] text-zinc-400 border border-white/10 group-hover:border-[#E50914]/30 group-hover:text-zinc-300 transition-colors">
-            &gt;_
-          </span>
         </button>
 
         {/* Profile Avatar & Role Switcher */}
