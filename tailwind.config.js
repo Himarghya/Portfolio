@@ -21,9 +21,13 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Netflix Sans', 'Helvetica Neue', 'Segoe UI', 'Roboto', 'Ubuntu', 'sans-serif'],
-        bebas: ['Bebas Neue', 'Impact', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['Space Grotesk', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        body: ['Space Grotesk', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        heading: ['Space Grotesk', 'sans-serif'],
+        display: ['Barlow Condensed', 'sans-serif'],
+        barlow: ['Barlow Condensed', 'sans-serif'],
+        bebas: ['Barlow Condensed', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'monospace'],
       },
       backgroundImage: {
         'netflix-hero': 'linear-gradient(to top, rgba(20,20,20,1) 0%, rgba(20,20,20,0.6) 20%, rgba(20,20,20,0) 60%, rgba(20,20,20,0.7) 100%)',
