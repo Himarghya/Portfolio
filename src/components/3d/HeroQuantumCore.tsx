@@ -4,7 +4,7 @@ import { Float, useTexture, Html, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import { Sparkles, Terminal, Activity } from 'lucide-react';
 
-interface ProjectNode {
+interface TechPillarNode {
   id: string;
   name: string;
   color: string;
@@ -14,11 +14,11 @@ interface ProjectNode {
   tag: string;
 }
 
-const PROJECT_NODES: ProjectNode[] = [
-  { id: 'varshanet', name: 'VarshaNet', color: '#10B981', angle: 0, radius: 1.8, y: 0.3, tag: 'GIS / AI' },
-  { id: 'polaris', name: 'Polaris', color: '#38BDF8', angle: Math.PI / 2, radius: 1.9, y: -0.2, tag: 'Offline CRDT' },
-  { id: 'pulsemesh', name: 'PulseMesh', color: '#A855F7', angle: Math.PI, radius: 1.8, y: 0.4, tag: 'Distributed Engine' },
-  { id: 'campusos', name: 'CampusOS', color: '#E50914', angle: (3 * Math.PI) / 2, radius: 1.9, y: -0.3, tag: 'Full-Stack ERP' },
+const TECH_PILLARS: TechPillarNode[] = [
+  { id: 'systems', name: 'C++20 / Systems', color: '#00E5FF', angle: 0, radius: 1.8, y: 0.3, tag: 'Memory & Concurrency' },
+  { id: 'fullstack', name: 'React / TypeScript', color: '#38BDF8', angle: Math.PI / 2, radius: 1.9, y: -0.2, tag: 'Modern Frontend' },
+  { id: 'distributed', name: 'Distributed Systems', color: '#A855F7', angle: Math.PI, radius: 1.8, y: 0.4, tag: 'Worker Engines' },
+  { id: 'databases', name: 'PostgreSQL / PostGIS', color: '#10B981', angle: (3 * Math.PI) / 2, radius: 1.9, y: -0.3, tag: 'Spatial & SQL' },
 ];
 
 // 👾 3D Pixel Art Avatar Mesh with Sharp Nearest-Neighbor Texture Filtering
@@ -135,8 +135,8 @@ const PixelAvatarPortraitMesh: React.FC<{
         />
       </mesh>
 
-      {/* Orbiting Project Nodes */}
-      {PROJECT_NODES.map((node) => {
+      {/* Orbiting Technical Pillar Nodes */}
+      {TECH_PILLARS.map((node) => {
         const isHighlighted = activeHighlight === node.id;
         const x = Math.cos(node.angle) * node.radius;
         const z = Math.sin(node.angle) * node.radius;

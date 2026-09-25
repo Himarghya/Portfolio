@@ -143,60 +143,36 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
               <HeroQuantumCore activeHighlight={activeHighlight} />
             </div>
 
-            {/* Console Bottom Project Badges */}
-            <div className="pt-3 border-t border-white/10">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <a
-                  href="#projects"
-                  onMouseEnter={() => setActiveHighlight('varshanet')}
-                  onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
-                    activeHighlight === 'varshanet'
-                      ? 'border-emerald-400 bg-emerald-950/30 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
-                      : 'border-white/[0.08] hover:border-emerald-500/40 hover:bg-white/[0.08]'
-                  }`}
-                >
-                  <span className="text-xs font-bold text-white font-mono">VarshaNet</span>
-                </a>
+            {/* Developer Profile & Engineering Specs */}
+            <div className="pt-3.5 border-t border-white/10 space-y-2.5">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="font-mono text-white font-bold text-xs tracking-wide">HIMARGHYA DAS</span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-zinc-300">
+                  DEVELOPER SPECS
+                </span>
+              </div>
 
-                <a
-                  href="#projects"
-                  onMouseEnter={() => setActiveHighlight('polaris')}
-                  onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
-                    activeHighlight === 'polaris'
-                      ? 'border-blue-400 bg-blue-950/30 shadow-[0_0_15px_rgba(56,189,248,0.3)]'
-                      : 'border-white/[0.08] hover:border-blue-500/40 hover:bg-white/[0.08]'
-                  }`}
-                >
-                  <span className="text-xs font-bold text-white font-mono">Polaris</span>
-                </a>
+              {/* Key Competencies Grid */}
+              <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
+                  <div className="text-[9px] uppercase tracking-wider text-zinc-400">Core Focus</div>
+                  <div className="text-white font-semibold mt-0.5">Systems &amp; Full Stack</div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
+                  <div className="text-[9px] uppercase tracking-wider text-zinc-400">Primary Stack</div>
+                  <div className="text-white font-semibold mt-0.5">C++20 • TS • React</div>
+                </div>
+              </div>
 
-                <a
-                  href="#projects"
-                  onMouseEnter={() => setActiveHighlight('pulsemesh')}
-                  onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
-                    activeHighlight === 'pulsemesh'
-                      ? 'border-purple-400 bg-purple-950/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
-                      : 'border-white/[0.08] hover:border-purple-500/40 hover:bg-white/[0.08]'
-                  }`}
-                >
-                  <span className="text-xs font-bold text-white font-mono">PulseMesh</span>
-                </a>
-
-                <a
-                  href="#projects"
-                  onMouseEnter={() => setActiveHighlight('campusos')}
-                  onMouseLeave={() => setActiveHighlight(null)}
-                  className={`py-2 px-3 rounded-xl bg-white/[0.04] backdrop-blur-md border text-center transition-all duration-200 group/stat cursor-pointer flex items-center justify-center ${
-                    activeHighlight === 'campusos'
-                      ? 'border-[#E50914] bg-red-950/30 shadow-[0_0_15px_rgba(229,9,20,0.3)]'
-                      : 'border-white/[0.08] hover:border-red-500/40 hover:bg-white/[0.08]'
-                  }`}
-                >
-                  <span className="text-xs font-bold text-white font-mono">CampusOS</span>
-                </a>
+              {/* Bio Summary / Philosophy Line */}
+              <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] backdrop-blur-md">
+                <div className="text-[9px] uppercase tracking-wider text-zinc-400 font-mono mb-0.5">ENGINEERING PHILOSOPHY</div>
+                <p className="text-[11px] text-zinc-300 font-normal leading-relaxed">
+                  Focusing on systems internals, clean code architectures, and high-resilience web software.
+                </p>
               </div>
             </div>
 
