@@ -1,213 +1,186 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useState, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float } from '@react-three/drei';
+import { Float, useTexture, Html, Stars } from '@react-three/drei';
 import * as THREE from 'three';
+import { Sparkles, Terminal, Activity } from 'lucide-react';
 
-// 🌿 3D Stylized Hanging Potted Plant / Foliage
-const HangingPlantMesh: React.FC<{
+interface ProjectNode {
+  id: string;
+  name: string;
+  color: string;
+  angle: number;
+  radius: number;
+  y: number;
+  tag: string;
+}
+
+const PROJECT_NODES: ProjectNode[] = [
+  { id: 'varshanet', name: 'VarshaNet', color: '#10B981', angle: 0, radius: 1.8, y: 0.3, tag: 'GIS / AI' },
+  { id: 'polaris', name: 'Polaris', color: '#38BDF8', angle: Math.PI / 2, radius: 1.9, y: -0.2, tag: 'Offline CRDT' },
+  { id: 'pulsemesh', name: 'PulseMesh', color: '#A855F7', angle: Math.PI, radius: 1.8, y: 0.4, tag: 'Distributed Engine' },
+  { id: 'campusos', name: 'CampusOS', color: '#E50914', angle: (3 * Math.PI) / 2, radius: 1.9, y: -0.3, tag: 'Full-Stack ERP' },
+];
+
+// 👾 3D Pixel Art Avatar Mesh with Sharp Nearest-Neighbor Texture Filtering
+const PixelAvatarPortraitMesh: React.FC<{
   mouseRef: React.MutableRefObject<{ x: number; y: number }>;
   activeHighlight: string | null;
-}> = ({ mouseRef }) => {
-  const potGroup = useRef<THREE.Group>(null);
-  const foliageGroup = useRef<THREE.Group>(null);
+}> = ({ mouseRef, activeHighlight }) => {
+  const cardGroup = useRef<THREE.Group>(null);
+  const ring1Ref = useRef<THREE.Mesh>(null);
+  const ring2Ref = useRef<THREE.Mesh>(null);
+  const [hovered, setHovered] = useState(false);
 
-  // Generate lush trailing vines and leaves (Pothos / Jade cascading foliage)
-  const { vineLeaves, topLeaves } = useMemo(() => {
-    // 1. Top dense cluster leaves
-    const top: { position: [number, number, number]; rotation: [number, number, number]; scale: number }[] = [];
-    const topCount = 38;
-    for (let i = 0; i < topCount; i++) {
-      const radius = 0.2 + Math.random() * 0.45;
-      const angle = Math.random() * Math.PI * 2;
-      const x = Math.cos(angle) * radius;
-      const z = Math.sin(angle) * radius;
-      const y = 0.15 + (1 - radius / 0.65) * 0.25 + Math.random() * 0.1;
-      const rotX = -0.3 + Math.random() * 0.6;
-      const rotY = angle + Math.PI / 2 + (Math.random() - 0.5) * 0.4;
-      const rotZ = 0.4 + Math.random() * 0.5;
-      top.push({ position: [x, y, z], rotation: [rotX, rotY, rotZ], scale: 0.8 + Math.random() * 0.4 });
-    }
+  // Load avatar texture and ensure strict pixel art crispness
+  const texture = useTexture('/profile/himarghya-pixel.png');
+  texture.minFilter = THREE.NearestFilter;
+  texture.magFilter = THREE.NearestFilter;
+  texture.generateMipmaps = false;
 
-    // 2. Cascading trailing vine strands
-    const vines: { position: [number, number, number]; rotation: [number, number, number]; scale: number }[] = [];
-    const strandCount = 10;
-    for (let s = 0; s < strandCount; s++) {
-      const strandAngle = (s / strandCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
-      const strandLength = 4 + Math.floor(Math.random() * 5); // 4 to 8 leaves per vine
-      const rimRadius = 0.58;
-
-      let curX = Math.cos(strandAngle) * rimRadius;
-      let curZ = Math.sin(strandAngle) * rimRadius;
-      let curY = 0.05;
-
-      for (let l = 0; l < strandLength; l++) {
-        curY -= 0.14 + Math.random() * 0.04;
-        curX += (Math.cos(strandAngle) * 0.06) + (Math.random() - 0.5) * 0.04;
-        curZ += (Math.sin(strandAngle) * 0.06) + (Math.random() - 0.5) * 0.04;
-
-        const leafScale = Math.max(0.45, 0.9 - l * 0.08 + Math.random() * 0.15);
-        vines.push({
-          position: [curX, curY, curZ],
-          rotation: [0.7 + l * 0.12, strandAngle + (l % 2 === 0 ? 0.3 : -0.3), 0.2],
-          scale: leafScale,
-        });
-      }
-    }
-
-    return { topLeaves: top, vineLeaves: vines };
-  }, []);
-
-  // Single Leaf Shape (Rounded Succulent / Jade Leaf)
-  const leafGeometry = useMemo(() => {
-    const shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.bezierCurveTo(0.12, 0.1, 0.18, 0.28, 0.14, 0.42);
-    shape.bezierCurveTo(0.1, 0.55, -0.1, 0.55, -0.14, 0.42);
-    shape.bezierCurveTo(-0.18, 0.28, -0.12, 0.1, 0, 0);
-
-    const extrudeSettings = {
-      depth: 0.02,
-      bevelEnabled: true,
-      bevelSegments: 3,
-      steps: 1,
-      bevelSize: 0.015,
-      bevelThickness: 0.015,
-    };
-    return new THREE.ExtrudeGeometry(shape, extrudeSettings);
-  }, []);
-
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const time = state.clock.elapsedTime;
     const mouse = mouseRef.current;
 
-    // Gentle natural pendulum swaying with mouse parallax
-    if (potGroup.current) {
-      const targetRotZ = -mouse.x * 0.12 + Math.sin(time * 1.2) * 0.04;
-      const targetRotX = mouse.y * 0.1 + Math.cos(time * 0.9) * 0.03;
-      const targetRotY = THREE.MathUtils.lerp(potGroup.current.rotation.y, time * 0.15 + mouse.x * 0.3, 0.04);
+    // Smooth 3D tilt tracking mouse
+    if (cardGroup.current) {
+      const targetRotY = mouse.x * 0.35 + Math.sin(time * 0.8) * 0.05;
+      const targetRotX = -mouse.y * 0.25 + Math.cos(time * 0.6) * 0.04;
+      const targetY = (hovered ? 0.05 : 0) + Math.sin(time * 1.5) * 0.06;
 
-      potGroup.current.rotation.z = THREE.MathUtils.lerp(potGroup.current.rotation.z, targetRotZ, 0.05);
-      potGroup.current.rotation.x = THREE.MathUtils.lerp(potGroup.current.rotation.x, targetRotX, 0.05);
-      potGroup.current.rotation.y = targetRotY;
-
-      // Gentle vertical float
-      potGroup.current.position.y = Math.sin(time * 1.5) * 0.06 + 0.1;
+      cardGroup.current.rotation.y = THREE.MathUtils.lerp(cardGroup.current.rotation.y, targetRotY, 0.08);
+      cardGroup.current.rotation.x = THREE.MathUtils.lerp(cardGroup.current.rotation.x, targetRotX, 0.08);
+      cardGroup.current.position.y = THREE.MathUtils.lerp(cardGroup.current.position.y, targetY, 0.08);
     }
 
-    // Subtle leaf breeze motion
-    if (foliageGroup.current) {
-      const s = 1 + Math.sin(time * 2.0) * 0.015;
-      foliageGroup.current.scale.set(s, s, s);
+    // Orbiting holographic rings
+    if (ring1Ref.current) {
+      ring1Ref.current.rotation.z += delta * 0.4;
+      ring1Ref.current.rotation.x = Math.PI / 3 + Math.sin(time * 0.5) * 0.1;
+    }
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.y -= delta * 0.3;
+      ring2Ref.current.rotation.z = Math.PI / 4 + Math.cos(time * 0.5) * 0.1;
     }
   });
 
   return (
-    <group ref={potGroup} position={[0, 0.1, 0]}>
-      {/* 🧵 3 Suspension Hanging Cords (Reaching up to ceiling) */}
-      {[0, (Math.PI * 2) / 3, (Math.PI * 4) / 3].map((angle, idx) => {
-        const rimX = Math.cos(angle) * 0.56;
-        const rimZ = Math.sin(angle) * 0.56;
-        const start = new THREE.Vector3(rimX, 0.12, rimZ);
-        const top = new THREE.Vector3(0, 2.6, 0);
-        const length = start.distanceTo(top);
-        const mid = new THREE.Vector3().addVectors(start, top).multiplyScalar(0.5);
+    <group
+      ref={cardGroup}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    >
+      {/* 🖼️ Main Floating Pixel Avatar Card */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[1.75, 1.75, 0.08]} />
+        <meshStandardMaterial
+          color="#0d1117"
+          roughness={0.2}
+          metalness={0.8}
+        />
+      </mesh>
+
+      {/* Pixel Avatar Front Face Image */}
+      <mesh position={[0, 0, 0.045]}>
+        <planeGeometry args={[1.65, 1.65]} />
+        <meshBasicMaterial
+          map={texture}
+          transparent={true}
+        />
+      </mesh>
+
+      {/* Cyber Glass Bevel Border */}
+      <mesh position={[0, 0, 0.05]}>
+        <ringGeometry args={[1.18, 1.22, 4, 1, Math.PI / 4]} />
+        <meshBasicMaterial
+          color={activeHighlight ? '#38BDF8' : '#00FF87'}
+          transparent
+          opacity={hovered ? 0.9 : 0.6}
+        />
+      </mesh>
+
+      {/* Top Left / Bottom Right Corner Cyber Bracket Accents */}
+      <mesh position={[-0.85, 0.85, 0.06]}>
+        <planeGeometry args={[0.2, 0.04]} />
+        <meshBasicMaterial color="#00FF87" />
+      </mesh>
+      <mesh position={[-0.85, 0.85, 0.06]}>
+        <planeGeometry args={[0.04, 0.2]} />
+        <meshBasicMaterial color="#00FF87" />
+      </mesh>
+      <mesh position={[0.85, -0.85, 0.06]}>
+        <planeGeometry args={[0.2, 0.04]} />
+        <meshBasicMaterial color="#38BDF8" />
+      </mesh>
+      <mesh position={[0.85, -0.85, 0.06]}>
+        <planeGeometry args={[0.04, 0.2]} />
+        <meshBasicMaterial color="#38BDF8" />
+      </mesh>
+
+      {/* Orbiting Telemetry Rings */}
+      <mesh ref={ring1Ref} position={[0, 0, 0]}>
+        <torusGeometry args={[1.45, 0.012, 16, 64]} />
+        <meshBasicMaterial
+          color="#00FF87"
+          transparent
+          opacity={0.35}
+        />
+      </mesh>
+
+      <mesh ref={ring2Ref} position={[0, 0, 0]}>
+        <torusGeometry args={[1.6, 0.01, 16, 64]} />
+        <meshBasicMaterial
+          color="#38BDF8"
+          transparent
+          opacity={0.25}
+        />
+      </mesh>
+
+      {/* Orbiting Project Nodes */}
+      {PROJECT_NODES.map((node) => {
+        const isHighlighted = activeHighlight === node.id;
+        const x = Math.cos(node.angle) * node.radius;
+        const z = Math.sin(node.angle) * node.radius;
 
         return (
-          <mesh
-            key={idx}
-            position={[mid.x, mid.y, mid.z]}
-            quaternion={
-              new THREE.Quaternion().setFromUnitVectors(
-                new THREE.Vector3(0, 1, 0),
-                new THREE.Vector3().subVectors(top, start).normalize()
-              )
-            }
-          >
-            <cylinderGeometry args={[0.007, 0.007, length, 8]} />
-            <meshStandardMaterial color="#d4d4d8" roughness={0.3} metalness={0.7} />
-          </mesh>
+          <group key={node.id} position={[x, node.y, z]}>
+            {/* 3D Geometric Crystal */}
+            <mesh scale={isHighlighted ? [1.4, 1.4, 1.4] : [1, 1, 1]}>
+              <octahedronGeometry args={[0.12]} />
+              <meshStandardMaterial
+                color={node.color}
+                emissive={node.color}
+                emissiveIntensity={isHighlighted ? 3 : 1.2}
+                roughness={0.1}
+                metalness={0.9}
+              />
+            </mesh>
+
+            {/* Orbiting node aura ring */}
+            <mesh rotation={[Math.PI / 2, 0, 0]}>
+              <ringGeometry args={[0.18, 0.22, 24]} />
+              <meshBasicMaterial
+                color={node.color}
+                transparent
+                opacity={isHighlighted ? 0.8 : 0.25}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
+          </group>
         );
       })}
-
-      {/* 🏺 Ceramic Hanging Bowl - Base (White / Ivory Matte Porcelain) */}
-      <mesh position={[0, -0.15, 0]}>
-        <sphereGeometry args={[0.6, 32, 24, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]} />
-        <meshPhysicalMaterial
-          color="#f4f4f5"
-          roughness={0.25}
-          metalness={0.1}
-          clearcoat={0.6}
-          clearcoatRoughness={0.15}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      {/* 🏺 Terracotta / Warm Clay Accent Rim */}
-      <mesh position={[0, 0.06, 0]} rotation={[0, 0, 0]}>
-        <cylinderGeometry args={[0.6, 0.6, 0.14, 32, 1, true]} />
-        <meshStandardMaterial
-          color="#c27d48"
-          roughness={0.5}
-          metalness={0.15}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      {/* 🏺 Top Rim Lip Ring */}
-      <mesh position={[0, 0.13, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.59, 0.02, 16, 48]} />
-        <meshStandardMaterial color="#c27d48" roughness={0.4} />
-      </mesh>
-
-      {/* 🌱 Soil Plane */}
-      <mesh position={[0, 0.08, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.57, 32]} />
-        <meshStandardMaterial color="#27272a" roughness={0.9} />
-      </mesh>
-
-      {/* 🌿 Dense Foliage Group */}
-      <group ref={foliageGroup}>
-        {/* Top Upright Succulent Leaves */}
-        {topLeaves.map((leaf, i) => (
-          <mesh
-            key={`top-${i}`}
-            geometry={leafGeometry}
-            position={leaf.position}
-            rotation={leaf.rotation}
-            scale={leaf.scale}
-          >
-            <meshStandardMaterial
-              color={i % 3 === 0 ? '#84cc16' : i % 3 === 1 ? '#a3e635' : '#65a30d'}
-              roughness={0.35}
-              metalness={0.1}
-              side={THREE.DoubleSide}
-            />
-          </mesh>
-        ))}
-
-        {/* Cascading Trailing Vines Leaves */}
-        {vineLeaves.map((leaf, i) => (
-          <mesh
-            key={`vine-${i}`}
-            geometry={leafGeometry}
-            position={leaf.position}
-            rotation={leaf.rotation}
-            scale={leaf.scale}
-          >
-            <meshStandardMaterial
-              color={i % 4 === 0 ? '#65a30d' : i % 4 === 1 ? '#84cc16' : '#a3e635'}
-              roughness={0.35}
-              metalness={0.1}
-              side={THREE.DoubleSide}
-            />
-          </mesh>
-        ))}
-      </group>
     </group>
   );
 };
 
-// 🌟 Main Hero 3D Component
+// Fallback skeleton while texture loads
+const PixelAvatarFallback: React.FC = () => (
+  <mesh position={[0, 0, 0]}>
+    <boxGeometry args={[1.7, 1.7, 0.08]} />
+    <meshStandardMaterial color="#18181b" wireframe />
+  </mesh>
+);
+
+// 🌟 Main Export Component
 export const HeroQuantumCore: React.FC<{ activeHighlight?: string | null }> = ({
   activeHighlight = null,
 }) => {
@@ -219,28 +192,54 @@ export const HeroQuantumCore: React.FC<{ activeHighlight?: string | null }> = ({
     mouseRef.current.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
   };
 
+  const handlePointerLeave = () => {
+    mouseRef.current.x = 0;
+    mouseRef.current.y = 0;
+  };
+
   return (
     <div
       onPointerMove={handlePointerMove}
-      className="relative w-full h-[320px] sm:h-[380px] lg:h-[420px] flex items-center justify-center select-none cursor-grab active:cursor-grabbing overflow-hidden"
+      onPointerLeave={handlePointerLeave}
+      className="relative w-full h-[320px] sm:h-[380px] lg:h-[420px] flex items-center justify-center select-none overflow-hidden rounded-2xl group"
     >
+      {/* 3D WebGL Canvas */}
       <Canvas
-        camera={{ position: [0, 0.1, 3.8], fov: 42 }}
+        camera={{ position: [0, 0, 3.4], fov: 45 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        className="w-full h-full"
+        className="w-full h-full cursor-grab active:cursor-grabbing"
       >
-        {/* Harmonized Studio Lighting matching Dark Obsidian Backdrop */}
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[4, 6, 4]} intensity={1.8} color="#FFFFFF" />
-        <pointLight position={[-4, 3, 3]} intensity={1.2} color="#00E5FF" />
-        <pointLight position={[4, -2, 2]} intensity={1.0} color="#E50914" />
-        <pointLight position={[0, -4, -2]} intensity={0.8} color="#A855F7" />
+        <ambientLight intensity={0.8} />
+        <directionalLight position={[3, 5, 4]} intensity={1.5} color="#ffffff" />
+        <pointLight position={[-3, 2, 2]} intensity={1.2} color="#00FF87" />
+        <pointLight position={[3, -2, 2]} intensity={1.2} color="#38BDF8" />
+        <Stars radius={40} depth={20} count={600} factor={2} saturation={0.5} fade speed={1.5} />
 
-        <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.3}>
-          {/* 🌿 3D Hanging Plant */}
-          <HangingPlantMesh mouseRef={mouseRef} activeHighlight={activeHighlight} />
+        <Float speed={1.5} rotationIntensity={0.15} floatIntensity={0.25}>
+          <Suspense fallback={<PixelAvatarFallback />}>
+            <PixelAvatarPortraitMesh
+              mouseRef={mouseRef}
+              activeHighlight={activeHighlight}
+            />
+          </Suspense>
         </Float>
       </Canvas>
+
+      {/* Cyberpunk HUD Scanning Line Effect */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-emerald-500/[0.03] to-transparent opacity-40 bg-[length:100%_4px]" />
+
+      {/* Status Overlay Badge */}
+      <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono text-emerald-400">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span>HIMARGHYA_SPRITE // 16-BIT</span>
+      </div>
+
+      {/* Active Project Indicator if Hovered */}
+      {activeHighlight && (
+        <div className="absolute bottom-3 right-3 pointer-events-none px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md border border-white/15 text-[10px] font-mono text-zinc-200">
+          LINK: <span className="text-emerald-400 font-bold uppercase">{activeHighlight}</span>
+        </div>
+      )}
     </div>
   );
 };
