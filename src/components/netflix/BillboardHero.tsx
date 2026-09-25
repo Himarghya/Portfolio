@@ -146,10 +146,7 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
             {/* Developer Profile & Engineering Specs */}
             <div className="pt-3.5 border-t border-white/10 space-y-2.5">
               <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="font-mono text-white font-bold text-xs tracking-wide">HIMARGHYA DAS</span>
-                </div>
+                <span className="font-mono text-white font-bold text-xs tracking-wide">HIMARGHYA DAS</span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-zinc-300">
                   DEVELOPER SPECS
                 </span>
