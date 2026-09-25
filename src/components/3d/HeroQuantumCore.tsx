@@ -228,18 +228,6 @@ export const HeroQuantumCore: React.FC<{ activeHighlight?: string | null }> = ({
       {/* Cyberpunk HUD Scanning Line Effect */}
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-emerald-500/[0.03] to-transparent opacity-40 bg-[length:100%_4px]" />
 
-      {/* Status Overlay Badge */}
-      <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono text-emerald-400">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span>HIMARGHYA_SPRITE // 16-BIT</span>
-      </div>
-
-      {/* Active Project Indicator if Hovered */}
-      {activeHighlight && (
-        <div className="absolute bottom-3 right-3 pointer-events-none px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md border border-white/15 text-[10px] font-mono text-zinc-200">
-          LINK: <span className="text-emerald-400 font-bold uppercase">{activeHighlight}</span>
-        </div>
-      )}
     </div>
   );
 };
