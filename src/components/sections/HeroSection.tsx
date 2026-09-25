@@ -23,7 +23,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ webglSupported }) => {
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 flex flex-col items-start space-y-6"
+            className="order-2 lg:order-1 lg:col-span-7 flex flex-col items-start space-y-6"
           >
             {/* System Status Pill */}
             <div className="flex flex-wrap items-center gap-3">
@@ -87,12 +87,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ webglSupported }) => {
             </div>
           </motion.div>
 
-          {/* Right Column: Interactive 3D Quantum Core */}
+          {/* Right Column: Interactive 3D Quantum Core (Ordered first on mobile) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 relative flex items-center justify-center"
+            className="order-1 lg:order-2 lg:col-span-5 relative flex items-center justify-center"
           >
             {/* Interactive 3D Canvas or Graceful Fallback */}
             {webglSupported ? <HeroQuantumCore /> : <FallbackCanvas />}

@@ -22,7 +22,7 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="lg:col-span-7 space-y-5 sm:space-y-6"
+          className="order-2 lg:order-1 lg:col-span-7 space-y-5 sm:space-y-6"
         >
           {/* Header Tag & Identity */}
           <div className="space-y-1 sm:space-y-2">
@@ -125,12 +125,12 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
           </div>
         </motion.div>
 
-        {/* Right Column: Interactive 3D Quantum Core Console */}
+        {/* Right Column: Interactive 3D Quantum Core Console (Ordered first on mobile) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="lg:col-span-5 relative w-full"
+          className="order-1 lg:order-2 lg:col-span-5 relative w-full"
         >
           {/* Subtle Ambient Glow Under Glass */}
           <div className="absolute -inset-2 bg-gradient-to-r from-red-600/20 via-purple-600/10 to-emerald-500/20 rounded-3xl blur-2xl opacity-60 pointer-events-none" />
