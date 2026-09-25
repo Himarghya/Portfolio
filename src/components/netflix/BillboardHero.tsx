@@ -24,32 +24,19 @@ export const BillboardHero: React.FC<BillboardHeroProps> = ({ onOpenDetailModal 
           transition={{ duration: 0.5 }}
           className="lg:col-span-7 space-y-5 sm:space-y-6"
         >
-          {/* Header Tag & Portrait Avatar Identity */}
-          <div className="flex items-center gap-4 sm:gap-6">
-            <div className="relative group/avatar shrink-0">
-              <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden border-2 border-white/20 shadow-[0_0_30px_rgba(229,9,20,0.4)] bg-black/60 relative">
-                <img
-                  src="/profile/himarghya-portrait.jpg"
-                  alt="Himarghya Das"
-                  className="w-full h-full object-cover object-center group-hover/avatar:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-30" />
-              </div>
+          {/* Header Tag & Identity */}
+          <div className="space-y-1 sm:space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="font-bebas text-lg sm:text-2xl text-[#E50914] font-bold tracking-wider drop-shadow-[0_0_12px_rgba(229,9,20,0.5)]">
+                H
+              </span>
+              <span className="text-[10px] sm:text-xs font-semibold tracking-widest text-zinc-400 uppercase font-mono">
+                SOFTWARE ENGINEER PORTFOLIO
+              </span>
             </div>
-
-            <div className="space-y-1 sm:space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="font-bebas text-lg sm:text-2xl text-[#E50914] font-bold tracking-wider drop-shadow-[0_0_12px_rgba(229,9,20,0.5)]">
-                  H
-                </span>
-                <span className="text-[10px] sm:text-xs font-semibold tracking-widest text-zinc-400 uppercase font-mono">
-                  SOFTWARE ENGINEER PORTFOLIO
-                </span>
-              </div>
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight uppercase font-bebas leading-none drop-shadow-md">
-                HIMARGHYA DAS
-              </h1>
-            </div>
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight uppercase font-bebas leading-none drop-shadow-md">
+              HIMARGHYA DAS
+            </h1>
           </div>
 
           <p className="text-sm sm:text-xl text-zinc-300 font-medium">
