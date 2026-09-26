@@ -18,6 +18,7 @@ import { NetflixContact } from './components/netflix/NetflixContact';
 import { NetflixFooter } from './components/netflix/NetflixFooter';
 import { NetflixDetailModal } from './components/netflix/NetflixDetailModal';
 import { NetflixTerminal } from './components/netflix/NetflixTerminal';
+import { NetflixArcadeModal } from './components/netflix/NetflixArcadeModal';
 
 import { saveStorage, loadStorage } from './utils/sessionManager';
 
@@ -31,6 +32,7 @@ export const App: React.FC = () => {
 
   const [activeModalItem, setActiveModalItem] = useState<NetflixItem | null>(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [arcadeOpen, setArcadeOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSelectProfile = (profile: NetflixProfile) => {
@@ -130,7 +132,7 @@ export const App: React.FC = () => {
           </main>
 
           {/* Footer */}
-          <NetflixFooter />
+          <NetflixFooter onOpenGame={() => setArcadeOpen(true)} />
 
           {/* Item Detail Modal */}
           <NetflixDetailModal
@@ -143,6 +145,12 @@ export const App: React.FC = () => {
           <NetflixTerminal
             isOpen={terminalOpen}
             onClose={() => setTerminalOpen(false)}
+          />
+
+          {/* Interactive Arcade Mini-Game Modal */}
+          <NetflixArcadeModal
+            isOpen={arcadeOpen}
+            onClose={() => setArcadeOpen(false)}
           />
 
           {/* Smooth Momentum Scroll & Floating Navigator */}

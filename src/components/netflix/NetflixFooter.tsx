@@ -10,10 +10,16 @@ import {
   Terminal,
   Send,
   Check,
-  Sparkles
+  Sparkles,
+  Gamepad2,
+  Play
 } from 'lucide-react';
 
-export const NetflixFooter: React.FC = () => {
+interface NetflixFooterProps {
+  onOpenGame?: () => void;
+}
+
+export const NetflixFooter: React.FC<NetflixFooterProps> = ({ onOpenGame }) => {
   const [copied, setCopied] = useState(false);
 
   const scrollToTop = () => {
@@ -100,6 +106,39 @@ export const NetflixFooter: React.FC = () => {
               </a>
             </div>
           </div>
+        </div>
+
+        {/* "Feeling bored? Want to try a game?" Interactive Game Banner */}
+        <div className="rounded-3xl bg-gradient-to-r from-red-950/40 via-purple-950/30 to-black/60 border border-white/10 hover:border-[#E50914]/50 p-6 sm:p-7 flex flex-col sm:flex-row items-center justify-between gap-5 transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group/game relative overflow-hidden">
+          {/* Subtle Ambient Glow */}
+          <div className="absolute -right-16 -top-16 w-48 h-48 bg-[#E50914]/15 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left relative z-10">
+            <div className="w-12 h-12 rounded-2xl bg-[#E50914]/20 border border-[#E50914]/40 flex items-center justify-center text-[#E50914] group-hover/game:scale-110 group-hover/game:shadow-[0_0_25px_rgba(229,9,20,0.6)] transition-all shrink-0">
+              <Gamepad2 className="w-6 h-6 animate-pulse" />
+            </div>
+            <div>
+              <div className="flex items-center justify-center sm:justify-start gap-2">
+                <span className="text-white font-bold text-sm sm:text-base tracking-wide">
+                  Feeling bored? Want to try a game?
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-[#E50914]/20 border border-[#E50914]/40 text-[#E50914] text-[10px] font-mono font-semibold uppercase">
+                  Mini Arcade
+                </span>
+              </div>
+              <p className="text-zinc-400 text-xs mt-1 font-light max-w-lg">
+                Play <strong>Cyber Blast</strong> — an interactive retro space defender! Destroy glitch packets, unlock power-ups, and beat the high score.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={onOpenGame}
+            className="relative z-10 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#E50914] to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold text-xs tracking-wider uppercase shadow-[0_4px_20px_rgba(229,9,20,0.4)] hover:shadow-[0_0_25px_rgba(229,9,20,0.7)] active:scale-95 transition-all duration-200 cursor-pointer shrink-0"
+          >
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>Play Game</span>
+          </button>
         </div>
 
         {/* 4-Column Structured Link Directory */}
