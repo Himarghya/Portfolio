@@ -201,67 +201,71 @@ export const NetflixNavbar: React.FC<NetflixNavbarProps> = ({
         </nav>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-2 sm:gap-3.5 text-white">
-        {/* Search */}
+      {/* Right Controls Dock */}
+      <div className="flex items-center gap-1.5 sm:gap-2 text-white">
+        {/* 1. Quick Search */}
         <div className="relative flex items-center">
           {searchOpen ? (
-            <div className="flex items-center bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-lg px-2.5 py-1 text-xs shadow-inner">
+            <div className="flex items-center bg-white/[0.08] backdrop-blur-xl border border-white/20 rounded-xl px-3 py-1.5 text-xs shadow-inner h-9">
               <Search className="w-3.5 h-3.5 text-zinc-400 mr-2 shrink-0" />
               <input
                 type="text"
                 autoFocus
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                placeholder="Filter projects..."
-                className="bg-transparent text-white focus:outline-none w-28 sm:w-44 placeholder-zinc-500 text-xs"
+                placeholder="Search projects..."
+                className="bg-transparent text-white focus:outline-none w-32 sm:w-44 placeholder-zinc-500 text-xs"
               />
-              <button onClick={() => { setSearchOpen(false); onSearchChange(''); }}>
-                <X className="w-3.5 h-3.5 text-zinc-400 hover:text-white" />
+              <button
+                onClick={() => { setSearchOpen(false); onSearchChange(''); }}
+                className="p-0.5 rounded-md hover:bg-white/10 text-zinc-400 hover:text-white transition-colors ml-1 cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
           ) : (
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-1.5 rounded-lg hover:bg-white/[0.08] text-zinc-300 hover:text-white transition-all cursor-pointer"
-              title="Search"
+              className="h-9 w-9 rounded-xl flex items-center justify-center bg-white/[0.04] hover:bg-white/[0.09] active:scale-95 border border-white/10 hover:border-white/25 text-zinc-300 hover:text-white transition-all cursor-pointer shadow-sm"
+              title="Search projects (Filter)"
             >
               <Search className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Direct Blog Link Button */}
+        {/* 2. Blog Link Button */}
         <a
           href="https://himarghya-blog.onrender.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative hidden sm:flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-b from-[#E50914]/20 to-[#E50914]/[0.05] hover:from-[#E50914]/40 hover:to-[#E50914]/20 text-xs font-semibold text-white transition-all duration-300 border border-[#E50914]/50 hover:border-[#E50914] shadow-[0_2px_10px_rgba(229,9,20,0.25)] hover:shadow-[0_0_20px_rgba(229,9,20,0.5)] cursor-pointer"
-          title="Visit Live Blog (https://himarghya-blog.onrender.com)"
+          className="group relative hidden sm:inline-flex items-center gap-1.5 h-9 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] active:scale-95 border border-white/10 hover:border-white/25 text-zinc-200 hover:text-white transition-all duration-200 text-xs font-medium cursor-pointer shadow-sm"
+          title="Visit Live Technical Blog (https://himarghya-blog.onrender.com)"
         >
-          <BookOpen className="w-3.5 h-3.5 text-[#E50914] group-hover:text-white transition-colors" />
-          <span className="tracking-wider">BLOG</span>
-          <ExternalLink className="w-2.5 h-2.5 text-zinc-400 group-hover:text-white" />
+          <BookOpen className="w-3.5 h-3.5 text-red-400 group-hover:text-red-300 transition-colors" />
+          <span>Blog</span>
+          <ExternalLink className="w-2.5 h-2.5 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
         </a>
 
-        {/* Interactive CLI Console Button */}
+        {/* 3. Interactive CLI Console Button */}
         <button
           onClick={onOpenTerminal}
-          className="group relative flex items-center justify-center px-3 py-1.5 rounded-xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] hover:from-[#E50914]/20 hover:to-[#E50914]/[0.05] text-xs font-mono text-zinc-300 hover:text-white transition-all duration-300 border border-white/10 hover:border-[#E50914]/60 shadow-[0_2px_10px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] hover:shadow-[0_0_20px_rgba(229,9,20,0.35)] cursor-pointer"
+          className="group relative hidden sm:inline-flex items-center gap-1.5 h-9 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] active:scale-95 border border-white/10 hover:border-white/25 text-zinc-200 hover:text-white transition-all duration-200 text-xs font-mono cursor-pointer shadow-sm"
           title="Launch Interactive Terminal (CLI)"
         >
-          <span className="font-semibold text-xs tracking-wider">CLI</span>
+          <Terminal className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
+          <span className="font-semibold">CLI</span>
         </button>
 
-        {/* Profile Avatar & Role Switcher */}
+        {/* 4. Profile Avatar & Role Switcher */}
         <div className="relative">
           <button
             onClick={() => setProfileDropdown(!profileDropdown)}
-            className="flex items-center gap-1.5 cursor-pointer p-1 sm:p-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 transition-all shadow-sm group/profile"
+            className="flex items-center gap-2 h-9 px-2 sm:px-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] active:scale-95 border border-white/10 hover:border-white/25 transition-all shadow-sm group/profile cursor-pointer"
             aria-label="Switch Role Profile"
           >
-            <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${activeProfile.avatarGradient || 'from-emerald-500 to-teal-700'} flex items-center justify-center text-white shadow-[0_2px_8px_rgba(0,0,0,0.4)] ring-1 ring-white/20 group-hover/profile:ring-[#E50914]/80 transition-all font-bold text-xs`}>
-              <User className="w-3.5 h-3.5 text-white drop-shadow" />
+            <div className={`w-5 h-5 rounded-md bg-gradient-to-br ${activeProfile.avatarGradient || 'from-emerald-500 to-teal-700'} flex items-center justify-center text-white shadow-sm ring-1 ring-white/20`}>
+              <User className="w-3 h-3 text-white drop-shadow" />
             </div>
 
             <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 group-hover/profile:text-white transition-transform duration-200 ${profileDropdown ? 'rotate-180' : ''}`} />
