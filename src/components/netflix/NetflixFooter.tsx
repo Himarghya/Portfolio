@@ -251,16 +251,10 @@ export const NetflixFooter: React.FC<NetflixFooterProps> = ({ onOpenGame }) => {
         </div>
 
         {/* Bottom Copyright & Colophon */}
-        <div className="pt-6 border-t border-white/10 text-[11px] text-zinc-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="pt-6 border-t border-white/10 text-[11px] text-zinc-500 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span>&copy; {new Date().getFullYear()} Himarghya Das.</span>
             <span>All rights reserved.</span>
-          </div>
-
-          <div className="flex items-center gap-3 text-zinc-400 font-mono text-[10px]">
-            <span>ENGINEERED WITH REACT &amp; TYPESCRIPT</span>
-            <span className="text-zinc-700">•</span>
-            <span>TAILWIND CSS</span>
           </div>
         </div>
 
