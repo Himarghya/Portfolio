@@ -9,6 +9,7 @@ const SECTION_IDS = [
   'timeline',
   'achievements',
   'certificates',
+  'blog',
   'about',
   'contact'
 ];

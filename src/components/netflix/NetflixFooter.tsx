@@ -23,11 +23,13 @@ export const NetflixFooter: React.FC = () => {
             <a href="#projects" className="block hover:text-white transition-colors">Projects</a>
             <a href="#skills" className="block hover:text-white transition-colors">Stack</a>
             <a href="#timeline" className="block hover:text-white transition-colors">Timeline</a>
+            <a href="https://himarghya-blog.onrender.com" target="_blank" rel="noopener noreferrer" className="block text-[#E50914] hover:text-red-400 transition-colors font-medium">Technical Blog ↗</a>
           </div>
 
           <div className="space-y-2">
             <a href={SHOWRUNNER_DOSSIER.github} target="_blank" rel="noopener noreferrer" className="block hover:text-white transition-colors">GitHub</a>
             <a href={SHOWRUNNER_DOSSIER.linkedin} target="_blank" rel="noopener noreferrer" className="block hover:text-white transition-colors">LinkedIn</a>
+            <a href="#certificates" className="block hover:text-white transition-colors">Certificates</a>
             <a href="#about" className="block hover:text-white transition-colors">About</a>
             <a href="#contact" className="block hover:text-white transition-colors">Contact</a>
           </div>

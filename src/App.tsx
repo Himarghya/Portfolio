@@ -12,6 +12,7 @@ import { TopTenRow } from './components/netflix/TopTenRow';
 import { SeasonsEpisodeTimeline } from './components/netflix/SeasonsEpisodeTimeline';
 import { NetflixAchievements } from './components/netflix/NetflixAchievements';
 import { NetflixCertificates } from './components/netflix/NetflixCertificates';
+import { NetflixBlog } from './components/netflix/NetflixBlog';
 import { NetflixAbout } from './components/netflix/NetflixAbout';
 import { NetflixContact } from './components/netflix/NetflixContact';
 import { NetflixFooter } from './components/netflix/NetflixFooter';
@@ -115,6 +116,9 @@ export const App: React.FC = () => {
 
               {/* Row 5: Verified Certifications */}
               <NetflixCertificates />
+
+              {/* Row 6: Technical Blog & Articles */}
+              <NetflixBlog />
 
               {/* About Section */}
               <NetflixAbout />
