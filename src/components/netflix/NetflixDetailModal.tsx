@@ -17,7 +17,7 @@ export const NetflixDetailModal: React.FC<NetflixDetailModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto">
         {/* Backdrop click */}
         <div className="fixed inset-0" onClick={onClose} />
 
@@ -26,7 +26,7 @@ export const NetflixDetailModal: React.FC<NetflixDetailModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#121319]/95 backdrop-blur-2xl border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.15)] z-10 text-white select-none no-scrollbar overflow-hidden"
+          className="relative w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl bg-[#121319]/95 backdrop-blur-2xl border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.15)] z-10 text-white select-none no-scrollbar overflow-hidden my-auto"
         >
           {/* Close Button */}
           <button

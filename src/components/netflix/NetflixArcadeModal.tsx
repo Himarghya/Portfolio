@@ -662,12 +662,13 @@ export const NetflixArcadeModal: React.FC<NetflixArcadeModalProps> = ({ isOpen, 
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl animate-in fade-in duration-200 overflow-y-auto">
+        <div className="fixed inset-0" onClick={onClose} />
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          className="relative w-full max-w-[560px] bg-[#0e0e12] border border-white/15 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden flex flex-col"
+          className="relative w-full max-w-[560px] max-h-[92vh] bg-[#0e0e12] border border-white/15 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden flex flex-col z-10 my-auto"
         >
           {/* Header Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/10 bg-white/[0.02]">
