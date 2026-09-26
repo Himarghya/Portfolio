@@ -310,8 +310,7 @@ export const NetflixBlog: React.FC = () => {
         
         <div className="space-y-2 relative z-10 max-w-2xl">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#E50914] animate-ping" />
-            <span className="text-[11px] font-mono text-red-400 font-semibold tracking-wider uppercase">
+            <span className="text-[11px] font-mono text-zinc-400 font-medium tracking-wider uppercase">
               LIVE TECHNICAL BLOG PLATFORM
             </span>
           </div>
