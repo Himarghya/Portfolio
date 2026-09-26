@@ -133,12 +133,12 @@ export const NetflixContact: React.FC = () => {
             href={SHOWRUNNER_DOSSIER.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] hover:border-white/25 hover:bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all flex items-center gap-2.5 text-left group"
+            className="p-3.5 rounded-xl bg-[#24292e]/80 hover:bg-[#24292e] backdrop-blur-xl border border-white/20 hover:border-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_4px_12px_rgba(0,0,0,0.4)] transition-all flex items-center gap-2.5 text-left group"
           >
-            <Github className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+            <Github className="w-4 h-4 fill-white text-white group-hover:scale-110 transition-transform" />
             <div>
-              <span className="text-[10px] text-zinc-400 font-mono block">CODE</span>
-              <span className="text-xs font-semibold text-white group-hover:text-[#E50914] transition-colors">GitHub</span>
+              <span className="text-[10px] text-zinc-300 font-mono block">CODE</span>
+              <span className="text-xs font-semibold text-white">GitHub</span>
             </div>
           </a>
 
@@ -146,12 +146,12 @@ export const NetflixContact: React.FC = () => {
             href={SHOWRUNNER_DOSSIER.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3.5 rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] hover:border-white/25 hover:bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all flex items-center gap-2.5 text-left group"
+            className="p-3.5 rounded-xl bg-[#0A66C2]/80 hover:bg-[#0A66C2] backdrop-blur-xl border border-[#0A66C2] hover:border-sky-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_14px_rgba(10,102,194,0.35)] transition-all flex items-center gap-2.5 text-left group"
           >
-            <Linkedin className="w-4 h-4 text-zinc-300 group-hover:text-white" />
+            <Linkedin className="w-4 h-4 fill-white text-white group-hover:scale-110 transition-transform" />
             <div>
-              <span className="text-[10px] text-zinc-400 font-mono block">PROFILE</span>
-              <span className="text-xs font-semibold text-white group-hover:text-[#E50914] transition-colors">LinkedIn</span>
+              <span className="text-[10px] text-sky-200 font-mono block">PROFILE</span>
+              <span className="text-xs font-semibold text-white">LinkedIn</span>
             </div>
           </a>
         </div>

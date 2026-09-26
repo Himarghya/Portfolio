@@ -239,12 +239,12 @@ export const NetflixNavbar: React.FC<NetflixNavbarProps> = ({
           href="https://himarghya-blog.onrender.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative hidden sm:inline-flex items-center gap-1.5 h-9 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] active:scale-95 border border-white/10 hover:border-white/25 text-zinc-200 hover:text-white transition-all duration-200 text-xs font-medium cursor-pointer shadow-sm"
+          className="group relative hidden sm:inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-gradient-to-r from-red-600/30 to-[#E50914]/40 hover:from-red-600 hover:to-[#E50914] active:scale-95 border border-red-500/50 hover:border-red-400 text-white transition-all duration-200 text-xs font-bold cursor-pointer shadow-[0_0_14px_rgba(229,9,20,0.3)] hover:shadow-[0_0_22px_rgba(229,9,20,0.7)]"
           title="Visit Live Technical Blog (https://himarghya-blog.onrender.com)"
         >
-          <BookOpen className="w-3.5 h-3.5 text-red-400 group-hover:text-red-300 transition-colors" />
+          <BookOpen className="w-3.5 h-3.5 fill-white text-white" />
           <span>Blog</span>
-          <ExternalLink className="w-2.5 h-2.5 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
+          <ExternalLink className="w-2.5 h-2.5 text-red-200 group-hover:text-white transition-colors" />
         </a>
 
         {/* 3. Interactive CLI Console Button */}
