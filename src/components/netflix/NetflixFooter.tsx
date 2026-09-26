@@ -230,8 +230,7 @@ export const NetflixFooter: React.FC<NetflixFooterProps> = ({ onOpenGame }) => {
             </h4>
             
             <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1.5">
-              <div className="flex items-center gap-2 text-emerald-400 text-[11px] font-mono font-semibold">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="text-emerald-400 text-[11px] font-mono font-semibold">
                 <span>Open for Roles</span>
               </div>
               <p className="text-[11px] text-zinc-400 font-light leading-relaxed">
