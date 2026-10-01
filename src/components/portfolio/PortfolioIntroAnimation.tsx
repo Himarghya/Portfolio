@@ -216,60 +216,38 @@ export const PortfolioIntroAnimation: React.FC<PortfolioIntroAnimationProps> = (
       {/* Center Cinematic Presentation Card */}
       <div className="relative z-20 flex flex-col items-center text-center px-4 max-w-2xl">
         
-        {/* Animated Layered Emblem */}
+        {/* Animated Premium Monogram Emblem */}
         <motion.div
-          initial={{ scale: 0.8, opacity: 0, y: -10 }}
+          initial={{ scale: 0.85, opacity: 0, y: -12 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-6 relative group"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-5 relative"
         >
-          {/* Orbital Glowing Radar Ring */}
-          <div className="absolute -inset-2 rounded-3xl border border-red-500/20 animate-[spin_10s_linear_infinite] pointer-events-none" />
-          <div className="absolute -inset-3 rounded-3xl border border-dashed border-red-500/15 animate-[spin_18s_linear_infinite_reverse] pointer-events-none" />
+          {/* Subtle Ambient Backlight Glow */}
+          <div className="absolute -inset-4 rounded-3xl bg-[#E50914]/20 blur-2xl pointer-events-none opacity-70" />
 
-          <div className="relative w-22 h-22 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-b from-[#1c1d24] via-[#121319] to-[#0c0d12] backdrop-blur-2xl border border-white/20 shadow-[0_0_45px_rgba(229,9,20,0.45),inset_0_1px_1px_rgba(255,255,255,0.25)] flex items-center justify-center p-3 overflow-hidden">
-            {/* Ambient Internal Glow */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#E50914]/20 to-transparent pointer-events-none" />
+          {/* Obsidian Beveled Monogram Glass Tile */}
+          <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-2xl bg-gradient-to-b from-[#1c1d24] via-[#111217] to-[#090a0d] backdrop-blur-2xl border border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.2)] flex items-center justify-center p-3 overflow-hidden">
+            {/* Specular Top-Glass Sheen */}
+            <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
 
-            {/* Glowing Monogram SVG */}
-            <svg viewBox="0 0 100 100" className="w-12 h-12 text-white relative z-10 drop-shadow-[0_0_12px_rgba(229,9,20,0.8)]">
-              <defs>
-                <linearGradient id="crestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#FFFFFF" />
-                  <stop offset="45%" stopColor="#FF3333" />
-                  <stop offset="100%" stopColor="#E50914" />
-                </linearGradient>
-                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="3" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
-              <path
-                d="M 28 22 L 28 78 M 28 50 L 72 50 M 72 22 L 72 78"
-                stroke="url(#crestGrad)"
-                strokeWidth="8.5"
-                strokeLinecap="round"
-                fill="none"
-              />
-            </svg>
-
-            {/* Neon Corner Tech Accents */}
-            <div className="absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-[#E50914] shadow-[0_0_8px_#E50914]" />
-            <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[#E50914] shadow-[0_0_8px_#E50914]" />
-            <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-[#E50914] shadow-[0_0_8px_#E50914]" />
-            <div className="absolute bottom-2 right-2 w-1.5 h-1.5 rounded-full bg-[#E50914] shadow-[0_0_8px_#E50914]" />
+            {/* Clean Architectural Monogram H */}
+            <span className="font-orbitron font-black text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-b from-white via-red-100 to-[#E50914] drop-shadow-[0_2px_16px_rgba(229,9,20,0.6)] select-none">
+              H
+            </span>
           </div>
         </motion.div>
 
-        {/* Creator Name Cyber Badge */}
+        {/* Creator Name Subheading */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.15, ease: 'easeOut' }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-950/40 border border-red-500/30 text-red-200 text-xs font-mono font-semibold tracking-[0.25em] uppercase shadow-[0_0_20px_rgba(229,9,20,0.2)] mb-2"
+          transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+          className="flex items-center gap-2 mb-2"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#E50914] animate-ping" />
-          <span>HIMARGHYA DAS</span>
+          <span className="text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-zinc-300 font-sans">
+            HIMARGHYA DAS
+          </span>
         </motion.div>
 
         {/* Hero Cinematic PORTFOLIO Title */}
