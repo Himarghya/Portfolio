@@ -270,26 +270,15 @@ export const PortfolioIntroAnimation: React.FC<PortfolioIntroAnimationProps> = (
           />
         </motion.div>
 
-        {/* Specialized Tech Capabilities Glass Tags */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
+        {/* Clean Subtitle Tagline */}
+        <motion.p
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.32 }}
-          className="flex flex-wrap items-center justify-center gap-2 mt-1 max-w-lg"
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-xs sm:text-sm text-zinc-400 tracking-[0.25em] uppercase font-medium mt-2 font-sans"
         >
-          <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-zinc-300 text-xs font-mono">
-            Systems Architecture
-          </span>
-          <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-zinc-300 text-xs font-mono">
-            C++20 &amp; STL
-          </span>
-          <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-zinc-300 text-xs font-mono">
-            PostGIS GIS
-          </span>
-          <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-zinc-300 text-xs font-mono">
-            Full Stack Web
-          </span>
-        </motion.div>
+          Systems Architecture &bull; Full Stack Engineering
+        </motion.p>
 
         {/* Futuristic HUD Loading Engine & Live Telemetry */}
         <motion.div
