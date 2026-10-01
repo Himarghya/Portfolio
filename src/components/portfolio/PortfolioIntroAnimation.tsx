@@ -279,7 +279,7 @@ export const PortfolioIntroAnimation: React.FC<PortfolioIntroAnimationProps> = (
           transition={{ duration: 0.6, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
           className="relative my-1"
         >
-          <h1 className="font-bebas text-7xl sm:text-9xl md:text-[10rem] text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-400 font-extrabold leading-none tracking-[0.12em] drop-shadow-[0_8px_35px_rgba(229,9,20,0.55)]">
+          <h1 className="font-orbitron text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-400 font-black leading-none tracking-[0.16em] drop-shadow-[0_8px_35px_rgba(229,9,20,0.55)]">
             PORTFOLIO
           </h1>
 
@@ -322,8 +322,7 @@ export const PortfolioIntroAnimation: React.FC<PortfolioIntroAnimationProps> = (
         >
           {/* Progress Metrics Header */}
           <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 px-0.5">
-            <span className="flex items-center gap-1.5 text-zinc-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="flex items-center text-zinc-300">
               <span>{getStatusText()}</span>
             </span>
             <span className="font-bold text-red-400 font-mono tracking-wider">{progress}%</span>
