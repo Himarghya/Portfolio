@@ -13,9 +13,9 @@
 
 <br />
 
-### 🌐 [**🚀 EXPERIENCE THE LIVE DEMO — portfolio-3k34.onrender.com**](https://portfolio-3k34.onrender.com/)
+### 🌐 [**🚀 EXPERIENCE THE LIVE PRODUCTION RELEASE — portfolio-3k34.onrender.com**](https://portfolio-3k34.onrender.com/)
 
-*An immersive, cinematic dark-glassmorphism engineering portfolio featuring Netflix-style profile routing, interactive 3D WebGL telemetry, autonomous celestial cursor dynamics, accredited honors, and an interactive developer CLI.*
+*An immersive, cinematic dark-glassmorphism engineering portfolio featuring Netflix-style profile routing, interactive 3D WebGL telemetry, episodic career timelines, an in-browser developer CLI, and verified technical credentials.*
 
 ---
 
@@ -23,24 +23,25 @@
 
 ## 🌟 Key Highlights & Engineering Features
 
-- **🎬 Netflix-Style Profile & Streaming UI**: Role-based entrance routing (Developer, Engineering Lead, Recruiter, Visitor) with tailored dossiers, billboard featured systems, and expandable episode viewports.
-- **🐉 Animated Celestial Dragon Companion**: High-performance Canvas2D physics engine featuring segmented serpentine kinematics, dorsal quills, sinuous whiskers, and autonomous ambient quadrant soaring with 60–120 FPS zero-lag execution.
-- **🪐 3D Holographic Quantum Core**: Real-time Three.js obsidian particle visualizer featuring dynamic Fibonacci lattice constellations and cursor tracking physics.
-- **🏆 Accredited Honors & Certifications**: Interactive lightbox verification, high-resolution zoom preview, instant PDF credentials, and third-party verification links.
-- **💻 Developer CLI Console (`>_`)**: In-browser terminal emulator supporting command auto-completion, sysinfo diagnostics, audio synthesized chime triggers, and dossier retrieval.
-- **🎥 Interactive Video Demos & Modals**: Embedded high-frame-rate MP4 demos for flagship systems (**VarshaNet 2.0** & **Polaris Arctic Logistics**).
-- **🕹️ Retro Mini Arcade**: Built-in interactive browser arcade games providing gamified visitor engagement directly in-app.
+- **🎬 Netflix-Style Profile & Streaming Architecture**: Personalized entrance routing (Developer, Engineering Lead, Recruiter, Visitor) with tailored dossiers, billboard featured systems, search indexing, and expandable episode viewports.
+- **🪐 3D Holographic Quantum Core & WebGL Telemetry**: Real-time Three.js particle visualizer with dynamic Fibonacci lattice constellations, interactive current vector fields, and cursor physics.
+- **💻 Developer CLI Console (`>_`)**: In-browser interactive terminal emulator supporting command auto-completion, audio synthesized sound chimes (`tudum`), system diagnostics, and dossier retrieval.
+- **🏆 Accredited Honors & Verified Certifications**: High-resolution zoom previews, direct credential verification links, and PDF exports for hackathon victories and bootcamp certifications.
+- **📚 Integrated Technical Blog Stream**: Direct links and summaries to engineering deep-dives covering Node.js clean architecture, PostgreSQL indexing, Redis job queues, and modern C++ move semantics.
+- **🎥 Interactive Demos & Episodic Breakdowns**: In-depth architecture modals, episode-by-episode breakdowns, and embedded video demos for flagship systems (**VarshaNet 2.0** & **Polaris Arctic Logistics**).
+- **🕹️ Built-in Retro Mini Arcade**: Interactive browser arcade game integrated directly into the footer for visitor engagement.
 
 ---
 
-## 🚀 Flagship Systems & Repositories
+## 🚀 Flagship Systems & Production Repositories
 
-| Project | Category | Architecture & Stack | Key Highlights | Repository |
+| Project | Category | Tech Stack | Key Metrics & Highlights | Repository |
 | :--- | :--- | :--- | :--- | :--- |
-| **[VarshaNet 2.0](https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic)** | Geospatial GIS & Weather Intelligence | FastAPI, PostGIS, Python, React, WebSockets, Docker | Ingests 4.2M+ precipitation datapoints, generates sub-120ms contour isobars, and renders real-time radar sweeps. | [View Code ↗](https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic) |
-| **[Polaris Arctic Logistics](https://github.com/Himarghya/SIH26062)** | Offline-First Expedition PWA | React, TypeScript, FastAPI, IndexedDB, Leaflet, Docker | Extreme-climate pathfinding engine with conflict-free offline IndexedDB synchronization and satellite uplink. | [View Code ↗](https://github.com/Himarghya/SIH26062) |
-| **[PulseMesh Orchestrator](https://github.com/Himarghya/PulseMesh)** | Distributed Queue & Workflow Engine | Node.js, Express, Redis Streams, React, SSE, Tailwind | Benchmarked at 12k tasks/min throughput with 5-second automatic worker heartbeat failover recovery. | [View Code ↗](https://github.com/Himarghya/PulseMesh) |
-| **[CampusOS](https://github.com/Himarghya/CampusOS)** | Smart Campus Monorepo Portal | React, TypeScript, Node.js, Express, PostgreSQL | Full-stack monorepo integrating granular JWT role-based access control, scheduling algorithms, and resource hubs. | [View Code ↗](https://github.com/Himarghya/CampusOS) |
+| **[VarshaNet 2.0](https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic)** | Geospatial GIS & Weather Intelligence | FastAPI, PostGIS, Python, React, WebSockets, Docker, MapLibre | • Ingests **4.2M+ precipitation data points**<br>• Sub-**50ms** PostGIS spatial polygon queries<br>• Real-time isobar contour generation in **< 120ms** | [View Code ↗](https://github.com/Himarghya/SIH-26069-VARSHANET-Team_TechTonic) |
+| **[PulseMesh](https://github.com/Himarghya/PulseMesh)** | Distributed Queue & Task Engine | Node.js, Express, Redis Streams, React, SSE, Tailwind | • Benchmarked at **12,000 tasks/min** throughput<br>• **5-second** automated worker heartbeat failover<br>• Zero-drop Server-Sent Events (SSE) telemetry | [View Code ↗](https://github.com/Himarghya/PulseMesh) |
+| **[Polaris Arctic Logistics](https://github.com/Himarghya/SIH26062)** | Offline-First Expedition PWA | React, TypeScript, FastAPI, IndexedDB, Leaflet, Docker | • **100% offline functionality** with IndexedDB & Dexie<br>• Extreme-climate terrain safety pathfinding in **180ms**<br>• Automated satellite sync on reconnection | [View Code ↗](https://github.com/Himarghya/SIH26062) |
+| **[CampusOS](https://github.com/Himarghya/CampusOS)** | Smart Campus Monorepo Portal | React, TypeScript, Node.js, Express, PostgreSQL | • Full-stack monorepo with granular JWT role permissions<br>• Automated timetable scheduling & attendance engine<br>• Centralized resource reservation hub | [View Code ↗](https://github.com/Himarghya/CampusOS) |
+| **[Hydrographic Ocean Telemetry](https://github.com/Himarghya)** | Marine Sensor & Bathymetric Simulation | Python, Docker, Three.js, FastAPI, PostgreSQL | • Parses **120 sensor packets/sec** across buoy stations<br>• 3D current vector visualizer built with Three.js<br>• Real-time temperature anomaly detection | [View Code ↗](https://github.com/Himarghya) |
 
 ---
 
@@ -48,9 +49,9 @@
 
 | Title / Recognition | Issuer / Organization | Team / Credential ID | Category | Verification |
 | :--- | :--- | :--- | :--- | :--- |
-| **🥇 CAN YOU HACK IT (Sept. 13, 2025) — 1st Position (Winners)** | THINKBUILDSHIP & Globus Infocom | Team *Still Standing* (Himarghya Das, Shreeshant Shetty, Alok Kumar Mishra, Anshuman Singh) | 24-Hour Hackathon Sprint | [View Recognition ↗](https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTE0NDAwNTQ3MTkyMjk5?story_media_id=3716531304344154391_48185590868&stkn=Znh0YWNsc3pzb3Aw) |
-| **🥉 RoboRush 3.0 (2025) — 3rd Position** | Electronics & Robotics Society (ERS), IIITDM Jabalpur | Team *Super Strikers* (Himarghya Das, Aditya Rajput, Harshal Paranjiya, Anuj) | Robotics & Embedded | [Inspect Portfolio ↗](https://portfolio-3k34.onrender.com/#achievements) |
-| **📜 The Complete Full-Stack Web Development Bootcamp** | Udemy (Dr. Angela Yu) | `UC-629e3310-b94c-4f76-a91e-1b90d378d496` | 62-Hour Comprehensive Full-Stack | [Verify Credential ↗](https://ude.my/UC-629e3310-b94c-4f76-a91e-1b90d378d496) |
+| **🥇 CAN YOU HACK IT — 1st Position (Winners)** | THINKBUILDSHIP & Globus Infocom | Team *Still Standing* (Himarghya Das, Shreeshant Shetty, Alok Kumar Mishra, Anshuman Singh) | 24-Hour Hackathon Sprint | [View Recognition ↗](https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTE0NDAwNTQ3MTkyMjk5?story_media_id=3716531304344154391_48185590868&stkn=Znh0YWNsc3pzb3Aw) |
+| **🥉 RoboRush 3.0 — 3rd Position** | Electronics & Robotics Society (ERS), IIITDM Jabalpur | Team *Super Strikers* (Himarghya Das, Aditya Rajput, Harshal Paranjiya, Anuj) | Robotics & Embedded Hardware | [Inspect Portfolio ↗](https://portfolio-3k34.onrender.com/#achievements) |
+| **📜 The Complete Full-Stack Web Development Bootcamp** | Udemy (Dr. Angela Yu) | `UC-629e3310-b94c-4f76-a91e-1b90d378d496` | 62-Hour Comprehensive Full-Stack Certification | [Verify Credential ↗](https://ude.my/UC-629e3310-b94c-4f76-a91e-1b90d378d496) |
 
 ---
 
@@ -62,15 +63,27 @@
 ├── 🪐 3D & Creative Graphics : Three.js, React Three Fiber, HTML5 Canvas2D Physics Engines
 ├── ⚙️ Backend & APIs        : FastAPI, Node.js, Express.js, RESTful APIs, WebSockets
 ├── ⚡ Distributed & Streaming: Redis Streams, Server-Sent Events (SSE), Worker Queues
-├── 🗄️ Databases & GIS       : PostgreSQL, PostGIS (Spatial Indexing), IndexedDB (Dexie.js)
+├── 🗄️ Databases & GIS       : PostgreSQL, PostGIS (Spatial Indexing), IndexedDB (Dexie.js), Redis
 └── 📦 DevOps & Tooling      : Docker, Git/GitHub, Linux/Shell, Vite, NPM
 ```
 
 ---
 
+## 📖 Technical Articles & Deep Dives
+
+Featured publications from [**Himarghya's Engineering Blog**](https://himarghya-blog.onrender.com):
+
+- **[How I Structure My Node.js Projects](https://himarghya-blog.onrender.com/blog/how-i-structure-my-nodejs-projects)** — *A practical 4-layer architecture for routes, controllers, services, and repositories without over-engineering.*
+- **[PostgreSQL Indexing: Beyond B-Tree](https://himarghya-blog.onrender.com/blog/postgresql-indexing-beyond-btree)** — *Leveraging GiST, GIN, and BRIN for high-throughput timeseries and PostGIS spatial datasets.*
+- **[Designing Reliable Job Queues with Redis & Leases](https://himarghya-blog.onrender.com/blog/designing-reliable-job-queues-with-redis)** — *Handling worker crashes, heartbeat fencing, and ensuring strict idempotency.*
+- **[Move Semantics & Memory in Modern C++](https://himarghya-blog.onrender.com/blog/understanding-move-semantics-memory-modern-cpp)** — *Rvalue references, std::move, RAII, and zero-cost abstractions explained.*
+- **[Building Resilient Systems: Failure Modes](https://himarghya-blog.onrender.com/blog/building-resilient-systems-failure-modes)** — *Circuit breakers, jitter backoff, and bulkhead isolation patterns in distributed architectures.*
+
+---
+
 ## 💻 Developer CLI Terminal Reference
 
-Access the built-in terminal anywhere on the site by clicking the **`>_`** icon or launching the terminal modal:
+Access the built-in terminal anywhere on the site by clicking the **`>_`** icon in the navbar or launch it via the terminal modal:
 
 | Command | Action / Response |
 | :--- | :--- |
@@ -84,9 +97,9 @@ Access the built-in terminal anywhere on the site by clicking the **`>_`** icon 
 
 ---
 
-## ⚡ Local Development Setup
+## ⚡ Local Development & Build Setup
 
-Clone the repository and spin up the local development server:
+Clone the repository and spin up the local development environment:
 
 ```bash
 # 1. Clone the repository
@@ -98,10 +111,10 @@ cd Portfolio
 # 3. Install dependencies
 npm install
 
-# 4. Launch Vite dev server
+# 4. Launch Vite development server
 npm run dev
 
-# 5. Build for production
+# 5. Build optimized production bundle
 npm run build
 ```
 
@@ -110,6 +123,6 @@ npm run build
 <div align="center">
 
 **Designed & Engineered with ❤️ by [Himarghya Das](https://github.com/Himarghya)**  
-*Live Site: [portfolio-3k34.onrender.com](https://portfolio-3k34.onrender.com/)*
+*Live Production: [portfolio-3k34.onrender.com](https://portfolio-3k34.onrender.com/)* • *Blog: [himarghya-blog.onrender.com](https://himarghya-blog.onrender.com/)*
 
 </div>
