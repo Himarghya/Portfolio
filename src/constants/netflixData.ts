@@ -293,20 +293,27 @@ export const CAREER_SEASONS = [
     episodes: [
       {
         epNumber: 1,
+        title: 'Hackyard Build 2026 (IIT Guwahati)',
+        duration: 'National Hackathon Finalist',
+        synopsis: 'Selected builder for Hackyard Build 2026 at IIT Guwahati to build and ship VARSHANET 2.0 with top builders across India and YC founder sessions.',
+        tech: 'React + FastAPI + PostGIS + 24h Ship Sprint'
+      },
+      {
+        epNumber: 2,
         title: 'VarshaNet Weather GIS Engine',
         duration: 'Production System',
         synopsis: 'Designed and implemented an end-to-end precipitation tracking platform with PostGIS spatial indexing and interactive radar sweeps.',
         tech: 'FastAPI + PostGIS + Python + React'
       },
       {
-        epNumber: 2,
+        epNumber: 3,
         title: 'PulseMesh Task Orchestrator',
         duration: 'Distributed Queue',
         synopsis: 'Built a reliable job queue engine with worker heartbeat monitoring, automated retry backoff, and SSE telemetry streaming.',
         tech: 'Node.js + Express + React + Redis'
       },
       {
-        epNumber: 3,
+        epNumber: 4,
         title: 'Polaris Arctic Logistics Platform',
         duration: 'Offline PWA',
         synopsis: 'Engineered an expedition cold-chain management system supporting full offline capability and route calculation.',

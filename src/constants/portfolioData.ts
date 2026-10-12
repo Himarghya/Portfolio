@@ -209,7 +209,7 @@ export const TIMELINE: TimelineMilestone[] = [
     year: "PHASE 04",
     status: "CURRENT FOCUS",
     title: "Advanced Weather & Ocean Analytics Platforms",
-    description: "Architected cutting-edge big data platforms: VarshaNet 2.0 for real-time weather & disaster intelligence with geospatial GIS queries, and Ocean Intelligence for marine anomaly tracking.",
+    description: "Architected cutting-edge big data platforms: VarshaNet 2.0 for real-time weather & disaster intelligence with geospatial GIS queries, and Ocean Intelligence for marine anomaly tracking. Selected for Hackyard Build 2026 at IIT Guwahati.",
     skills: ["PostGIS", "FastAPI", "GIS Spatial Data", "Docker", "Three.js 3D Visuals"],
     icon: "Globe",
     badge: "Specialized Engineering"
